@@ -7,6 +7,7 @@ vsebovat more:
 *slikco troopa
 *range
 *damage
+*attack cooldown
 *health
 *cost
 in pol setas neke start value in pol usak troop sam klices supr z parametrcki.
@@ -16,6 +17,7 @@ vsebuje:
 *lokacijo towerja na gridu
 *range
 *damage
+*attack cooldown
 *health
 
 -i guess de class GRID k bo naredu grif na kirm se bo use dogajal
