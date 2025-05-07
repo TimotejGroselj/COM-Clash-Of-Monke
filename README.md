@@ -1,6 +1,7 @@
 # COM-Clash-Of-Monke
 le project by jaka and timo
 what to do when u dont like urself (u start working in this bullshit):
+
 -nared class TROOP(lhka se mu da ime MONKE) k bo daddy useh troopu.
 vsebovat more:
 *slikco troopa
