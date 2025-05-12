@@ -37,10 +37,10 @@ public class Grid {
   public double getWindowHeight() {
     return windowHeight;
   }
-    public boolean isOnFrendlyGround(Vektor lokacija, boolean isFrendly) {
-        if (lokacija.getY()<=this.getySize()/2) {
-            return isFrendly;
+    public boolean isOnFrendlyGround(Troop troop) {
+        if (troop.getLocation().getY()<=this.getySize()/2) {
+            return troop.isFrendly();
         }
-        return !isFrendly;
+        return !troop.isFrendly();
     }
 }

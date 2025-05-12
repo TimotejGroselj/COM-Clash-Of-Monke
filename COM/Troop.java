@@ -15,8 +15,9 @@ public class Troop {
     private Vektor location;
     private int[][] animation = new int[2][2];
     private int currenthealth;
+    private boolean isFrendly;
     public Troop(BufferedImage picture, double speed, int damage, int range, double cool, int maxhealth, int cost,
-                 double orientation, Vektor location, int[][] animation, int currenthealth) {
+                 double orientation, Vektor location, int[][] animation, int currenthealth, boolean isFrendly) {
 
         this.picture = picture;
         this.speed = speed;
@@ -29,6 +30,7 @@ public class Troop {
         this.location = location;
         this.animation = animation;
         this.currenthealth = currenthealth;
+        this.isFrendly = isFrendly;
     }
     public double getOrientation() {
         return orientation;
@@ -69,11 +71,12 @@ public class Troop {
     public int getCost() {
         return cost;
     }
-
     public int[][] getAnimation() {
         return animation;
     }
-
+    public boolean isFrendly() {
+        return isFrendly;
+    }
     public void setPicture(BufferedImage picture) {
         this.picture = picture;
     }
@@ -89,7 +92,7 @@ public class Troop {
         Vektor move = new Vektor(Math.cos(this.getOrientation()) * normSpeed, Math.sin(this.getOrientation()) * normSpeed);
         this.setLocation(Vektor.plus(move, this.getLocation()));
     }
-    public void attack(Troop victim) {
+    public void attack(Troop victim, double timestamp) {
         //das mu victim in nrdi attack
         //sproz animacijo somehow?
         victim.setCurrenthealth(victim.getCurrenthealth()-this.getDamage());
@@ -97,12 +100,12 @@ public class Troop {
     public boolean isInRange(Troop victim) {
         return (Vektor.dist(this.getLocation(), victim.getLocation())<=this.getRange());
     }
-    public void pathFind(Grid grid, boolean isFrendly) {
+    public void pathFind(Grid grid) {
         //fuck it we ball
         double min = 300.0; 
         Troop pathPoinTroop = null;
-        for (Troop enemy: grid.getTroops(isFrendly)) {
-            if ((!grid.isOnFrendlyGround(this.getLocation(),isFrendly)) && enemy instanceof Bridge) {
+        for (Troop enemy: grid.getTroops(this.isFrendly())) {
+            if ((!grid.isOnFrendlyGround(this)) && enemy instanceof Bridge) {
                 continue;
             }
             double dist = Vektor.dist(enemy.getLocation(),this.getLocation());
