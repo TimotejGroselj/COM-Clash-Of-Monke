@@ -1,9 +1,11 @@
+package COM;
+
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class TesterMonke extends Troop  {
+public class TesterMonke extends Troop {
     private static final double SPEED=1;
     private static final int DAMAGE=2;
     private static final int RANGE=2;

@@ -1,3 +1,5 @@
+package COM;
+
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
@@ -7,7 +9,7 @@ public class MainLoop {
     public static void main(String[] args) throws IOException {
         Grid grid = new Grid();
         Set<Troop> frendly = new HashSet<Troop>();
-        //Set<Troop> enemy = new HashSet<Troop>();
+        //Set<COM.Troop> enemy = new HashSet<COM.Troop>();
         while (true) {
             //magično iz cursorja dobiš lokacijo pa kir troop je selectan k ga deploya
             Vektor location = new Vektor(1,2);

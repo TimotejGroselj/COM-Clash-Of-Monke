@@ -1,3 +1,5 @@
+package COM;
+
 import java.awt.image.BufferedImage;
 
 public class Troop {

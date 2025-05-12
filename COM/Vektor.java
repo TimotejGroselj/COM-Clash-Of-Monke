@@ -1,3 +1,5 @@
+package COM;
+
 public class Vektor {
     private double x;
     private double y;

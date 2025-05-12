@@ -1,3 +1,4 @@
+package COM;
 
 public class Grid {
     private int xSize;
