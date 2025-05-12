@@ -4,14 +4,29 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
+
+class Attack extends TimerTask{
+ private Troop freTroop;
+ private Troop eneTroop;
+ public Attack(Troop freTroop, Troop eneTroop) {
+    this.freTroop = freTroop;
+    this.eneTroop = eneTroop;
+ }
+ @Override
+ public void run() {
+     freTroop.attack(eneTroop);
+ }
+}
 
 public class MainLoop {
-
     public static void main(String[] args) throws IOException {
         Set<Troop> frendlys = new HashSet<Troop>(); frendlys.add(new Tower(Math.PI/2, new Vektor(10,10),true)); frendlys.add(new Tower(Math.PI/2, new Vektor(90,10), true));
         Set<Troop> enemys = new HashSet<Troop>(); enemys.add(new Tower(Math.PI/2, new Vektor(10,190),false)); enemys.add(new Tower(Math.PI/2, new Vektor(90,190),false));
         //nrdi set frendly pa enemy k vsebuje towerje pa bridge
         Grid grid = new Grid(frendlys, enemys, 8008.5, 8008.5);
+        Timer timer = new Timer();
         while (true) {
             ////magično iz cursorja dobiš lokacijo pa kir troop je selectan k ga deploya
             //Vektor location = new Vektor(1,2);
@@ -44,18 +59,14 @@ public class MainLoop {
             boolean IsAttacking;
             for (Troop freTroop: frendlys) {
                 IsAttacking = false;
-                double timeStart = 0;
+                double startTime = Instant.now().toEpochMilli();
                 for (Troop eneTroop: enemys) {
                     if (freTroop instanceof Bridge || eneTroop instanceof Bridge) {
                         continue;
                     }
                     if (freTroop.isInRange(eneTroop)) {
-                        if (Instant.now().toEpochMilli()-timeStart>=freTroop.getCool()) {
-                          	freTroop.attack(eneTroop);
-                            timeStart = Instant.now().toEpochMilli();
-                        }
-                        IsAttacking = true;
-                        break;
+                        TimerTask task = new Attack(freTroop,eneTroop);
+                        timer.schedule(task, 0, (long) freTroop.getCool()*1000);
                     }
                     if (!IsAttacking) {
                         //freTroop.move(timestep somehow);
