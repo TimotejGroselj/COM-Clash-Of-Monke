@@ -25,10 +25,10 @@ public class Grid {
   public int getySize() {
     return ySize;
   }
-  public Set<Troop> getFrendlys() {
-    return frendlys;
-  }
-  public Set<Troop> getEnemys() {
+  public Set<Troop> getTroops(boolean isFrendly) {
+    if (isFrendly) {
+      return frendlys;
+    }
     return enemys;
   }
   public double getWindowWidth() {
@@ -37,10 +37,10 @@ public class Grid {
   public double getWindowHeight() {
     return windowHeight;
   }
-    public boolean isOnFrendlyGround(Vektor lokacija) {
-        if (lokacija.getY()<this.getySize()/2) {
-            return true;
+    public boolean isOnFrendlyGround(Vektor lokacija, boolean isFrendly) {
+        if (lokacija.getY()<=this.getySize()/2) {
+            return isFrendly;
         }
-        return false;
+        return !isFrendly;
     }
 }

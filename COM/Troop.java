@@ -97,13 +97,16 @@ public class Troop {
     public boolean isInRange(Troop victim) {
         return (Vektor.dist(this.getLocation(), victim.getLocation())<=this.getRange());
     }
-    public void pathFind(Grid grid) {
+    public void pathFind(Grid grid, boolean isFrendly) {
         //fuck it we ball
         double min = 300.0; 
         Troop pathPoinTroop = null;
-        for (Troop enemy: grid.getEnemys()) {
+        for (Troop enemy: grid.getTroops(isFrendly)) {
+            if ((!grid.isOnFrendlyGround(this.getLocation(),isFrendly)) && enemy instanceof Bridge) {
+                continue;
+            }
             double dist = Vektor.dist(enemy.getLocation(),this.getLocation());
-            if (dist < min && dist!=0) {
+            if (dist < min) {
                 min = dist;
                 pathPoinTroop = enemy;
             }
