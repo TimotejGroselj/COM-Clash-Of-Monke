@@ -92,7 +92,7 @@ public class Troop {
         Vektor move = new Vektor(Math.cos(this.getOrientation()) * normSpeed, Math.sin(this.getOrientation()) * normSpeed);
         this.setLocation(Vektor.plus(move, this.getLocation()));
     }
-    public void attack(Troop victim, double timestamp) {
+    public void attack(Troop victim) {
         //das mu victim in nrdi attack
         //sproz animacijo somehow?
         victim.setCurrenthealth(victim.getCurrenthealth()-this.getDamage());
