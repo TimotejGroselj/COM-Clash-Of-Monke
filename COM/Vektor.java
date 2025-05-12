@@ -30,8 +30,19 @@ public class Vektor {
     }
 
     public static double angle(Vektor v1,Vektor v2) {
-        //nimam pojma ce to dela vm de zgleda narobe in cudn sam nimam glih a way to test it
-        return Math.atan(v1.getX()-v2.getX())/(v2.getY()-v1.getY())-90;
+        //should worky?
+        double dx = v2.getX() - v1.getX();
+        double dy = v2.getY() - v1.getY();
+        double angle = Math.atan(dy/dx);
+        if (dx < 0 && dy > 0 || dx < 0 && dy < 0) {
+            return Math.PI+angle;
+        }
+        else if (dx > 0 && dy < 0) {
+            return 2*Math.PI+angle;
+        }
+        else {
+            return angle;
+        }
     }
     public static void main(String[] args){
         Vektor vek = new Vektor(2.0,2.0);

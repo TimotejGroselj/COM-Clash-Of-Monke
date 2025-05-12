@@ -98,25 +98,16 @@ public class Troop {
         return (Vektor.dist(this.getLocation(), victim.getLocation())<=this.getRange());
     }
     public void pathFind(Grid grid) {
-        //nastav oreintacijo tko, da ko se bo premiku bo pršu v najbižji objective aka bridge al pa enemy tower
-        if (grid.isOnFrendlyGround(this.getLocation())) {
-            if ((Vektor.dist(grid.getBridgeLoc()[0],this.getLocation())) < (Vektor.dist(grid.getBridgeLoc()[1],this.getLocation()))) {
-                this.setOrientation(Vektor.angle(this.getLocation(), grid.getBridgeLoc()[1]));
-            }
-            else {
-                this.setOrientation(Vektor.angle(this.getLocation(), grid.getBridgeLoc()[0]));
-            }
-        }
-        else {
-            if ((Vektor.dist(grid.getEneTowerLoc()[0],this.getLocation())) < (Vektor.dist(grid.getEneTowerLoc()[1],this.getLocation()))) {
-                this.setOrientation(Vektor.angle(this.getLocation(), grid.getEneTowerLoc()[1]));
-            }
-            else {
-                this.setOrientation(Vektor.angle(this.getLocation(), grid.getEneTowerLoc()[0]));
+        //fuck it we ball
+        double min = 300.0; 
+        Troop pathPoinTroop = null;
+        for (Troop enemy: grid.getEnemys()) {
+            double dist = Vektor.dist(enemy.getLocation(),this.getLocation());
+            if (dist < min && dist!=0) {
+                min = dist;
+                pathPoinTroop = enemy;
             }
         }
+        this.setOrientation(Vektor.angle(this.getLocation(), pathPoinTroop.getLocation()));
     }
-
-
-
 }

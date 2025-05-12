@@ -20,6 +20,6 @@ public class TesterMonke extends Troop {
     //vse dobiš z get metodam
     //kar lhka spreminjaš (current health, orientation, location) spreminjaš z set metodam
     public TesterMonke(Vektor location) throws IOException {
-        super(ImageIO.read(new File("COM","TeseterMonke.png")), SPEED, DAMAGE, RANGE, COOL, MAXHEATLH, COST, Math.PI/2, location, ANIMATION, MAXHEATLH);
+        super(ImageIO.read(new File("TeseterMonke.png")), SPEED, DAMAGE, RANGE, COOL, MAXHEATLH, COST, Math.PI/2, location, ANIMATION, MAXHEATLH);
     }
 }
