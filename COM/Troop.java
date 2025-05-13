@@ -39,32 +39,6 @@ public class Troop {
         this.name = name;
     }
     public Troop(Vektor location, boolean isFrendly, String name) throws IOException {
-        //cajt za standard balancing: vsaka kategorija ima 9 barov k vplivajo na ta določeno kategorijo (delam use od oka tuk de please forgive me in spreminjala bova 
-        //kok vsak level doda vsazga stata)
-        //speed: vsak level doda 2pixla na iteracijo
-        //damage: vsak level doda 3 damage point
-        //range: vsak level doda 30 pixlov ranga
-        //cool: vsak level zbije cooldown iz 80 iteracij za 8 (iz 4s cooldowna na 0.4s cooldowna)
-        //maxHealth: vsak level doda 10HP
-        //cost: vsak level zbije od 10 en elixir
-
-        //balancan troop recva de je najbl middle of the road ass troop k ma use 5 aka premika se z 10 pixli na iteracijo (glede na max window aka 1920x1080)
-        //ma 5 damage ma 150 pixlov ranga ma cooldown 40 iteracij (delam pod assumptionom de bo repain 50ms) ma 40 maxHealth in stane 5 elixirja.
-
-        //sum vseh pointov je pol u tm primeru 30 pointov ki jih lahko porabiš kakor želiš.
-        if (name == "TesterMonke") {
-            this.picture = ImageIO.read(new File("TeseterMonke.png"));
-            this.orientation = Math.PI/2;
-            this.location = location;
-            this.isFrendly = isFrendly;
-            this.name = name;
-            setSpeed(5);
-            setDamage(5);
-            setRange(5);
-            setCool(5);
-            setMaxhealth(5);
-            setCost(5);
-        }
         if (name == "Tower") {
             this.picture = ImageIO.read(new File("TeseterMonke.png"));
             this.orientation = Math.PI/2;
@@ -90,6 +64,34 @@ public class Troop {
             this.cool = 0;
             this.maxhealth = 0;
             this.cost = 0;
+        }
+        //initiatana fixna Tower pa bridge k sta mal built diffrent
+
+        //cajt za standard balancing: vsaka kategorija ima 9 barov k vplivajo na ta določeno kategorijo (delam use od oka tuk de please forgive me in spreminjala bova 
+        //kok vsak level doda vsazga stata)
+        //speed: vsak level doda 2pixla na iteracijo
+        //damage: vsak level doda 3 damage point
+        //range: vsak level doda 30 pixlov ranga
+        //cool: vsak level zbije cooldown iz 80 iteracij za 8 (iz 4s cooldowna na 0.4s cooldowna)
+        //maxHealth: vsak level doda 10HP
+        //cost: vsak level zbije od 10 en elixir
+
+        //balancan troop recva de je najbl middle of the road ass troop k ma use 5 aka premika se z 10 pixli na iteracijo (glede na max window aka 1920x1080)
+        //ma 5 damage ma 150 pixlov ranga ma cooldown 40 iteracij (delam pod assumptionom de bo repain 50ms) ma 40 maxHealth in stane 5 elixirja.
+
+        //sum vseh pointov je pol u tm primeru 30 pointov ki jih lahko porabiš kakor želiš.
+        if (name == "TesterMonke") {
+            this.picture = ImageIO.read(new File("TeseterMonke.png"));
+            this.orientation = Math.PI/2;
+            this.location = location;
+            this.isFrendly = isFrendly;
+            this.name = name;
+            setSpeed(5);
+            setDamage(5);
+            setRange(5);
+            setCool(5);
+            setMaxhealth(5);
+            setCost(5);
         }
     }
     
