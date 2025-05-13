@@ -21,24 +21,39 @@ public class Troop {
     private int currenthealth;
     private boolean isFrendly;
     private String name;
-    public Troop(BufferedImage picture, int speed, int damage, int range, int cool, int maxhealth, int cost,
-                 double orientation, Vektor location, int[][] animation, int currenthealth, boolean isFrendly, String name) {
+    private int lastAttack;
 
-        this.picture = picture;
-        this.speed = speed;
-        this.damage = damage;
-        this.range = range;
-        this.cool = cool;
-        this.maxhealth = maxhealth;
-        this.cost = cost;
-        this.orientation = orientation;
-        this.location = location;
-        this.animation = animation;
-        this.currenthealth = currenthealth;
-        this.isFrendly = isFrendly;
-        this.name = name;
-    }
     public Troop(Vektor location, boolean isFrendly, String name) throws IOException {
+        if (name == "Tower") {
+            this.picture = ImageIO.read(new File("TeseterMonke.png"));
+            this.orientation = Math.PI/2;
+            this.location = location;
+            this.isFrendly = isFrendly;
+            this.lastAttack=0;
+            this.name = name;
+            this.speed = 0;
+            setDamage(8);
+            setRange(8);
+            setCool(3);
+            this.maxhealth = 500;
+            this.cost = 0;
+        }
+        if (name == "Bridge") {
+            this.picture = ImageIO.read(new File("TeseterMonke.png"));
+            this.orientation = Math.PI/2;
+            this.location = location;
+            this.isFrendly = isFrendly;
+            this.lastAttack=0;
+            this.name = name;
+            this.speed = 0;
+            this.damage = 0;
+            this.range = 0;
+            this.cool = 0;
+            this.maxhealth = 0;
+            this.cost = 0;
+        }
+        //initiatana fixna Tower pa bridge k sta mal built diffrent
+
         //cajt za standard balancing: vsaka kategorija ima 9 barov k vplivajo na ta določeno kategorijo (delam use od oka tuk de please forgive me in spreminjala bova 
         //kok vsak level doda vsazga stata)
         //speed: vsak level doda 2pixla na iteracijo
@@ -55,6 +70,7 @@ public class Troop {
         if (name == "TesterMonke") {
             this.picture = ImageIO.read(new File("TeseterMonke.png"));
             this.orientation = Math.PI/2;
+            this.lastAttack=0;
             this.location = location;
             this.isFrendly = isFrendly;
             this.name = name;
@@ -64,32 +80,6 @@ public class Troop {
             setCool(5);
             setMaxhealth(5);
             setCost(5);
-        }
-        if (name == "Tower") {
-            this.picture = ImageIO.read(new File("TeseterMonke.png"));
-            this.orientation = Math.PI/2;
-            this.location = location;
-            this.isFrendly = isFrendly;
-            this.name = name;
-            this.speed = 0;
-            setDamage(8);
-            setRange(8);
-            setCool(3);
-            this.maxhealth = 500;
-            this.cost = 0;
-        }
-        if (name == "Bridge") {
-            this.picture = ImageIO.read(new File("TeseterMonke.png"));
-            this.orientation = Math.PI/2;
-            this.location = location;
-            this.isFrendly = isFrendly;
-            this.name = name;
-            this.speed = 0;
-            this.damage = 0;
-            this.range = 0;
-            this.cool = 0;
-            this.maxhealth = 0;
-            this.cost = 0;
         }
     }
     
@@ -160,6 +150,12 @@ public class Troop {
     public String getName() {
         return name;
     }
+    public int getLastAttack() {
+        return lastAttack;
+    }
+    public void setLastAttack(int lastAttack) {
+        this.lastAttack = lastAttack;
+    }
     public boolean isFrendly() {
         return isFrendly;
     }
@@ -172,12 +168,11 @@ public class Troop {
         }
         return false;
     }
-    
 
-    public void move(double timestep) {
+
+    public void move() {
         //nastavi lokacijo troopa po premiku, ki ga opravi v timestepu
-        double normSpeed = timestep * this.getSpeed();
-        Vektor move = new Vektor(Math.cos(this.getOrientation()) * normSpeed, Math.sin(this.getOrientation()) * normSpeed);
+        Vektor move = new Vektor(Math.cos(this.getOrientation()) * this.getSpeed(), Math.sin(this.getOrientation()) * this.getSpeed());
         this.setLocation(Vektor.plus(move, this.getLocation()));
     }
     public void attack(Troop victim) {
@@ -193,7 +188,7 @@ public class Troop {
         double min = 300.0; 
         Troop pathPoinTroop = null;
         for (Troop enemy: grid.getTroops(this.isFrendly())) {
-            if ((!grid.isOnFrendlyGround(this)) && enemy.getName() == "Bridge") {
+            if ((!grid.isOnFrendlyGround(this)) && enemy.getName().equals("Bridge")) {
                 continue;
             }
             double dist = Vektor.dist(enemy.getLocation(),this.getLocation());
