@@ -22,8 +22,8 @@ class Attack extends TimerTask{
 
 public class MainLoop {
     public static void main(String[] args) throws IOException {
-        Set<Troop> frendlys = new HashSet<Troop>(); frendlys.add(new Tower(Math.PI/2, new Vektor(10,10),true)); frendlys.add(new Tower(Math.PI/2, new Vektor(90,10), true));
-        Set<Troop> enemys = new HashSet<Troop>(); enemys.add(new Tower(Math.PI/2, new Vektor(10,190),false)); enemys.add(new Tower(Math.PI/2, new Vektor(90,190),false));
+        Set<Troop> frendlys = new HashSet<Troop>(); frendlys.add(new Troop(new Vektor(10,10),true, "Tower")); frendlys.add(new Troop(new Vektor(90,10),true, "Tower"));
+        Set<Troop> enemys = new HashSet<Troop>(); enemys.add(new Troop(new Vektor(10,90),false, "Tower")); enemys.add(new Troop(new Vektor(90,90),false, "Tower"));
         //nrdi set frendly pa enemy k vsebuje towerje pa bridge
         Grid grid = new Grid(frendlys, enemys, 8008.5, 8008.5);
         Timer timer = new Timer();
@@ -41,14 +41,14 @@ public class MainLoop {
 
             //zanka de pathfinder frendlyu
             for (Troop freTroop: frendlys) {
-                if (freTroop instanceof Bridge) {
+                if (freTroop.getName() == "Bridge") {
                     continue;
                 }
                 freTroop.pathFind(grid);    
             }
             //zanka za pathfinderja enemyu
              for (Troop eneTroop: enemys) {
-                if (eneTroop instanceof Bridge) {
+                if (eneTroop.getName() == "Bridge") {
                     continue;
                 }
                 eneTroop.pathFind(grid);    
@@ -61,7 +61,7 @@ public class MainLoop {
                 IsAttacking = false;
                 double startTime = Instant.now().toEpochMilli();
                 for (Troop eneTroop: enemys) {
-                    if (freTroop instanceof Bridge || eneTroop instanceof Bridge) {
+                    if (freTroop.getName() == "Bridge" || eneTroop.getName() == "Bridge") {
                         continue;
                     }
                     if (freTroop.isInRange(eneTroop)) {
@@ -75,7 +75,7 @@ public class MainLoop {
             }
             for (Troop eneTroop: enemys) {
                 for (Troop freTroop: frendlys) {
-                    if (freTroop instanceof Bridge || eneTroop instanceof Bridge) {
+                    if (freTroop.getName() == "Bridge" || eneTroop.getName() == "Bridge") {
                         continue;
                     }
                    if (eneTroop.isInRange(freTroop)) {
