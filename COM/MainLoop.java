@@ -1,24 +1,8 @@
 package COM;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
-
-class Attack extends TimerTask{
- private Troop freTroop;
- private Troop eneTroop;
- public Attack(Troop freTroop, Troop eneTroop) {
-    this.freTroop = freTroop;
-    this.eneTroop = eneTroop;
- }
- @Override
- public void run() {
-     freTroop.attack(eneTroop);
- }
-}
 
 public class MainLoop {
     public static void main(String[] args) throws IOException {
@@ -26,7 +10,7 @@ public class MainLoop {
         Set<Troop> enemys = new HashSet<Troop>(); enemys.add(new Troop(new Vektor(10,90),false, "Tower")); enemys.add(new Troop(new Vektor(90,90),false, "Tower"));
         //nrdi set frendly pa enemy k vsebuje towerje pa bridge
         Grid grid = new Grid(frendlys, enemys, 8008.5, 8008.5);
-        Timer timer = new Timer();
+        int i = 0;
         while (true) {
             ////magično iz cursorja dobiš lokacijo pa kir troop je selectan k ga deploya
             //Vektor location = new Vektor(1,2);
@@ -41,52 +25,52 @@ public class MainLoop {
 
             //zanka de pathfinder frendlyu
             for (Troop freTroop: frendlys) {
-                if (freTroop.getName() == "Bridge") {
+                if (freTroop.getName().equals("Bridge")) {
                     continue;
                 }
                 freTroop.pathFind(grid);    
             }
             //zanka za pathfinderja enemyu
              for (Troop eneTroop: enemys) {
-                if (eneTroop.getName() == "Bridge") {
+                if (eneTroop.getName().equals("Bridge")) {
                     continue;
                 }
                 eneTroop.pathFind(grid);    
             }
-
-
             //zanka za in range pa atack za frendlye in enemye
-            boolean IsAttacking;
             for (Troop freTroop: frendlys) {
-                IsAttacking = false;
-                double startTime = Instant.now().toEpochMilli();
                 for (Troop eneTroop: enemys) {
-                    if (freTroop.getName() == "Bridge" || eneTroop.getName() == "Bridge") {
+                    if (freTroop.getName().equals("Bridge") || eneTroop.getName().equals("Bridge")) {
                         continue;
                     }
                     if (freTroop.isInRange(eneTroop)) {
-                        TimerTask task = new Attack(freTroop,eneTroop);
-                        timer.schedule(task, 0, (long) freTroop.getCool()*1000);
+                        if (i-freTroop.getLastAttack() <= freTroop.getCool()) {
+                            freTroop.attack(eneTroop);
+                            freTroop.setLastAttack(i);
+                        }
                     }
-                    if (!IsAttacking) {
-                        //freTroop.move(timestep somehow);
+                    else {
+                        freTroop.move();
                     }
                 }
             }
             for (Troop eneTroop: enemys) {
                 for (Troop freTroop: frendlys) {
-                    if (freTroop.getName() == "Bridge" || eneTroop.getName() == "Bridge") {
+                    if (freTroop.getName().equals("Bridge") || eneTroop.getName().equals("Bridge")) {
                         continue;
                     }
-                   if (eneTroop.isInRange(freTroop)) {
-                        //start timer 
-                        //if current time-timer>=eneTroop.getcool(){
-                        //  	eneTroop.attack(freTroop);
-                        //}
+                    if (i-eneTroop.getLastAttack() <= eneTroop.getCool()) {
+                            eneTroop.attack(freTroop);
+                            eneTroop.setLastAttack(i);
+                    }
+                    else {
+                        eneTroop.move();
+                    }
                     }
                 }
+                i++;
             }
         }
     }
-}
+
 
