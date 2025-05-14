@@ -1,10 +1,8 @@
 package COM;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
+import java.util.List;
 
 public class MonkeThinker {
 
@@ -83,10 +81,10 @@ class ChooseTheGuy{
 
 class ChooseTheLocation{
     private Troop enemy;
-    private int a; //to se dodelis fiksno
-    private int b; //to se dodelis fiksno
-    private int ry; //to se dodelis fiksno
-    private int rx; //to se dodelis fiksno
+    private double a; //to se dodelis fiksno
+    private double b; //to se dodelis fiksno
+    private double ry; //to se dodelis fiksno
+    private double rx; //to se dodelis fiksno
     private Troop friend;
 
 
@@ -95,15 +93,13 @@ class ChooseTheLocation{
         this.friend = friend;
     }
 
-    public boolean IsInside(int x,int y){
-        Rectangle rect = new Rectangle(rx,ry,a,b);
-        Point spawn = new Point(x,y);
-        return rect.contains(spawn);
+    public boolean IsInside(double x,double y){
+        return ((x >= rx || x <= rx+a)&&(y >= ry || y <= ry+b));
     }
 
     public String PickSide(){
-        Vektor r1 = new Vektor((double) rx + a,(double) ry + b/2.0);
-        Vektor r2 = new Vektor((double) rx + a,(double) ry + b/2.0);
+        Vektor r1 = new Vektor(rx + a,ry + b/2.0);
+        Vektor r2 = new Vektor(rx + a,ry + b/2.0);
         Vektor wherefriend = this.friend.getLocation();
         if (Vektor.dist(r1,wherefriend) >= Vektor.dist(r2,wherefriend)){
             return "Left";
@@ -114,13 +110,42 @@ class ChooseTheLocation{
     public Vektor GetSpawn(String strategy){
         Random r = new Random();
         if (Objects.equals(strategy, "Attack")){
-            int x = r.nextInt(rx,rx+a);
-            int y = r.nextInt(ry,ry+b);
-            return new Vektor((double) x,(double) y);
+            double x = r.nextInt((int) rx,(int) (rx+a));
+            double y = r.nextInt((int) ry,(int) (ry+b));
+            return new Vektor(x,y);
         }
-        //se za defence
-        return null;
+        double range = this.enemy.getRange();
+        double y = range;
+        double x = 0.0;
+        List<Vektor> ranxy = new ArrayList<>();
+        while (ranxy.size() < 4){
+            if (IsInside(x,y)){
+                ranxy.add(new Vektor(x,y));
+            }
+            y -= 0.33; //neki parameter
+            x = Math.sqrt(Math.pow(range,2)-Math.pow(y,2));
+        }
+        int id = r.nextInt(4);
+        return ranxy.get(id);
     }
 
-    }
+}
+
+/*Plan za jutr:
+Checki za left and right stvari
+Zbris metode za zbrat troopa
+Metodo dodefence preured za hashmap interactionov za dani troop
+U classu spawn nared zadevo da loh spawna uzad (torej ce vid tanka na drugi strani lahko sumi,da gre za push in more defendat, defenda doklr tank ne umre)
+Nadaljevanje od zgornga: ce ni tanka ampak je nek semi-tank lahko izbere a bo defendu al attacku based on threatning level pa elixir, ce je pa attack pa napad na drugi strani?
+Bottomline lots of work awaits you maggot
+*/
+
+
+
+
+
+
+
+
+
 
