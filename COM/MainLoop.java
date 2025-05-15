@@ -26,13 +26,13 @@ public class MainLoop {
     public final static int WIDTH = 1900;
     public static final String[] SET_VALUES = new String[] {"TesterMonke"};
     public final Set<String> TROOPTYPES = new HashSet<>(Arrays.asList(SET_VALUES));
-    private static String selectedName = "TeseterMonke";
+    private static String selectedName = "TesterMonke";
     protected static int freCum = 5;
     protected static int eneCum = 5;
     protected static Set<Troop> frendlys = new HashSet<>(Arrays.asList
-    (new Troop[] {new Troop(new Vektor(100,-980),true, "Tower"),new Troop(new Vektor(980, -980),true, "Tower")}));
+    (new Troop[] {new Troop(new Vektor(100,-980),true, "Tower"),new Troop(new Vektor(980, -980), true, "Tower")}));
     protected static Set<Troop> enemys = new HashSet<>(Arrays.asList
-    (new Troop[] {new Troop(new Vektor(100,-100),false, "Tower"),new Troop(new Vektor(980,-100),false, "Tower")}));
+    (new Troop[] {new Troop(new Vektor(100,-100),false, "Tower"), new Troop(new Vektor(980,-100), false, "Tower")}));
 
     public static void main(String[] args) throws IOException {
 
@@ -55,19 +55,16 @@ public class MainLoop {
 
 
 
-        //nrdi set frendly pa enemy k vsebuje towerje pa bridge
-        Grid grid = new Grid(frendlys, enemys, HEIGHT, HEIGHT);
-        int i = 0;
         playArea.addMouseListener(new MouseAdapter() {
     	    @Override
     	    public void mouseClicked(MouseEvent event) {
-    		    double x = (double) event.getX();
-    		    double y = (double) -event.getY();
+    		    double x = event.getX();
+    		    double y = -event.getY();
                 Vektor location = new Vektor(x, y);
                 Troop monke = new Troop(location, true, selectedName);
-                if (grid.isOnFrendlyGround(monke)) {
+                if (monke.isOnFrendlyGround(HEIGHT) && freCum > monke.getCost()) {
                     //če je klik playerja biu na frendly area pol ugotoviš kua je objective tega pieca glede na to kam je postaulen in pol ga addas v aktivne monkeyu na gridu
-                    monke.pathFind(grid);
+                    monke.pathFind(enemys, HEIGHT);
                     frendlys.add(monke);
                     MainLoop.freCum = MainLoop.freCum-monke.getCost();
                     cum.repaint();
@@ -75,23 +72,23 @@ public class MainLoop {
             }
          });
 
-
-
-
+        int i = 0;
+        int j = 1;
+        int k = 1;
         while (i<1) {
             //zanka de pathfinder frendlyu
             for (Troop freTroop: frendlys) {
                 if (freTroop.getName().equals("Bridge")) {
                     continue;
                 }
-                freTroop.pathFind(grid);    
+                freTroop.pathFind(enemys, HEIGHT);    
             }
             //zanka za pathfinderja enemyu
              for (Troop eneTroop: enemys) {
                 if (eneTroop.getName().equals("Bridge")) {
                     continue;
                 }
-                eneTroop.pathFind(grid);    
+                eneTroop.pathFind(frendlys, HEIGHT);    
             }
             //zanka za in range pa atack za frendlye in enemye
             for (Troop freTroop: frendlys) {
@@ -103,6 +100,9 @@ public class MainLoop {
                         if (i-freTroop.getLastAttack() <= freTroop.getCool()) {
                             freTroop.attack(eneTroop);
                             freTroop.setLastAttack(i);
+                            if (eneTroop.isDead()) {
+                                enemys.remove(eneTroop);
+                            }
                         }
                     }
                     else {
@@ -125,6 +125,17 @@ public class MainLoop {
                     }
                 }
                 i++;
+                if (i > 40*j && freCum < 10) {
+                    freCum++;
+                    j++;
+                    }
+                    if (i > 40*k && eneCum < 10) {
+                    eneCum++;
+                    k++;
+                    }
+                }
+
+
                 playArea.repaint(); // ponoven izris okna
                 cum.repaint();
                 cards.repaint();
@@ -132,10 +143,10 @@ public class MainLoop {
                     Thread.sleep(50); // počakaj 50 ms
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-    }
+                }
             }
         }
-    }
+    
 class CumPanel extends JPanel {
         public CumPanel() {
         super();
@@ -167,13 +178,13 @@ class MainPanel extends JPanel {
         Graphics2D graphics = (Graphics2D)g; 
         AffineTransform base = graphics.getTransform();
         for (Troop freTroop: MainLoop.frendlys) {
-            graphics.translate(freTroop.getLocation().getX(), -HEIGHT+freTroop.getLocation().getY());
+            graphics.translate(freTroop.getLocation().getX()-50, -HEIGHT+freTroop.getLocation().getY()+50);
             graphics.rotate(freTroop.getOrientation());
             graphics.drawImage(freTroop.getPicture(), 100, 100, null);
             graphics.setTransform(base);
         }
         for (Troop eneTroop: MainLoop.enemys) {
-            graphics.translate(eneTroop.getLocation().getX(), -HEIGHT+eneTroop.getLocation().getY());
+            graphics.translate(eneTroop.getLocation().getX()-50, -HEIGHT+eneTroop.getLocation().getY()+50);
             graphics.rotate(eneTroop.getOrientation());
             graphics.drawImage(eneTroop.getPicture(), 100, 100, null);
             graphics.setTransform(base);

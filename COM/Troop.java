@@ -3,6 +3,7 @@ package COM;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 
@@ -24,7 +25,7 @@ public class Troop {
     private int lastAttack;
 
     public Troop(Vektor location, boolean isFrendly, String name)  {
-        if (name == "Tower") {
+        if (name.equals("Tower")) {
             try {
             this.picture = ImageIO.read(new File("TeseterMonke.png"));
             } catch (IOException e) {
@@ -42,7 +43,7 @@ public class Troop {
             this.maxhealth = 500;
             this.cost = 0;
         }
-        if (name == "Bridge") {
+        if (name.equals("Bridge")) {
            try {
             this.picture = ImageIO.read(new File("TeseterMonke.png"));
             } catch (IOException e) {
@@ -75,7 +76,7 @@ public class Troop {
         //ma 5 damage ma 150 pixlov ranga ma cooldown 40 iteracij (delam pod assumptionom de bo repain 50ms) ma 40 maxHealth in stane 5 elixirja.
 
         //sum vseh pointov je pol u tm primeru 30 pointov ki jih lahko porabiš kakor želiš.
-        if (name == "TesterMonke") {
+        if (name.equals("TesterMonke")) {
            try {
             this.picture = ImageIO.read(new File("TeseterMonke.png"));
             } catch (IOException e) {
@@ -195,12 +196,19 @@ public class Troop {
     public boolean isInRange(Troop victim) {
         return (Vektor.dist(this.getLocation(), victim.getLocation())<=this.getRange());
     }
-    public void pathFind(Grid grid) {
+    public boolean isOnFrendlyGround(int height) {
+        if (this.getLocation().getY() < height/2) {
+            return this.isFrendly();
+        }
+        return !this.isFrendly();
+
+    }
+    public void pathFind(Set <Troop> enemys, int height) {
         //fuck it we ball
-        double min = 300.0; 
+        double min = 100000.0; 
         Troop pathPoinTroop = null;
-        for (Troop enemy: grid.getTroops(this.isFrendly())) {
-            if ((!grid.isOnFrendlyGround(this)) && enemy.getName().equals("Bridge")) {
+        for (Troop enemy: enemys) {
+            if ((!this.isOnFrendlyGround(height)) && enemy.getName().equals("Bridge")) {
                 continue;
             }
             double dist = Vektor.dist(enemy.getLocation(),this.getLocation());
