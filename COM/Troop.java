@@ -23,9 +23,13 @@ public class Troop {
     private String name;
     private int lastAttack;
 
-    public Troop(Vektor location, boolean isFrendly, String name) throws IOException {
+    public Troop(Vektor location, boolean isFrendly, String name)  {
         if (name == "Tower") {
+            try {
             this.picture = ImageIO.read(new File("TeseterMonke.png"));
+            } catch (IOException e) {
+            e.printStackTrace();
+            }
             this.orientation = Math.PI/2;
             this.location = location;
             this.isFrendly = isFrendly;
@@ -39,7 +43,11 @@ public class Troop {
             this.cost = 0;
         }
         if (name == "Bridge") {
+           try {
             this.picture = ImageIO.read(new File("TeseterMonke.png"));
+            } catch (IOException e) {
+            e.printStackTrace();
+            }
             this.orientation = Math.PI/2;
             this.location = location;
             this.isFrendly = isFrendly;
@@ -68,7 +76,11 @@ public class Troop {
 
         //sum vseh pointov je pol u tm primeru 30 pointov ki jih lahko porabiš kakor želiš.
         if (name == "TesterMonke") {
+           try {
             this.picture = ImageIO.read(new File("TeseterMonke.png"));
+            } catch (IOException e) {
+            e.printStackTrace();
+            }
             this.orientation = Math.PI/2;
             this.lastAttack=0;
             this.location = location;
