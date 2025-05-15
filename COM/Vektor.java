@@ -4,7 +4,6 @@ public class Vektor {
     private double x;
     private double y;
     public Vektor(double x, double y) {
-        super();
         this.x = x;
         this.y = y;
     }
