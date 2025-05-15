@@ -128,12 +128,12 @@ public class MainLoop {
                 if (i > 40*j && freCum < 10) {
                     freCum++;
                     j++;
-                    }
-                    if (i > 40*k && eneCum < 10) {
+                }
+                if (i > 40*k && eneCum < 10) {
                     eneCum++;
                     k++;
-                    }
                 }
+                
 
 
                 playArea.repaint(); // ponoven izris okna
@@ -145,6 +145,7 @@ public class MainLoop {
                     e.printStackTrace();
                 }
             }
+        }
         }
     
 class CumPanel extends JPanel {
