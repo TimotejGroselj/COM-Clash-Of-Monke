@@ -167,13 +167,13 @@ class MainPanel extends JPanel {
         Graphics2D graphics = (Graphics2D)g; 
         AffineTransform base = graphics.getTransform();
         for (Troop freTroop: MainLoop.frendlys) {
-            graphics.translate(freTroop.getLocation().getX(), HEIGHT-freTroop.getLocation().getY());
+            graphics.translate(freTroop.getLocation().getX(), -HEIGHT+freTroop.getLocation().getY());
             graphics.rotate(freTroop.getOrientation());
             graphics.drawImage(freTroop.getPicture(), 100, 100, null);
             graphics.setTransform(base);
         }
         for (Troop eneTroop: MainLoop.enemys) {
-            graphics.translate(eneTroop.getLocation().getX(), HEIGHT-eneTroop.getLocation().getY());
+            graphics.translate(eneTroop.getLocation().getX(), -HEIGHT+eneTroop.getLocation().getY());
             graphics.rotate(eneTroop.getOrientation());
             graphics.drawImage(eneTroop.getPicture(), 100, 100, null);
             graphics.setTransform(base);
