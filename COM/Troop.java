@@ -65,9 +65,9 @@ public class Troop {
 
         //cajt za standard balancing: vsaka kategorija ima 9 barov k vplivajo na ta določeno kategorijo (delam use od oka tuk de please forgive me in spreminjala bova 
         //kok vsak level doda vsazga stata)
-        //speed: vsak level doda 2pixla na iteracijo
+        //speed: vsak level doda 1pixla na iteracijo
         //damage: vsak level doda 3 damage point
-        //range: vsak level doda 30 pixlov ranga
+        //range: vsak level doda 5 pixlov ranga
         //cool: vsak level zbije cooldown iz 80 iteracij za 8 (iz 4s cooldowna na 0.4s cooldowna)
         //maxHealth: vsak level doda 10HP
         //cost: vsak level zbije od 10 en elixir
@@ -99,13 +99,13 @@ public class Troop {
 
     //tuki prefukava konstante de balancava shit
     private void setSpeed(int speed) {
-        this.speed = 2*speed;
+        this.speed = speed;
     }
     private void setDamage(int damage) {
         this.damage = 3*damage;
     }
     private void setRange(int range) {
-        this.range = 30*range;
+        this.range = range;
     }
     private void setCool(int cool) {
         this.cool = 80-8*cool;
@@ -197,7 +197,7 @@ public class Troop {
         return (Vektor.dist(this.getLocation(), victim.getLocation())<=this.getRange());
     }
     public boolean isOnFrendlyGround(int height) {
-        if (this.getLocation().getY() < height/2) {
+        if (this.getLocation().getY() > height/2) {
             return this.isFrendly();
         }
         return !this.isFrendly();

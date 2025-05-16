@@ -32,16 +32,7 @@ public class Vektor {
         //should worky?
         double dx = v2.getX() - v1.getX();
         double dy = v2.getY() - v1.getY();
-        double angle = Math.atan(dy/dx);
-        if (dx < 0 && dy > 0 || dx < 0 && dy < 0) {
-            return Math.PI+angle;
-        }
-        else if (dx > 0 && dy < 0) {
-            return 2*Math.PI+angle;
-        }
-        else {
-            return angle;
-        }
+        return Math.atan2(dy, dx);
     }
     public static void main(String[] args){
         Vektor vek = new Vektor(2.0,2.0);

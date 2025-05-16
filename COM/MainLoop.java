@@ -12,6 +12,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,7 +20,8 @@ import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 
 public class MainLoop {
     public final static int HEIGHT = 1000;
@@ -30,26 +32,36 @@ public class MainLoop {
     protected static int freCum = 5;
     protected static int eneCum = 5;
     protected static Set<Troop> frendlys = new HashSet<>(Arrays.asList
-    (new Troop[] {new Troop(new Vektor(100,-980),true, "Tower"),new Troop(new Vektor(980, -980), true, "Tower")}));
+    (new Troop[] {new Troop(new Vektor(100,900),true, "Tower"),new Troop(new Vektor(900, 900), true, "Tower")}));
     protected static Set<Troop> enemys = new HashSet<>(Arrays.asList
-    (new Troop[] {new Troop(new Vektor(100,-100),false, "Tower"), new Troop(new Vektor(980,-100), false, "Tower")}));
+    (new Troop[] {new Troop(new Vektor(100,100),false, "Tower"), new Troop(new Vektor(900,100), false, "Tower")}));
 
     public static void main(String[] args) throws IOException {
 
         JFrame frame = new JFrame("COM");
         frame.setSize(new Dimension(WIDTH, HEIGHT));
         frame.setResizable(false);
-        frame.setLayout(new BorderLayout());
-
-        MainPanel playArea = new MainPanel();
-        frame.add(playArea, BorderLayout.CENTER);
-
+        frame.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(0,0,0,0);
+        c.gridx = 0;
+        c.ipadx = 450;
+        c.ipady = HEIGHT;
         CumPanel cum = new CumPanel();//aka elixir
-        cum.setMinimumSize(new Dimension(420,HEIGHT));
-        frame.add(cum, BorderLayout.WEST);
+        frame.add(cum, c);
+
+        c.gridx = 1;
+        c.ipadx = HEIGHT;
+        c.ipady = HEIGHT;
+        MainPanel playArea = new MainPanel();
+        frame.add(playArea, c);
+
+        c.gridx = 2;
+        c.ipadx = 450;
+        c.ipady = HEIGHT;
         CardPanel cards = new CardPanel();
-        cards.setMinimumSize(new Dimension(420,HEIGHT));
-        frame.add(cards, BorderLayout.EAST);
+        frame.add(cards, c);
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
 
@@ -58,8 +70,8 @@ public class MainLoop {
         playArea.addMouseListener(new MouseAdapter() {
     	    @Override
     	    public void mouseClicked(MouseEvent event) {
-    		    double x = event.getX();
-    		    double y = -event.getY();
+    		    double x = event.getX() - 25;
+    		    double y = event.getY() + 25;
                 Vektor location = new Vektor(x, y);
                 Troop monke = new Troop(location, true, selectedName);
                 if (monke.isOnFrendlyGround(HEIGHT) && freCum > monke.getCost()) {
@@ -75,7 +87,18 @@ public class MainLoop {
         int i = 0;
         int j = 1;
         int k = 1;
-        while (i<1) {
+        while (i<2400) {
+            if (frendlys.size() == 0) {
+                System.out.println("LOSER");
+                break;
+            }
+            if (enemys.size() == 0) {
+                System.out.println("WINNER");
+                break;
+            }
+
+
+
             //zanka de pathfinder frendlyu
             for (Troop freTroop: frendlys) {
                 if (freTroop.getName().equals("Bridge")) {
@@ -92,22 +115,26 @@ public class MainLoop {
             }
             //zanka za in range pa atack za frendlye in enemye
             for (Troop freTroop: frendlys) {
+                if (!(i-freTroop.getLastAttack() <= freTroop.getCool()) || freTroop.getName().equals("Bridge")) {
+                    freTroop.move();
+                    continue;  
+                }
                 for (Troop eneTroop: enemys) {
-                    if (freTroop.getName().equals("Bridge") || eneTroop.getName().equals("Bridge")) {
+                    if (eneTroop.getName().equals("Bridge")) {
                         continue;
                     }
-                    if (freTroop.isInRange(eneTroop)) {
-                        if (i-freTroop.getLastAttack() <= freTroop.getCool()) {
+                        if (freTroop.isInRange(eneTroop)) {
+                            System.out.println("AAA");
                             freTroop.attack(eneTroop);
                             freTroop.setLastAttack(i);
                             if (eneTroop.isDead()) {
                                 enemys.remove(eneTroop);
                             }
                         }
-                    }
-                    else {
-                        freTroop.move();
-                    }
+                    
+                }
+                if (freTroop.getLastAttack() != i) {
+                    freTroop.move();
                 }
             }
             for (Troop eneTroop: enemys) {
@@ -157,14 +184,18 @@ class CumPanel extends JPanel {
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D graphics = (Graphics2D)g; 
-        int width = 420;
-        int height = 100; 
+        int width = 450;
+        int height = 90; 
         for (int i = 0; i < MainLoop.freCum; i++) {
             graphics.setColor(Color.YELLOW);
             graphics.fillRect(0, i * height, width, height);
             graphics.setColor(Color.BLACK);
             graphics.drawRect(0, i * height, width, height);
         }  
+        if (MainLoop.freCum == 10) {
+            graphics.setColor(Color.RED);
+            graphics.fillRect(0, 10 * height, width, height);
+        }
     }
 }
 
@@ -178,16 +209,17 @@ class MainPanel extends JPanel {
         super.paint(g);
         Graphics2D graphics = (Graphics2D)g; 
         AffineTransform base = graphics.getTransform();
+        int picSize = 50;
         for (Troop freTroop: MainLoop.frendlys) {
-            graphics.translate(freTroop.getLocation().getX()-50, -HEIGHT+freTroop.getLocation().getY()+50);
+            graphics.translate(freTroop.getLocation().getX()-picSize/2, freTroop.getLocation().getY()-picSize/2);
             graphics.rotate(freTroop.getOrientation());
-            graphics.drawImage(freTroop.getPicture(), 100, 100, null);
+            graphics.drawImage(freTroop.getPicture(), 0, 0, null);
             graphics.setTransform(base);
         }
         for (Troop eneTroop: MainLoop.enemys) {
-            graphics.translate(eneTroop.getLocation().getX()-50, -HEIGHT+eneTroop.getLocation().getY()+50);
+            graphics.translate(eneTroop.getLocation().getX(), eneTroop.getLocation().getY());
             graphics.rotate(eneTroop.getOrientation());
-            graphics.drawImage(eneTroop.getPicture(), 100, 100, null);
+            graphics.drawImage(eneTroop.getPicture(), -picSize/2, -picSize/2, null);
             graphics.setTransform(base);
         }
     }
