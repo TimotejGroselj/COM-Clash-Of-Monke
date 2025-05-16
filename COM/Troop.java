@@ -105,7 +105,7 @@ public class Troop {
         this.damage = 3*damage;
     }
     private void setRange(int range) {
-        this.range = range;
+        this.range = 5*range;
     }
     private void setCool(int cool) {
         this.cool = 80-8*cool;

@@ -115,7 +115,9 @@ public class MainLoop {
             }
             //zanka za in range pa atack za frendlye in enemye
             for (Troop freTroop: frendlys) {
-                if (!(i-freTroop.getLastAttack() <= freTroop.getCool()) || freTroop.getName().equals("Bridge")) {
+                //preveris ce je trenutna stevilka iteracije aka time kkr je minil - stevilka iteracije k je tazadnic napadu  cooldown pa ce 
+                //je objekt bridge in ce kr kol 
+                if ((i-freTroop.getLastAttack() < freTroop.getCool()) || freTroop.getName().equals("Bridge")) {
                     freTroop.move();
                     continue;  
                 }
