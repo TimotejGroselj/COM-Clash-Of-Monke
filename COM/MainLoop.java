@@ -128,15 +128,12 @@ public class MainLoop {
                         if (freTroop.isInRange(eneTroop)) {
                             freTroop.attack(eneTroop);
                             freTroop.setLastAttack(i);
-                            if (eneTroop.isDead()) {
-                                enemys.remove(eneTroop);
-                            }
                         }
-                    
                 }
                 if (freTroop.getLastAttack() != i) {
                     freTroop.move();
                 }
+                enemys.removeIf(enemy -> enemy.isDead());
             }
 
 
@@ -150,16 +147,15 @@ public class MainLoop {
                     if (freTroop.getName().equals("Bridge") || eneTroop.getName().equals("Bridge")) {
                         continue;
                     }
-                            eneTroop.attack(freTroop);
-                            eneTroop.setLastAttack(i);
-                            if (freTroop.isDead()) {
-                                frendlys.remove(freTroop);
-                            }
-                    
+                    if (eneTroop.isInRange(freTroop)) {
+                        eneTroop.attack(freTroop);
+                        eneTroop.setLastAttack(i);
+                    }
                     if (freTroop.getLastAttack() != i) {
                     freTroop.move();
                     }
                 }
+                frendlys.removeIf(frendly -> frendly.isDead());
             }
                 i++;
                 if (i > 40*j && freCum < 10) {
