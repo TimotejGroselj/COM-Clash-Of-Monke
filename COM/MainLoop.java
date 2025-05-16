@@ -126,7 +126,6 @@ public class MainLoop {
                         continue;
                     }
                         if (freTroop.isInRange(eneTroop)) {
-                            System.out.println("AAA");
                             freTroop.attack(eneTroop);
                             freTroop.setLastAttack(i);
                             if (eneTroop.isDead()) {
@@ -139,20 +138,29 @@ public class MainLoop {
                     freTroop.move();
                 }
             }
+
+
+
             for (Troop eneTroop: enemys) {
+                    if ((i-eneTroop.getLastAttack() < eneTroop.getCool()) || eneTroop.getName().equals("Bridge")) {
+                        eneTroop.move();
+                        continue;  
+                    }
                 for (Troop freTroop: frendlys) {
                     if (freTroop.getName().equals("Bridge") || eneTroop.getName().equals("Bridge")) {
                         continue;
                     }
-                    if (i-eneTroop.getLastAttack() <= eneTroop.getCool()) {
                             eneTroop.attack(freTroop);
                             eneTroop.setLastAttack(i);
-                    }
-                    else {
-                        eneTroop.move();
-                    }
+                            if (freTroop.isDead()) {
+                                frendlys.remove(freTroop);
+                            }
+                    
+                    if (freTroop.getLastAttack() != i) {
+                    freTroop.move();
                     }
                 }
+            }
                 i++;
                 if (i > 40*j && freCum < 10) {
                     freCum++;
