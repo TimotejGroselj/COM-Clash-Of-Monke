@@ -211,9 +211,9 @@ class MainPanel extends JPanel {
         AffineTransform base = graphics.getTransform();
         int picSize = 50;
         for (Troop freTroop: MainLoop.frendlys) {
-            graphics.translate(freTroop.getLocation().getX()-picSize/2, freTroop.getLocation().getY()-picSize/2);
+            graphics.translate(freTroop.getLocation().getX(), freTroop.getLocation().getY());
             graphics.rotate(freTroop.getOrientation());
-            graphics.drawImage(freTroop.getPicture(), 0, 0, null);
+            graphics.drawImage(freTroop.getPicture(), -picSize/2, -picSize/2, null);
             graphics.setTransform(base);
         }
         for (Troop eneTroop: MainLoop.enemys) {
