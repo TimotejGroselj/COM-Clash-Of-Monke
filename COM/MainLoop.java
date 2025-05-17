@@ -32,6 +32,7 @@ public class MainLoop {
     protected static int i = 0; //globalni timer
 
     protected static Set<Troop> animations = new HashSet<Troop>(); //tuki grejo troopi k nucajo animacijo
+    
     protected static Set<Troop> frendlys = new HashSet<>(Arrays.asList
     (new Troop[] {new Troop(new Vektor(100,900),true, "Tower"),new Troop(new Vektor(900, 900), true, "Tower")}));
     protected static Set<Troop> enemys = new HashSet<>(Arrays.asList
