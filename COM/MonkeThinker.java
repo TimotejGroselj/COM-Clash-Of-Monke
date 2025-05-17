@@ -161,12 +161,7 @@ class ChooseTheLocation {
 }
 
 /*Plan za jutr:
-
-
-USE GLEDAS SE NA ELIXIR K JE NA VOLJO!!
-BackupDefence loh nardis da coresponda z lokacijo enemy tanka, pa da defenda doklr tank ne umre
-Kaj pa ni nobenega friendlyja na mapi kaj pa potem?
-Bottomline lots of work awaits you maggot
+/preglej se enkat
 */
 
 
