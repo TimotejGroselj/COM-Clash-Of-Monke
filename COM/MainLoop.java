@@ -201,7 +201,6 @@ public class MainLoop {
                 e.printStackTrace();
             }
         }
-        System.out.println("DRAW");
         }
         }
     
