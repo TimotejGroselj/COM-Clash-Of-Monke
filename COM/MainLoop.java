@@ -2,13 +2,16 @@ package COM;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -26,11 +29,12 @@ import java.awt.GridBagLayout;
 public class MainLoop {
     public final static int HEIGHT = 1000;
     public final static int WIDTH = 1900;
-    public static final String[] SET_VALUES = new String[] {"TesterMonke"};
+    public static final String[] SET_VALUES = new String[] {"TesterMonke", "basic monke"};
     public final Set<String> TROOPTYPES = new HashSet<>(Arrays.asList(SET_VALUES));
-    private static String selectedName = "basic monke";
+    private static String selectedName = "TesterMonke";
     protected static int freCum = 5;
     protected static int eneCum = 5;
+    protected static Set<Troop> animations = new HashSet<Troop>();
     protected static Set<Troop> frendlys = new HashSet<>(Arrays.asList
     (new Troop[] {new Troop(new Vektor(100,900),true, "Tower"),new Troop(new Vektor(900, 900), true, "Tower")}));
     protected static Set<Troop> enemys = new HashSet<>(Arrays.asList
@@ -74,7 +78,7 @@ public class MainLoop {
     		    double y = event.getY() + 25;
                 Vektor location = new Vektor(x, y);
                 Troop monke = new Troop(location, true, selectedName);
-                if (monke.isOnFrendlyGround(HEIGHT) && freCum > monke.getCost()) {
+                if (monke.isOnFrendlyGround(HEIGHT) && freCum >= monke.getCost()) {
                     //če je klik playerja biu na frendly area pol ugotoviš kua je objective tega pieca glede na to kam je postaulen in pol ga addas v aktivne monkeyu na gridu
                     monke.pathFind(enemys, HEIGHT);
                     frendlys.add(monke);
@@ -87,6 +91,7 @@ public class MainLoop {
         int i = 0;
         int j = 1;
         int k = 1;
+        boolean test = true;
         while (i<2400) {
             if (frendlys.size() == 0) {
                 System.out.println("LOSER");
@@ -96,9 +101,6 @@ public class MainLoop {
                 System.out.println("WINNER");
                 break;
             }
-
-
-
             //zanka de pathfinder frendlyu
             for (Troop freTroop: frendlys) {
                 if (freTroop.getName().equals("Bridge")) {
@@ -117,21 +119,30 @@ public class MainLoop {
             for (Troop freTroop: frendlys) {
                 //preveris ce je trenutna stevilka iteracije aka time kkr je minil - stevilka iteracije k je tazadnic napadu  cooldown pa ce 
                 //je objekt bridge in ce kr kol 
-                if ((i-freTroop.getLastAttack() < freTroop.getCool()) || freTroop.getName().equals("Bridge")) {
-                    freTroop.move();
-                    continue;  
-                }
-                for (Troop eneTroop: enemys) {
-                    if (eneTroop.getName().equals("Bridge")) {
-                        continue;
+                if (!((i-freTroop.getLastAttack() < freTroop.getCool()) || freTroop.getName().equals("Bridge"))) {
+                    for (Troop eneTroop: enemys) {
+                        if (eneTroop.getName().equals("Bridge")) {
+                            continue;
+                        }
+                        if (freTroop.isInRange(eneTroop)) {
+                            freTroop.attack(eneTroop);
+                            animations.add(freTroop);
+                            freTroop.setLastAttack(i);
+                            break;
+                        }
                     }
+                }
+  
+                for (Troop eneTroop: enemys) {
                     if (freTroop.isInRange(eneTroop)) {
-                        freTroop.attack(eneTroop);
-                        freTroop.setLastAttack(i);
+                        test = false;
                         break;
                     }
+                    else {
+                        test = true;
+                    }
                 }
-                if (freTroop.getLastAttack() != i) {
+                if (test) {
                     freTroop.move();
                 }
                 enemys.removeIf(enemy -> (enemy.isDead()));
@@ -140,23 +151,24 @@ public class MainLoop {
 
 
             for (Troop eneTroop: enemys) {
-                    if ((i-eneTroop.getLastAttack() < eneTroop.getCool()) || eneTroop.getName().equals("Bridge")) {
-                        eneTroop.move();
-                        continue;  
+                //preveris ce je trenutna stevilka iteracije aka time kkr je minil - stevilka iteracije k je tazadnic napadu  cooldown pa ce 
+                //je objekt bridge in ce kr kol 
+                if (!((i-eneTroop.getLastAttack() < eneTroop.getCool()) || eneTroop.getName().equals("Bridge"))) {
+                    for (Troop freTroop: frendlys) {
+                        if (freTroop.getName().equals("Bridge")) {
+                            continue;
+                        }
+                        if (eneTroop.isInRange(freTroop)) {
+                            eneTroop.attack(freTroop);
+                            animations.add(eneTroop);
+                            eneTroop.setLastAttack(i);
+                            break;
+                        }
                     }
-                for (Troop freTroop: frendlys) {
-                    if (freTroop.getName().equals("Bridge") || eneTroop.getName().equals("Bridge")) {
-                        continue;
-                    }
-                    if (eneTroop.isInRange(freTroop)) {
-                        eneTroop.attack(freTroop);
-                        eneTroop.setLastAttack(i);
-                    }
-                    if (freTroop.getLastAttack() != i) {
-                    freTroop.move();
-                    }
-                }
-                frendlys.removeIf(frendly -> frendly.isDead());
+                }   
+ 
+                eneTroop.move();
+                frendlys.removeIf(frendly -> (frendly.isDead()));
             }
                 i++;
                 if (i > 40*j && freCum < 10) {
@@ -220,13 +232,19 @@ class MainPanel extends JPanel {
         for (Troop freTroop: MainLoop.frendlys) {
             graphics.translate(freTroop.getLocation().getX(), freTroop.getLocation().getY());
             graphics.rotate(freTroop.getOrientation());
-            graphics.drawImage(freTroop.getPicture(), -picSize/2, -picSize/2, null);
+            graphics.drawImage(freTroop.getPicture(), -picSize/2, -picSize/2, picSize, picSize, null);
             graphics.setTransform(base);
         }
         for (Troop eneTroop: MainLoop.enemys) {
             graphics.translate(eneTroop.getLocation().getX(), eneTroop.getLocation().getY());
             graphics.rotate(eneTroop.getOrientation());
-            graphics.drawImage(eneTroop.getPicture(), -picSize/2, -picSize/2, null);
+            graphics.drawImage(eneTroop.getPicture(), -picSize/2, -picSize/2, picSize, picSize, null);
+            graphics.setTransform(base);
+        }
+        for (Troop attackingTroop: MainLoop.animations) {
+            graphics.translate(attackingTroop.getLocation().getX(), attackingTroop.getLocation().getY());
+            graphics.rotate(attackingTroop.getOrientation());
+            graphics.drawImage(attackingTroop.getAnimation(), picSize/2, -picSize/4, attackingTroop.getRange()-picSize+20, picSize/2, null);
             graphics.setTransform(base);
         }
     }

@@ -18,11 +18,12 @@ public class Troop {
     private int cost;
     private double orientation;
     private Vektor location;
-    private int[][] animation = new int[2][2];
+    private BufferedImage animation;
     private int currenthealth;
     private boolean isFrendly;
     private String name;
     private int lastAttack;
+    
 
     public Troop(Vektor location, boolean isFrendly, String name)  {
         if (name.equals("Tower")) {
@@ -37,7 +38,7 @@ public class Troop {
             this.lastAttack=-100;
             this.name = name;
             this.speed = 0;
-            setDamage(8);
+            setDamage(11);
             setRange(8);
             setCool(3);
             this.maxhealth = 500;
@@ -60,7 +61,7 @@ public class Troop {
             this.range = 0;
             this.cool = 0;
             this.maxhealth = 0;
-            setCurrenthealth(getMaxhealth());
+            this.currenthealth = this.maxhealth;
             this.cost = 0;
         }
 
@@ -68,54 +69,57 @@ public class Troop {
 
         //initiatana fixna Tower pa bridge k sta mal built diffrent
 
-        //cajt za standard balancing: vsaka kategorija ima 9 barov k vplivajo na ta določeno kategorijo (delam use od oka tuk de please forgive me in spreminjala bova 
+        //cajt za standard balancing: vsaka kategorija ima svoje št barov k vplivajo na ta določeno kategorijo (delam use od oka tuk de please forgive me in spreminjala bova 
         //kok vsak level doda vsazga stata)
-        //speed: vsak level doda 1pixla na iteracijo
-        //damage: vsak level doda 3 damage point
-        //range: vsak level doda 5 pixlov ranga
-        //cool: vsak level zbije cooldown iz 80 iteracij za 8 (iz 4s cooldowna na 0.4s cooldowna)
-        //maxHealth: vsak level doda 10HP
-        //cost: vsak level zbije od 10 en elixir
+        //speed 5 levelu: vsak level doda 1pixl na iteracijo
+        //damage 10 levelu: vsak level doda 2 damage point
+        //range 10 levelu: vsak level doda 30 pixlov ranga
+        //cool 10 levelu: vsak level zbije cooldown iz 110 iteracij za 10 (iz 5s cooldowna na 0.5s cooldowna)
+        //maxHealth 10 levelu: vsak level doda 10HP
+        //cost 9 levelu: vsak level zbije od 10 en elixir
 
-        //balancan troop recva de je najbl middle of the road ass troop k ma use 5 aka premika se z 10 pixli na iteracijo (glede na max window aka 1920x1080)
-        //ma 5 damage ma 150 pixlov ranga ma cooldown 40 iteracij (delam pod assumptionom de bo repain 50ms) ma 40 maxHealth in stane 5 elixirja.
-
-        //sum vseh pointov je pol u tm primeru 30 pointov ki jih lahko porabiš kakor želiš.
+        //sum vseh pointov nj bo 25 pointov ki jih lahko porabiš kakor želiš dokler so v limiti.
         if (name.equals("TesterMonke")) {
-           try {
+
+            this.isFrendly = isFrendly;
+            this.name = name;
+            try {
             this.picture = ImageIO.read(new File("TeseterMonke.png"));
             } catch (IOException e) {
             e.printStackTrace();
             }
-            this.orientation = Math.PI/2;
-            this.lastAttack=-100;
-            this.location = location;
+            try {
+            this.animation = (ImageIO.read(new File("laser.png")));
+            } catch (IOException e) {
+            e.printStackTrace();
+            }
+            setOrientation(Math.PI/2);
+            setLastAttack(-100);
+            setLocation(location);
+            setSpeed(2);
+            setDamage(5);
+            setRange(5);
+            setCool(4);
+            setMaxhealth(5);
+            setCurrenthealth(getMaxhealth());
+            setCost(4);
+        }
+        if (name.equals("basic monke")) {
             this.isFrendly = isFrendly;
             this.name = name;
+            try {
+            setPicture(ImageIO.read(new File("basicMonke.png")));
+            } catch (IOException e) {
+            e.printStackTrace();
+            }
+            setOrientation(Math.PI/2);
+            setLastAttack(-100);
+            setLocation(location);
             setSpeed(5);
             setDamage(5);
             setRange(5);
             setCool(5);
-            setMaxhealth(5);
-            setCurrenthealth(getMaxhealth());
-            setCost(5);
-        }
-        if (name.equals("basic monke")) {
-           try {
-            this.picture = ImageIO.read(new File("basicMonke.png"));
-            } catch (IOException e) {
-            e.printStackTrace();
-            }
-            this.orientation = Math.PI/2;
-            this.lastAttack=-100;
-            this.location = location;
-            this.isFrendly = isFrendly;
-            this.name = name;
-            setSpeed(9);
-            setDamage(2);
-            setRange(2);
-            setCool(7);
-            setMaxhealth(1);
+            setMaxhealth(2);
             setCurrenthealth(getMaxhealth());
             setCost(9);
         }
@@ -127,16 +131,16 @@ public class Troop {
         this.speed = speed;
     }
     private void setDamage(int damage) {
-        this.damage = 3*damage;
+        this.damage = 2*damage;
     }
     private void setRange(int range) {
-        this.range = 5*range;
+        this.range = 30*range;
     }
     private void setCool(int cool) {
-        this.cool = 80-8*cool;
+        this.cool = 110-10*cool;
     }
     private void setMaxhealth(int maxhealth) {
-        this.maxhealth = 8*maxhealth;
+        this.maxhealth = 10*maxhealth;
     }
     private void setCost(int cost) {
         this.cost = 10-cost;
@@ -182,7 +186,7 @@ public class Troop {
     public int getCost() {
         return cost;
     }
-    public int[][] getAnimation() {
+    public BufferedImage getAnimation() {
         return animation;
     }
     public String getName() {
@@ -206,7 +210,6 @@ public class Troop {
         }
         return false;
     }
-
 
     public void move() {
         //nastavi lokacijo troopa po premiku, ki ga opravi v timestepu
