@@ -25,7 +25,7 @@ public class MainLoop {
 
     public static final String[] SET_VALUES = new String[] {"TesterMonke", "basic monke"};
     public final Set<String> TROOPTYPES = new HashSet<>(Arrays.asList(SET_VALUES));
-    private static String selectedName = "TesterMonke";
+    private static String selectedName = "basic monke";
 
     protected static int freCum = 5; //elixir globaln za risanje
     protected static int eneCum = 5;
@@ -102,7 +102,6 @@ public class MainLoop {
                 break;
             }
 
-
             //zanka za pathfinder frendlyu
             for (Troop freTroop: frendlys) {
                 if (freTroop.getName().equals("Bridge")) {
@@ -132,7 +131,6 @@ public class MainLoop {
                             animations.add(freTroop);
                             freTroop.setLastAttack(i);
                             break;
-                            
                         }
                     }
                 }
@@ -254,7 +252,7 @@ class MainPanel extends JPanel {
             graphics.drawImage(eneTroop.getPicture(), -picSize/2, -picSize/2, picSize, picSize, null);
             graphics.setTransform(base);
         }
-        MainLoop.animations.removeIf(troop -> (MainLoop.i-troop.getLastAttack()) > 4);
+        MainLoop.animations.removeIf(troop -> (MainLoop.i-troop.getLastAttack()) > 2);
         for (Troop attackingTroop: MainLoop.animations) {
             graphics.translate(attackingTroop.getLocation().getX(), attackingTroop.getLocation().getY());
             graphics.rotate(attackingTroop.getOrientation());

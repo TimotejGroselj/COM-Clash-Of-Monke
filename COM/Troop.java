@@ -117,6 +117,11 @@ public class Troop {
             } catch (IOException e) {
             e.printStackTrace();
             }
+            try {
+            this.animation = (ImageIO.read(new File("laser.png")));
+            } catch (IOException e) {
+            e.printStackTrace();
+            }
             setOrientation(Math.PI/2);
             setLastAttack(-100);
             setLocation(location);
