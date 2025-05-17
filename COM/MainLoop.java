@@ -35,6 +35,7 @@ public class MainLoop {
     protected static int freCum = 5;
     protected static int eneCum = 5;
     protected static Set<Troop> animations = new HashSet<Troop>();
+    protected static int i = 0;
     protected static Set<Troop> frendlys = new HashSet<>(Arrays.asList
     (new Troop[] {new Troop(new Vektor(100,900),true, "Tower"),new Troop(new Vektor(900, 900), true, "Tower")}));
     protected static Set<Troop> enemys = new HashSet<>(Arrays.asList
@@ -88,7 +89,7 @@ public class MainLoop {
             }
          });
 
-        int i = 0;
+
         int j = 1;
         int k = 1;
         boolean test = true;
@@ -241,6 +242,7 @@ class MainPanel extends JPanel {
             graphics.drawImage(eneTroop.getPicture(), -picSize/2, -picSize/2, picSize, picSize, null);
             graphics.setTransform(base);
         }
+        MainLoop.animations.removeIf(troop -> (MainLoop.i-troop.getLastAttack()) > 4);
         for (Troop attackingTroop: MainLoop.animations) {
             graphics.translate(attackingTroop.getLocation().getX(), attackingTroop.getLocation().getY());
             graphics.rotate(attackingTroop.getOrientation());

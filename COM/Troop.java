@@ -32,6 +32,11 @@ public class Troop {
             } catch (IOException e) {
             e.printStackTrace();
             }
+            try {
+            this.animation = ImageIO.read(new File("laser.png"));
+            } catch (IOException e) {
+            e.printStackTrace();
+            }
             this.orientation = Math.PI/2;
             this.location = location;
             this.isFrendly = isFrendly;
