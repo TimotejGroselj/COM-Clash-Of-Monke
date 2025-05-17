@@ -27,7 +27,7 @@ public class Troop {
     public Troop(Vektor location, boolean isFrendly, String name)  {
         if (name.equals("Tower")) {
             try {
-            this.picture = ImageIO.read(new File("TeseterMonke.png"));
+            this.picture = ImageIO.read(new File("tower.png"));
             } catch (IOException e) {
             e.printStackTrace();
             }
@@ -63,6 +63,9 @@ public class Troop {
             setCurrenthealth(getMaxhealth());
             this.cost = 0;
         }
+
+
+
         //initiatana fixna Tower pa bridge k sta mal built diffrent
 
         //cajt za standard balancing: vsaka kategorija ima 9 barov k vplivajo na ta določeno kategorijo (delam use od oka tuk de please forgive me in spreminjala bova 
@@ -96,6 +99,25 @@ public class Troop {
             setMaxhealth(5);
             setCurrenthealth(getMaxhealth());
             setCost(5);
+        }
+        if (name.equals("basic monke")) {
+           try {
+            this.picture = ImageIO.read(new File("basicMonke.png"));
+            } catch (IOException e) {
+            e.printStackTrace();
+            }
+            this.orientation = Math.PI/2;
+            this.lastAttack=-100;
+            this.location = location;
+            this.isFrendly = isFrendly;
+            this.name = name;
+            setSpeed(9);
+            setDamage(2);
+            setRange(2);
+            setCool(7);
+            setMaxhealth(1);
+            setCurrenthealth(getMaxhealth());
+            setCost(9);
         }
     }
     

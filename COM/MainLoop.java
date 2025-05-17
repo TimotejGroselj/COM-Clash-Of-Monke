@@ -28,7 +28,7 @@ public class MainLoop {
     public final static int WIDTH = 1900;
     public static final String[] SET_VALUES = new String[] {"TesterMonke"};
     public final Set<String> TROOPTYPES = new HashSet<>(Arrays.asList(SET_VALUES));
-    private static String selectedName = "TesterMonke";
+    private static String selectedName = "basic monke";
     protected static int freCum = 5;
     protected static int eneCum = 5;
     protected static Set<Troop> frendlys = new HashSet<>(Arrays.asList
