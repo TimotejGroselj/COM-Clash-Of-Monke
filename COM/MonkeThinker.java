@@ -12,20 +12,22 @@ public class MonkeThinker {
 
     public MonkeThinker(Set<Troop> friendly,Set<Troop> enemy,int elixir) {
         this.elixir = elixir;
-        int onfield = 0;
         for (Troop friend:friendly){
             ChooseTheGuy BestMonke = new ChooseTheGuy(friend,enemy,this.elixir);
             if (!friend.isOnFrendlyGround(MainLoop.HEIGHT)){
-                this.Dude = BestMonke.DoDefence();
+                this.Dude = BestMonke.DoDefence(friend);
+                if (this.Dude == null) continue;
                 this.Spawn = new ChooseTheLocation(this.Dude,friend).GetSpawn("Defence");
             }
             else {
-                if (friend.getCurrenthealth() > 100) { //tuki se to stotko nastimi, to je za tanke
-                    this.Dude = BestMonke.DoBackupDefence();
+                if (friend.getCurrenthealth() > 70) { //tuki se to stotko nastimi, to je za tanke
+                    this.Dude = BestMonke.DoBackupDefence(friend);
+                    if (this.Dude == null) continue;
                     this.Spawn = new ChooseTheLocation(this.Dude,friend).GetSpawn("BackupDefence");
                 }
                 else {
                     this.Dude = BestMonke.DoOffence();
+                    if (this.Dude == null) continue;
                     this.Spawn = new ChooseTheLocation(this.Dude,friend).GetSpawn("Offence");
                 }
             }
@@ -43,42 +45,65 @@ public class MonkeThinker {
 
 class ChooseTheGuy{
 
-    private Set<Troop> enemies;
-    private Troop friend;
-    private HashMap<Troop,Integer> best;
-    private int current_elixir;
+    private final Set<Troop> enemies;
+    private final int current_elixir;
+    private final Map<Troop, HashMap<Troop,Boolean>> interactions = new Interactions(null).getInteractions();
+
 
     public ChooseTheGuy(Troop friend, Set<Troop> enemies,int current_elixir) {
         this.current_elixir = current_elixir;
         this.enemies = enemies;
-        this.friend = friend;
-        this.best = new HashMap<>();
-        for (Troop dude: enemies){
-            this.best.put(dude,0);
+    }
+
+    public Troop DoBackupDefence(Troop tr1){
+        Random r = new Random();
+        HashMap<Troop,Boolean> tobeat = interactions.get(tr1);
+        List<Troop> best = new ArrayList<>();
+        for (Troop i: tobeat.keySet()){
+            if (tobeat.get(i) && (i.getCost()<this.current_elixir)){best.add(i);}
         }
+        if (best.isEmpty()) return null;
+        if (best.size() == 1) return best.getFirst();
+
+        int num = r.nextInt(best.size()-1);
+        for (Troop i1: best){
+            if (i1.getDamage() > 80) {return i1;} //ta 80 se se stima
+        }
+        return best.get(num);
     }
 
-    public Troop DoBackupDefence(){
-        return null;
-    }
-
-    public Troop DoDefence(){
-        return null;
+    public Troop DoDefence(Troop tr1){
+        Random r = new Random();
+        HashMap<Troop,Boolean> tobeat = interactions.get(tr1);
+        List<Troop> best = new ArrayList<>();
+        for (Troop i: tobeat.keySet()){
+            if (tobeat.get(i) && (i.getCost()<this.current_elixir)){best.add(i);}
+        }
+        if (best.isEmpty()) return null;
+        if (best.size() == 1) return best.getFirst();
+        int num = r.nextInt(best.size()-1);
+        return best.get(num);
     }
 
     public Troop DoOffence(){
-        return null;
+        Random r = new Random();
+        List<Troop> best = new ArrayList<>();
+        for (Troop thing:enemies){
+            if (thing.getCost() <= this.current_elixir){best.add(thing);}
+        }
+        if (best.isEmpty()) return null;
+        if (best.size() == 1) return best.getFirst();
+        int num = r.nextInt(best.size() - 1);
+        return best.get(num);
     }
 }
 
 class ChooseTheLocation {
-    private Troop enemy;
-    private double a = MainLoop.WIDTH;
-    private double ry = MainLoop.HEIGHT/2.0; //left y cord
-    private Troop friend;
-    private double range;
-    private double x0;
-    private double y0;
+    private final double a = MainLoop.WIDTH;
+    private final double ry = MainLoop.HEIGHT/2.0; //left y cord
+    private final double range;
+    private final double x0;
+    private final double y0;
 
 
     public ChooseTheLocation(Troop enemy, Troop friend) {
@@ -116,7 +141,9 @@ class ChooseTheLocation {
                     cords.add(new Vektor(x, y));
                 }
             }
-            int id = (int)(Math.random()* cords.size());
+            if (cords.isEmpty()) return null;
+            if (cords.size() == 1) return cords.getFirst();
+            int id = r.nextInt(cords.size()-1);
             return cords.get(id);
         }
         else {
@@ -134,8 +161,8 @@ class ChooseTheLocation {
 }
 
 /*Plan za jutr:
-Zbildi class za interactione med troopi (kdo koga zmaga glede na range: enemy range in pa friendly range)
-S tem zbuildi metode: BackupDefence bos iskou heavy hitterja al pa tanka,DoOffence zberes kergakol,DoDefence zberes najbolsga
+
+
 USE GLEDAS SE NA ELIXIR K JE NA VOLJO!!
 BackupDefence loh nardis da coresponda z lokacijo enemy tanka, pa da defenda doklr tank ne umre
 Kaj pa ni nobenega friendlyja na mapi kaj pa potem?
