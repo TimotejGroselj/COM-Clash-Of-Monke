@@ -46,7 +46,7 @@ public class Troop {
             setDamage(11);
             setRange(8);
             setCool(3);
-            this.maxhealth = 500;
+            this.maxhealth = 200;
             setCurrenthealth(getMaxhealth());
             this.cost = 0;
         }
