@@ -125,15 +125,16 @@ public class MainLoop {
                     if (eneTroop.getName().equals("Bridge")) {
                         continue;
                     }
-                        if (freTroop.isInRange(eneTroop)) {
-                            freTroop.attack(eneTroop);
-                            freTroop.setLastAttack(i);
-                        }
+                    if (freTroop.isInRange(eneTroop)) {
+                        freTroop.attack(eneTroop);
+                        freTroop.setLastAttack(i);
+                        break;
+                    }
                 }
                 if (freTroop.getLastAttack() != i) {
                     freTroop.move();
                 }
-                enemys.removeIf(enemy -> enemy.isDead());
+                enemys.removeIf(enemy -> (enemy.isDead()));
             }
 
 

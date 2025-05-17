@@ -34,13 +34,14 @@ public class Troop {
             this.orientation = Math.PI/2;
             this.location = location;
             this.isFrendly = isFrendly;
-            this.lastAttack=0;
+            this.lastAttack=-100;
             this.name = name;
             this.speed = 0;
             setDamage(8);
             setRange(8);
             setCool(3);
             this.maxhealth = 500;
+            setCurrenthealth(getMaxhealth());
             this.cost = 0;
         }
         if (name.equals("Bridge")) {
@@ -52,13 +53,14 @@ public class Troop {
             this.orientation = Math.PI/2;
             this.location = location;
             this.isFrendly = isFrendly;
-            this.lastAttack=0;
+            this.lastAttack=-100;
             this.name = name;
             this.speed = 0;
             this.damage = 0;
             this.range = 0;
             this.cool = 0;
             this.maxhealth = 0;
+            setCurrenthealth(getMaxhealth());
             this.cost = 0;
         }
         //initiatana fixna Tower pa bridge k sta mal built diffrent
@@ -83,7 +85,7 @@ public class Troop {
             e.printStackTrace();
             }
             this.orientation = Math.PI/2;
-            this.lastAttack=0;
+            this.lastAttack=-100;
             this.location = location;
             this.isFrendly = isFrendly;
             this.name = name;
@@ -92,6 +94,7 @@ public class Troop {
             setRange(5);
             setCool(5);
             setMaxhealth(5);
+            setCurrenthealth(getMaxhealth());
             setCost(5);
         }
     }
