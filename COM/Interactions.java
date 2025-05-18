@@ -29,11 +29,10 @@ public class Interactions {
         double troop1 = trp1.getMaxhealth() * trp2.getCool() / trp2.getDamage();
         double troop2 = trp2.getMaxhealth() * trp1.getCool() / trp1.getDamage();
         if (trp1.getRange() < trp2.getRange()){
-            double dr = Math.abs(trp1.getRange()-trp2.getRange()); //zrihti se speed zravn
+            double dr = Math.abs(trp1.getRange()-trp2.getRange())/ trp1.getSpeed();
             troop2 += dr;
         }
         return troop1<=troop2;
     }
 
 }
-//se enkrat chekeri

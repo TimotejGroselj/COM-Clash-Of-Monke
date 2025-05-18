@@ -4,16 +4,26 @@ package COM;
 import java.util.*;
 import java.util.List;
 
+/*
+How to use:
+Before while loop call Map<Troop, HashMap<Troop,Boolean>> name = new Interactions(Set<Troop> AllTroops).gerInteractions();
+name must be called before while loop for one time only call!
+In while loop call MonkeThinker enemy_monk = new MonkeThinker(Set<Troop> your_deck_cards,Set<Troop> AllTroops,current_elixir_forAI,name);
+Then Troop MonkeChoice = enemy_monk.getDude(); //gets the best card for scenario
+Vektor MonkePlace = enemy_monk.getSpawn(); //gets ai's placement decision
+ */
 public class MonkeThinker {
 
     public Vektor Spawn;
     public Troop Dude;
     public int elixir;
+    private Map<Troop, HashMap<Troop,Boolean>> fightclub;
 
-    public MonkeThinker(Set<Troop> friendly,Set<Troop> enemy,int elixir) {
+    public MonkeThinker(Set<Troop> friendly,Set<Troop> enemy,int elixir, Map<Troop, HashMap<Troop,Boolean>> fightclub) {
+        this.fightclub = fightclub;
         this.elixir = elixir;
         for (Troop friend:friendly){
-            ChooseTheGuy BestMonke = new ChooseTheGuy(friend,enemy,this.elixir);
+            ChooseTheGuy BestMonke = new ChooseTheGuy(friend,enemy,this.elixir,this.fightclub);
             if (!friend.isOnFrendlyGround(MainLoop.HEIGHT)){
                 this.Dude = BestMonke.DoDefence(friend);
                 if (this.Dude == null) continue;
@@ -47,17 +57,18 @@ class ChooseTheGuy{
 
     private final Set<Troop> enemies;
     private final int current_elixir;
-    private final Map<Troop, HashMap<Troop,Boolean>> interactions = new Interactions(null).getInteractions();
+    private final Map<Troop, HashMap<Troop,Boolean>> interactions;
 
 
-    public ChooseTheGuy(Troop friend, Set<Troop> enemies,int current_elixir) {
+    public ChooseTheGuy(Troop friend, Set<Troop> enemies,int current_elixir, Map<Troop, HashMap<Troop,Boolean>> interactions) {
         this.current_elixir = current_elixir;
         this.enemies = enemies;
+        this.interactions = interactions;
     }
 
     public Troop DoBackupDefence(Troop tr1){
         Random r = new Random();
-        HashMap<Troop,Boolean> tobeat = interactions.get(tr1);
+        HashMap<Troop,Boolean> tobeat = this.interactions.get(tr1);
         List<Troop> best = new ArrayList<>();
         for (Troop i: tobeat.keySet()){
             if (tobeat.get(i) && (i.getCost()<this.current_elixir)){best.add(i);}
@@ -74,7 +85,7 @@ class ChooseTheGuy{
 
     public Troop DoDefence(Troop tr1){
         Random r = new Random();
-        HashMap<Troop,Boolean> tobeat = interactions.get(tr1);
+        HashMap<Troop,Boolean> tobeat = this.interactions.get(tr1);
         List<Troop> best = new ArrayList<>();
         for (Troop i: tobeat.keySet()){
             if (tobeat.get(i) && (i.getCost()<this.current_elixir)){best.add(i);}
@@ -160,9 +171,7 @@ class ChooseTheLocation {
     }
 }
 
-/*Plan za jutr:
-/preglej se enkat
-*/
+
 
 
 
