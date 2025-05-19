@@ -1,14 +1,19 @@
 package COM;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -24,14 +29,15 @@ public class MainLoop {
     public final static int WIDTH = 1900;
 
     public static final String[] SET_VALUES = new String[] {"TesterMonke", "basic monke"};
-    public final Set<String> TROOPTYPES = new HashSet<>(Arrays.asList(SET_VALUES));
-    private static String selectedName = "basic monke";
+    public static final Set<String> TROOPTYPES = new HashSet<>(Arrays.asList(SET_VALUES));
+    private static String selectedName = "TesterMonke";
 
     protected static int freCum = 5; //elixir globaln za risanje
     protected static int eneCum = 5;
     protected static int i = 0; //globalni timer
 
-    protected static Set<Troop> animations = new HashSet<Troop>(); //tuki grejo troopi k nucajo animacijo
+    protected static Map<Troop, Troop> animations = new HashMap<Troop, Troop>(); //tuki grejo troopi k nucajo animacijo
+    protected static List<Troop> troopSelection= new ArrayList<Troop>();
     
     protected static Set<Troop> frendlys = new HashSet<>(Arrays.asList
     (new Troop[] {new Troop(new Vektor(100,900),true, "Tower"),new Troop(new Vektor(900, 900), true, "Tower")}));
@@ -39,6 +45,14 @@ public class MainLoop {
     (new Troop[] {new Troop(new Vektor(100,100),false, "Tower"), new Troop(new Vektor(900,100), false, "Tower")}));
     //začetni troopi aka sam towerji
     public static void main(String[] args) throws IOException {
+        for (int i = 0; i < 4; i++) {
+            for (String troop: TROOPTYPES) {    
+            Troop toBeAdded = new Troop(new Vektor(0,0), true, troop);
+            if (!troopSelection.contains(toBeAdded)) {
+                troopSelection.add(toBeAdded);
+            }
+        }
+        }
 
         JFrame frame = new JFrame("COM");
         frame.setSize(new Dimension(WIDTH, HEIGHT));
@@ -86,9 +100,6 @@ public class MainLoop {
             }
          });
 
-
-        int j = 1;
-        int k = 1;
         boolean test = true;
         while (i<2400) {
             //če poteče cajt konča igro
@@ -101,6 +112,9 @@ public class MainLoop {
                 System.out.println("WINNER");
                 break;
             }
+
+
+
 
             //zanka za pathfinder frendlyu
             for (Troop freTroop: frendlys) {
@@ -128,7 +142,7 @@ public class MainLoop {
                         }
                         if (freTroop.isInRange(eneTroop)) {
                             freTroop.attack(eneTroop);
-                            animations.add(freTroop);
+                            animations.put(freTroop, eneTroop);
                             freTroop.setLastAttack(i);
                             break;
                         }
@@ -160,7 +174,7 @@ public class MainLoop {
                         }
                         if (eneTroop.isInRange(freTroop)) {
                             eneTroop.attack(freTroop);
-                            animations.add(eneTroop);
+                            animations.put(eneTroop, freTroop);
                             eneTroop.setLastAttack(i);
                             break;
                         }
@@ -183,13 +197,12 @@ public class MainLoop {
                 //spremeni globaln timer
             i++;
             //pogleda če lhka prišteje elixer in če lahko ga
-            if (i > 40*j && freCum < 10) {
+            if (i % 40 == 0 && freCum < 10) {
                 freCum++;
-                j++;
             }
-            if (i > 40*k && eneCum < 10) {
+            if (i % 40 == 0 && eneCum < 10) {
                 eneCum++;
-                k++;
+
             }
 
             playArea.repaint(); // ponoven izris okna
@@ -251,11 +264,12 @@ class MainPanel extends JPanel {
             graphics.drawImage(eneTroop.getPicture(), -picSize/2, -picSize/2, picSize, picSize, null);
             graphics.setTransform(base);
         }
-        MainLoop.animations.removeIf(troop -> (MainLoop.i-troop.getLastAttack()) > 2);
-        for (Troop attackingTroop: MainLoop.animations) {
+        
+        MainLoop.animations.keySet().removeIf(animatroop -> (MainLoop.i-animatroop.getLastAttack() > 6));
+        for (Troop attackingTroop: MainLoop.animations.keySet()) {
             graphics.translate(attackingTroop.getLocation().getX(), attackingTroop.getLocation().getY());
             graphics.rotate(attackingTroop.getOrientation());
-            graphics.drawImage(attackingTroop.getAnimation(), picSize/2, -picSize/4, attackingTroop.getRange()-picSize+20, picSize/2, null);
+            graphics.drawImage(attackingTroop.getAnimation(),(int) Vektor.dist(MainLoop.animations.get(attackingTroop).getLocation(), attackingTroop.getLocation())/2-picSize/2, -picSize/8, picSize/2, picSize/4, null);
             graphics.setTransform(base);
         }
     }
@@ -270,14 +284,22 @@ class CardPanel extends JPanel {
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D graphics = (Graphics2D)g; 
-        int width = WIDTH/3-WIDTH/4;
-        int height = HEIGHT; 
+        int width = 450;
+        int height = 90; 
+        graphics.setFont(new Font("Montserrat", Font.BOLD, 30));
         for (int i = 0; i < 4; i++) {
-            graphics.setColor(Color.YELLOW);
-            graphics.fillRect(0, height-i * height, width, height);
-            graphics.setColor(Color.BLACK);
-            graphics.drawRect(0, height-i * height, width, height);
+            graphics.drawImage(MainLoop.troopSelection.get(i).getPicture(),0,i*250, 250, 250, null);
+            graphics.drawString("cost: " + MainLoop.troopSelection.get(i).getCost(), 280, i*250+50);
+            graphics.drawString("health: " + MainLoop.troopSelection.get(i).getMaxhealth(), 280, i*250+80);
+
+
+
         }  
+        if (MainLoop.freCum == 10) {
+            graphics.setColor(Color.RED);
+            graphics.fillRect(0, 10 * height, width, height);
+        }
     }
 }
+
 

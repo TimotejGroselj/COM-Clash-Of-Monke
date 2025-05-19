@@ -28,12 +28,12 @@ public class Troop {
     public Troop(Vektor location, boolean isFrendly, String name)  {
         if (name.equals("Tower")) {
             try {
-            this.picture = ImageIO.read(new File("tower.png"));
+            this.picture = ImageIO.read(new File("pictures","tower.png"));
             } catch (IOException e) {
             e.printStackTrace();
             }
             try {
-            this.animation = ImageIO.read(new File("laser.png"));
+            this.animation = ImageIO.read(new File("animations","laserblast.png"));
             } catch (IOException e) {
             e.printStackTrace();
             }
@@ -52,7 +52,7 @@ public class Troop {
         }
         if (name.equals("Bridge")) {
            try {
-            this.picture = ImageIO.read(new File("TeseterMonke.png"));
+            this.picture = ImageIO.read(new File("pictures","TeseterMonke.png"));
             } catch (IOException e) {
             e.printStackTrace();
             }
@@ -89,12 +89,12 @@ public class Troop {
             this.isFrendly = isFrendly;
             this.name = name;
             try {
-            this.picture = ImageIO.read(new File("TeseterMonke.png"));
+            this.picture = ImageIO.read(new File("pictures","TeseterMonke.png"));
             } catch (IOException e) {
             e.printStackTrace();
             }
             try {
-            this.animation = (ImageIO.read(new File("laser.png")));
+            this.animation = (ImageIO.read(new File("animations", "laser.png")));
             } catch (IOException e) {
             e.printStackTrace();
             }
@@ -113,12 +113,12 @@ public class Troop {
             this.isFrendly = isFrendly;
             this.name = name;
             try {
-            setPicture(ImageIO.read(new File("basicMonke.png")));
+            setPicture(ImageIO.read(new File("pictures","basicMonke.png")));
             } catch (IOException e) {
             e.printStackTrace();
             }
             try {
-            this.animation = (ImageIO.read(new File("laser.png")));
+            this.animation = (ImageIO.read(new File("animations", "laser.png")));
             } catch (IOException e) {
             e.printStackTrace();
             }
