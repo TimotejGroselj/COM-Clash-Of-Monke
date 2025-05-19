@@ -33,7 +33,7 @@ public class Troop {
             e.printStackTrace();
             }
             try {
-            this.animation = ImageIO.read(new File("animations","laserblast.png"));
+            this.animation = ImageIO.read(new File("animations","towerrocket.png"));
             } catch (IOException e) {
             e.printStackTrace();
             }
@@ -84,12 +84,12 @@ public class Troop {
         //cost 9 levelu: vsak level zbije od 10 en elixir
 
         //sum vseh pointov nj bo 25 pointov ki jih lahko porabiš kakor želiš dokler so v limiti.
-        if (name.equals("TesterMonke")) {
+        if (name.equals("Bomerang")) {
 
             this.isFrendly = isFrendly;
             this.name = name;
             try {
-            this.picture = ImageIO.read(new File("pictures","TeseterMonke.png"));
+            this.picture = ImageIO.read(new File("pictures","bommerang.png"));
             } catch (IOException e) {
             e.printStackTrace();
             }
@@ -109,7 +109,7 @@ public class Troop {
             setCurrenthealth(getMaxhealth());
             setCost(4);
         }
-        if (name.equals("basic monke")) {
+        if (name.equals("Monke")) {
             this.isFrendly = isFrendly;
             this.name = name;
             try {
@@ -118,7 +118,7 @@ public class Troop {
             e.printStackTrace();
             }
             try {
-            this.animation = (ImageIO.read(new File("animations", "laser.png")));
+            this.animation = (ImageIO.read(new File("animations", "dart.png")));
             } catch (IOException e) {
             e.printStackTrace();
             }
@@ -134,7 +134,7 @@ public class Troop {
             setCost(9);
         }
 
-            if (name.equals("Wizard")) {
+            if (name.equals("Ice wizard")) {
 
             this.isFrendly = isFrendly;
             this.name = name;
@@ -144,7 +144,7 @@ public class Troop {
             e.printStackTrace();
             }
             try {
-            this.animation = (ImageIO.read(new File("animations", "laserblast.png")));
+            this.animation = (ImageIO.read(new File("animations", "frezebolt.png")));
             } catch (IOException e) {
             e.printStackTrace();
             }
@@ -152,12 +152,12 @@ public class Troop {
             setLastAttack(-100);
             setLocation(location);
             setSpeed(4);
-            setDamage(7);
-            setRange(7);
-            setCool(3);
-            setMaxhealth(2);
+            setDamage(3);
+            setRange(4);
+            setCool(5);
+            setMaxhealth(5);
             setCurrenthealth(getMaxhealth());
-            setCost(3);
+            setCost(5);
         }
 
         if (name.equals("Super")) {
@@ -182,6 +182,83 @@ public class Troop {
             setRange(5);
             setCool(10);
             setMaxhealth(7);
+            setCurrenthealth(getMaxhealth());
+            setCost(1);
+        }
+            if (name.equals("Mortar")) {
+
+            this.isFrendly = isFrendly;
+            this.name = name;
+            try {
+            this.picture = ImageIO.read(new File("pictures","mortar.png"));
+            } catch (IOException e) {
+            e.printStackTrace();
+            }
+            try {
+            this.animation = (ImageIO.read(new File("animations", "bomb.png")));
+            } catch (IOException e) {
+            e.printStackTrace();
+            }
+            setOrientation(Math.PI/2);
+            setLastAttack(-100);
+            setLocation(location);
+            setSpeed(0);
+            setDamage(10);
+            setRange(17);
+            setCool(1);
+            setMaxhealth(7);
+            setCurrenthealth(getMaxhealth());
+            setCost(5);
+        }
+
+            if (name.equals("Fire wizard")) {
+
+            this.isFrendly = isFrendly;
+            this.name = name;
+            try {
+            this.picture = ImageIO.read(new File("pictures","FireWizard.png"));
+            } catch (IOException e) {
+            e.printStackTrace();
+            }
+            try {
+            this.animation = (ImageIO.read(new File("animations", "laserblast.png")));
+            } catch (IOException e) {
+            e.printStackTrace();
+            }
+            setOrientation(Math.PI/2);
+            setLastAttack(-100);
+            setLocation(location);
+            setSpeed(4);
+            setDamage(7);
+            setRange(7);
+            setCool(3);
+            setMaxhealth(2);
+            setCurrenthealth(getMaxhealth());
+            setCost(3);
+        }
+
+            if (name.equals("CHIPPER")) {
+
+            this.isFrendly = isFrendly;
+            this.name = name;
+            try {
+            this.picture = ImageIO.read(new File("pictures","Chipper.png"));
+            } catch (IOException e) {
+            e.printStackTrace();
+            }
+            try {
+            this.animation = (ImageIO.read(new File("animations", "sparkles.png")));
+            } catch (IOException e) {
+            e.printStackTrace();
+            }
+            setOrientation(Math.PI/2);
+            setLastAttack(-100);
+            setLocation(location);
+            setSpeed(1);
+            this.damage = 1;
+            setRange(2);
+            setCool(11); //jap nima cooldowna vsako kurcevi iteracijo dela damage
+            setMaxhealth(8);
             setCurrenthealth(getMaxhealth());
             setCost(1);
         }

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,17 +32,17 @@ public class MainLoop {
     public final static int HEIGHT = 1000;
     public final static int WIDTH = 1900;
 
-    public static final String[] SET_VALUES = new String[] {"TesterMonke", "basic monke", "Wizard", "Super"};
-    public static final Set<String> TROOPTYPES = new HashSet<>(Arrays.asList(SET_VALUES));
-    private static String selectedName = "TesterMonke";
-    protected static int indSelectedName = 0;
+    public static final String[] TROOPTYPES = new String[] {"Bomerang", "Monke", "Ice wizard", "Super", "Mortar", "Fire wizard", "CHIPPER"};
+    protected static Random random = new Random();
+    private static String selectedName;
+    protected static List<String> troopSelection= new ArrayList<String>();
 
     protected static int freCum = 5; //elixir globaln za risanje
     protected static int eneCum = 5;
     protected static int i = 0; //globalni timer
 
     protected static Map<Troop, Troop> animations = new HashMap<Troop, Troop>(); //tuki grejo troopi k nucajo animacijo
-    protected static List<String> troopSelection= new ArrayList<String>();
+
     
     protected static Set<Troop> frendlys = new HashSet<>(Arrays.asList
     (new Troop[] {new Troop(new Vektor(100,900),true, "Tower"),new Troop(new Vektor(900, 900), true, "Tower")}));
@@ -53,7 +54,7 @@ public class MainLoop {
             for (String troop: TROOPTYPES) {    
             if (!troopSelection.contains(troop)) {
                 troopSelection.add(troop);
-                //break; ker mava premal troopov
+                break;
             }
         }
         }
@@ -92,12 +93,22 @@ public class MainLoop {
     		    double x = event.getX() - 25;
     		    double y = event.getY() + 25;
                 Vektor location = new Vektor(x, y);
-                Troop monke = new Troop(location, true, selectedName);
+                Troop monke = new Troop(location, true, MainLoop.selectedName);
                 if (monke.isOnFrendlyGround(HEIGHT) && freCum >= monke.getCost()) {
                     //če je klik playerja biu na frendly area pol ugotoviš kua je objective tega pieca glede na to kam je postaulen in pol ga addas v aktivne monkeyu na gridu
                     monke.pathFind(enemys, HEIGHT);
                     frendlys.add(monke);
                     MainLoop.freCum = MainLoop.freCum-monke.getCost();
+                    int ind = MainLoop.troopSelection.indexOf(MainLoop.selectedName);
+                    while (true) {
+                        String name = MainLoop.TROOPTYPES[random.nextInt(MainLoop.TROOPTYPES.length)];
+                        if (!MainLoop.troopSelection.contains(name)) {
+                            MainLoop.troopSelection.set(ind, name);
+                            MainLoop.selectedName = null;
+                            break;
+                        }
+                    }   
+                    cards.repaint();
                     cum.repaint();
                 }
             }
@@ -310,11 +321,19 @@ class MainPanel extends JPanel {
         }
         
         MainLoop.animations.keySet().removeIf(animatroop -> (MainLoop.i-animatroop.getLastAttack() > 6));
+        graphics.setFont(new Font("Montserrat", Font.BOLD, 20));
+        graphics.setColor(Color.RED);
         for (Troop attackingTroop: MainLoop.animations.keySet()) {
             graphics.translate(attackingTroop.getLocation().getX(), attackingTroop.getLocation().getY());
             graphics.rotate(attackingTroop.getOrientation());
-            graphics.drawImage(attackingTroop.getAnimation(),(int) Vektor.dist(MainLoop.animations.get(attackingTroop).getLocation(), attackingTroop.getLocation())/2-picSize/2, -picSize/8, picSize/2, picSize/2, null);
-            graphics.setTransform(base);
+            int dist = (int) Vektor.dist(MainLoop.animations.get(attackingTroop).getLocation(), attackingTroop.getLocation());
+            graphics.drawImage(attackingTroop.getAnimation(), dist/2-picSize/2, -picSize/8, picSize/2, picSize/2, null);
+            if (MainLoop.i-attackingTroop.getLastAttack() > 4) {
+                graphics.translate(dist, 0);
+                graphics.rotate(-attackingTroop.getOrientation());
+                graphics.drawString(attackingTroop.getDamage()+"", 0, 50);
+                graphics.setTransform(base);
+            }
         }
     }
 }
@@ -328,16 +347,17 @@ class CardPanel extends JPanel {
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D graphics = (Graphics2D)g; 
-        graphics.setFont(new Font("Montserrat", Font.BOLD, 25));
+        graphics.setFont(new Font("Montserrat", Font.BOLD, 22));
         for (int i = 0; i < 4; i++) {
             Troop troop = new Troop(new Vektor(0,0), true, MainLoop.troopSelection.get(i));
             graphics.drawImage(troop.getPicture(),0,i*250, 250, 250, null);
-            graphics.drawString("cost: " + troop.getCost() + "CUM", 250, i*250+40);
-            graphics.drawString("health: " + troop.getMaxhealth() + "HP", 250, i*250+80);
-            graphics.drawString("range: " + troop.getRange()/30, 250, i*250+120);
-            graphics.drawString("damage: " + troop.getDamage()+ "HP", 250, i*250+160);
-            graphics.drawString("cool: " + troop.getCool()*0.05 + "s", 250, i*250+200);
-            graphics.drawString("speed: " + troop.getSpeed(), 250, i*250+240);
+            graphics.drawString("cost: " + troop.getCost() + "CUM", 250, i*250+22);
+            graphics.drawString(troop.getName(), 0, i*250+20);
+            graphics.drawString("health: " + troop.getMaxhealth() + "HP", 250, i*250+45);
+            graphics.drawString("range: " + troop.getRange()/30, 250, i*250+67);
+            graphics.drawString("damage: " + troop.getDamage()+ "HP", 250, i*250+89);
+            graphics.drawString("cool: " + troop.getCool()*0.05 + "s", 250, i*250+111);
+            graphics.drawString("speed: " + troop.getSpeed(), 250, i*250+133);
             graphics.drawRect(0, i*250, 450, 250);
         }  
     }
