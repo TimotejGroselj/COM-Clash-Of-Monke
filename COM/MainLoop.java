@@ -105,7 +105,6 @@ public class MainLoop {
          cards.setLayout(new GridLayout(4,1));
 
          JButton but1 = new JButton();
-        but1.setVisible(false);
          but1.setBounds(0,0,450,250);
          but1.addActionListener(new ActionListener() {
             @Override
@@ -117,7 +116,6 @@ public class MainLoop {
          cards.add(but1);
 
          JButton but2 = new JButton();
-         but2.setVisible(false);
          but2.setBounds(0,250,450,250);
          but2.addActionListener(new ActionListener() {
             @Override
@@ -128,7 +126,6 @@ public class MainLoop {
          cards.add(but2);
 
         JButton but3 = new JButton();
-        but3.setVisible(false);
          but3.setBounds(0,500,450,250);
          but3.addActionListener(new ActionListener() {
             @Override
@@ -139,7 +136,6 @@ public class MainLoop {
          cards.add(but3);
 
         JButton but4 = new JButton();
-        but4.setVisible(false);
          but4.setBounds(0,750,450,250);
          but4.addActionListener(new ActionListener() {
             @Override
@@ -317,7 +313,7 @@ class MainPanel extends JPanel {
         for (Troop attackingTroop: MainLoop.animations.keySet()) {
             graphics.translate(attackingTroop.getLocation().getX(), attackingTroop.getLocation().getY());
             graphics.rotate(attackingTroop.getOrientation());
-            graphics.drawImage(attackingTroop.getAnimation(),(int) Vektor.dist(MainLoop.animations.get(attackingTroop).getLocation(), attackingTroop.getLocation())/2-picSize/2, -picSize/8, picSize/2, picSize/4, null);
+            graphics.drawImage(attackingTroop.getAnimation(),(int) Vektor.dist(MainLoop.animations.get(attackingTroop).getLocation(), attackingTroop.getLocation())/2-picSize/2, -picSize/8, picSize/2, picSize/2, null);
             graphics.setTransform(base);
         }
     }

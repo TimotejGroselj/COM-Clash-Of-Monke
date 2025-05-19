@@ -94,7 +94,7 @@ public class Troop {
             e.printStackTrace();
             }
             try {
-            this.animation = (ImageIO.read(new File("animations", "laser.png")));
+            this.animation = (ImageIO.read(new File("animations", "bommer.png")));
             } catch (IOException e) {
             e.printStackTrace();
             }
