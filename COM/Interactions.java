@@ -8,14 +8,16 @@ public class Interactions {
 
     public Map<Troop, HashMap<Troop,Boolean>> interactions;
 
-    public Interactions(Set<Troop> allTroops) {
+    public Interactions(Set<String> allTroops) {
         Map<Troop, HashMap<Troop,Boolean>> interactions = new HashMap<>();
-        for (Troop first:allTroops){
+        for (String first:allTroops){
+            Troop attacker = new Troop(new Vektor(0,0),true,first);
             HashMap<Troop, Boolean> fornow = new HashMap<>();
-            for (Troop second:allTroops){
-                fornow.put(second,WhoWins(first,second));
+            for (String second:allTroops){
+                Troop defender = new Troop(new Vektor(0,0),false,second);
+                fornow.put(defender,WhoWins(attacker,defender));
             }
-            interactions.put(first, fornow);
+            interactions.put(attacker, fornow);
         }
         this.interactions = interactions;
     }

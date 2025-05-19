@@ -19,11 +19,11 @@ public class MonkeThinker {
     public int elixir;
     private Map<Troop, HashMap<Troop,Boolean>> fightclub;
 
-    public MonkeThinker(Set<Troop> friendly,Set<Troop> enemy,int elixir, Map<Troop, HashMap<Troop,Boolean>> fightclub) {
+    public MonkeThinker(Set<Troop> friendly,int elixir, Map<Troop, HashMap<Troop,Boolean>> fightclub) {
         this.fightclub = fightclub;
         this.elixir = elixir;
         for (Troop friend:friendly){
-            ChooseTheGuy BestMonke = new ChooseTheGuy(friend,enemy,this.elixir,this.fightclub);
+            ChooseTheGuy BestMonke = new ChooseTheGuy(friend,this.elixir,this.fightclub);
             if (!friend.isOnFrendlyGround(MainLoop.HEIGHT)){
                 this.Dude = BestMonke.DoDefence(friend);
                 if (this.Dude == null) continue;
@@ -55,14 +55,12 @@ public class MonkeThinker {
 
 class ChooseTheGuy{
 
-    private final Set<Troop> enemies;
     private final int current_elixir;
     private final Map<Troop, HashMap<Troop,Boolean>> interactions;
 
 
-    public ChooseTheGuy(Troop friend, Set<Troop> enemies,int current_elixir, Map<Troop, HashMap<Troop,Boolean>> interactions) {
+    public ChooseTheGuy(Troop friend,int current_elixir, Map<Troop, HashMap<Troop,Boolean>> interactions) {
         this.current_elixir = current_elixir;
-        this.enemies = enemies;
         this.interactions = interactions;
     }
 
@@ -71,7 +69,7 @@ class ChooseTheGuy{
         HashMap<Troop,Boolean> tobeat = this.interactions.get(tr1);
         List<Troop> best = new ArrayList<>();
         for (Troop i: tobeat.keySet()){
-            if (tobeat.get(i) && (i.getCost()<this.current_elixir)){best.add(i);}
+            if (tobeat.get(i) && (i.getCost()<=this.current_elixir)){best.add(i);}
         }
         if (best.isEmpty()) return null;
         if (best.size() == 1) return best.getFirst();
@@ -88,7 +86,7 @@ class ChooseTheGuy{
         HashMap<Troop,Boolean> tobeat = this.interactions.get(tr1);
         List<Troop> best = new ArrayList<>();
         for (Troop i: tobeat.keySet()){
-            if (tobeat.get(i) && (i.getCost()<this.current_elixir)){best.add(i);}
+            if (tobeat.get(i) && (i.getCost()<=this.current_elixir)){best.add(i);}
         }
         if (best.isEmpty()) return null;
         if (best.size() == 1) return best.getFirst();
@@ -99,7 +97,7 @@ class ChooseTheGuy{
     public Troop DoOffence(){
         Random r = new Random();
         List<Troop> best = new ArrayList<>();
-        for (Troop thing:enemies){
+        for (Troop thing:this.interactions.keySet()){
             if (thing.getCost() <= this.current_elixir){best.add(thing);}
         }
         if (best.isEmpty()) return null;
