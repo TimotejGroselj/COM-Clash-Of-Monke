@@ -18,9 +18,13 @@ import java.awt.image.BufferedImage;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
+import java.awt.Stroke;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -34,7 +38,7 @@ public class MainLoop {
 
     public static final String[] TROOPTYPES = new String[] {"Bomerang", "Monke", "Ice wizard", "Super", "Mortar", "Fire wizard", "CHIPPER"};
     protected static Random random = new Random();
-    private static String selectedName;
+    protected static String selectedName;
     protected static List<String> troopSelection= new ArrayList<String>();
 
     protected static int freCum = 5; //elixir globaln za risanje
@@ -90,26 +94,28 @@ public class MainLoop {
         playArea.addMouseListener(new MouseAdapter() {
     	    @Override
     	    public void mouseClicked(MouseEvent event) {
-    		    double x = event.getX() - 25;
-    		    double y = event.getY() + 25;
-                Vektor location = new Vektor(x, y);
-                Troop monke = new Troop(location, true, MainLoop.selectedName);
-                if (monke.isOnFrendlyGround(HEIGHT) && freCum >= monke.getCost()) {
-                    //če je klik playerja biu na frendly area pol ugotoviš kua je objective tega pieca glede na to kam je postaulen in pol ga addas v aktivne monkeyu na gridu
-                    monke.pathFind(enemys, HEIGHT);
-                    frendlys.add(monke);
-                    MainLoop.freCum = MainLoop.freCum-monke.getCost();
-                    int ind = MainLoop.troopSelection.indexOf(MainLoop.selectedName);
-                    while (true) {
-                        String name = MainLoop.TROOPTYPES[random.nextInt(MainLoop.TROOPTYPES.length)];
-                        if (!MainLoop.troopSelection.contains(name)) {
-                            MainLoop.troopSelection.set(ind, name);
-                            MainLoop.selectedName = null;
-                            break;
-                        }
-                    }   
-                    cards.repaint();
-                    cum.repaint();
+                if (!MainLoop.selectedName.equals(null)) {
+                    double x = event.getX() - 25;
+                    double y = event.getY() + 25;
+                    Vektor location = new Vektor(x, y);
+                    Troop monke = new Troop(location, true, MainLoop.selectedName);
+                    if (monke.isOnFrendlyGround(HEIGHT) && freCum >= monke.getCost()) {
+                        //če je klik playerja biu na frendly area pol ugotoviš kua je objective tega pieca glede na to kam je postaulen in pol ga addas v aktivne monkeyu na gridu
+                        monke.pathFind(enemys, HEIGHT);
+                        frendlys.add(monke);
+                        MainLoop.freCum = MainLoop.freCum-monke.getCost();
+                        int ind = MainLoop.troopSelection.indexOf(MainLoop.selectedName);
+                        while (true) {
+                            String name = MainLoop.TROOPTYPES[random.nextInt(MainLoop.TROOPTYPES.length)];
+                            if (!MainLoop.troopSelection.contains(name)) {
+                                MainLoop.troopSelection.set(ind, name);
+                                MainLoop.selectedName = null;
+                                break;
+                            }
+                        }   
+                        cards.repaint();
+                        cum.repaint();
+                    }
                 }
             }
          });
@@ -269,6 +275,7 @@ public class MainLoop {
                 e.printStackTrace();
             }
         }
+        frame.removeAll();
         }
         }
     
@@ -306,7 +313,7 @@ class MainPanel extends JPanel {
         super.paint(g);
         Graphics2D graphics = (Graphics2D)g; 
         AffineTransform base = graphics.getTransform();
-        int picSize = 50;
+        int picSize = 80;
         for (Troop freTroop: MainLoop.frendlys) {
             graphics.translate(freTroop.getLocation().getX(), freTroop.getLocation().getY());
             graphics.rotate(freTroop.getOrientation());
@@ -321,7 +328,7 @@ class MainPanel extends JPanel {
         }
         
         MainLoop.animations.keySet().removeIf(animatroop -> (MainLoop.i-animatroop.getLastAttack() > 6));
-        graphics.setFont(new Font("Montserrat", Font.BOLD, 20));
+        graphics.setFont(new Font("Montserrat", Font.BOLD, 30));
         graphics.setColor(Color.RED);
         for (Troop attackingTroop: MainLoop.animations.keySet()) {
             graphics.translate(attackingTroop.getLocation().getX(), attackingTroop.getLocation().getY());
@@ -331,7 +338,7 @@ class MainPanel extends JPanel {
             if (MainLoop.i-attackingTroop.getLastAttack() > 4) {
                 graphics.translate(dist, 0);
                 graphics.rotate(-attackingTroop.getOrientation());
-                graphics.drawString(attackingTroop.getDamage()+"", 0, 50);
+                graphics.drawString(attackingTroop.getDamage()+"", 0, picSize);
                 graphics.setTransform(base);
             }
         }
@@ -348,7 +355,19 @@ class CardPanel extends JPanel {
         super.paint(g);
         Graphics2D graphics = (Graphics2D)g; 
         graphics.setFont(new Font("Montserrat", Font.BOLD, 22));
+        graphics.setStroke(new BasicStroke(2));
+        int ind = MainLoop.troopSelection.indexOf(MainLoop.selectedName);
         for (int i = 0; i < 4; i++) {
+            if (ind == i) {
+                graphics.setStroke(new BasicStroke(5));
+                graphics.setColor(Color.RED);
+                graphics.drawRect(0, i*250, 450, 250);
+                graphics.setColor(Color.BLACK);
+                graphics.setStroke(new BasicStroke(2));
+            }
+            else {
+                graphics.drawRect(0, i*250, 450, 250);
+            }
             Troop troop = new Troop(new Vektor(0,0), true, MainLoop.troopSelection.get(i));
             graphics.drawImage(troop.getPicture(),0,i*250, 250, 250, null);
             graphics.drawString("cost: " + troop.getCost() + "CUM", 250, i*250+22);
@@ -358,7 +377,6 @@ class CardPanel extends JPanel {
             graphics.drawString("damage: " + troop.getDamage()+ "HP", 250, i*250+89);
             graphics.drawString("cool: " + troop.getCool()*0.05 + "s", 250, i*250+111);
             graphics.drawString("speed: " + troop.getSpeed(), 250, i*250+133);
-            graphics.drawRect(0, i*250, 450, 250);
         }  
     }
 }

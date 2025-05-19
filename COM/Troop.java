@@ -183,7 +183,7 @@ public class Troop {
             setCool(10);
             setMaxhealth(7);
             setCurrenthealth(getMaxhealth());
-            setCost(1);
+            setCost(2);
         }
             if (name.equals("Mortar")) {
 
