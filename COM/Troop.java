@@ -133,6 +133,58 @@ public class Troop {
             setCurrenthealth(getMaxhealth());
             setCost(9);
         }
+
+            if (name.equals("Wizard")) {
+
+            this.isFrendly = isFrendly;
+            this.name = name;
+            try {
+            this.picture = ImageIO.read(new File("pictures","wizi.png"));
+            } catch (IOException e) {
+            e.printStackTrace();
+            }
+            try {
+            this.animation = (ImageIO.read(new File("animations", "laserblast.png")));
+            } catch (IOException e) {
+            e.printStackTrace();
+            }
+            setOrientation(Math.PI/2);
+            setLastAttack(-100);
+            setLocation(location);
+            setSpeed(4);
+            setDamage(7);
+            setRange(7);
+            setCool(3);
+            setMaxhealth(2);
+            setCurrenthealth(getMaxhealth());
+            setCost(3);
+        }
+
+        if (name.equals("Super")) {
+
+            this.isFrendly = isFrendly;
+            this.name = name;
+            try {
+            this.picture = ImageIO.read(new File("pictures","super.png"));
+            } catch (IOException e) {
+            e.printStackTrace();
+            }
+            try {
+            this.animation = (ImageIO.read(new File("animations", "dart.png")));
+            } catch (IOException e) {
+            e.printStackTrace();
+            }
+            setOrientation(Math.PI/2);
+            setLastAttack(-100);
+            setLocation(location);
+            setSpeed(2);
+            setDamage(1);
+            setRange(5);
+            setCool(10);
+            setMaxhealth(7);
+            setCurrenthealth(getMaxhealth());
+            setCost(1);
+        }
     }
     
 

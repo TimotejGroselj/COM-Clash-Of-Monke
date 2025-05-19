@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
@@ -23,21 +25,23 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 
 public class MainLoop {
     public final static int HEIGHT = 1000;
     public final static int WIDTH = 1900;
 
-    public static final String[] SET_VALUES = new String[] {"TesterMonke", "basic monke"};
+    public static final String[] SET_VALUES = new String[] {"TesterMonke", "basic monke", "Wizard", "Super"};
     public static final Set<String> TROOPTYPES = new HashSet<>(Arrays.asList(SET_VALUES));
     private static String selectedName = "TesterMonke";
+    protected static int indSelectedName = 0;
 
     protected static int freCum = 5; //elixir globaln za risanje
     protected static int eneCum = 5;
     protected static int i = 0; //globalni timer
 
     protected static Map<Troop, Troop> animations = new HashMap<Troop, Troop>(); //tuki grejo troopi k nucajo animacijo
-    protected static List<Troop> troopSelection= new ArrayList<Troop>();
+    protected static List<String> troopSelection= new ArrayList<String>();
     
     protected static Set<Troop> frendlys = new HashSet<>(Arrays.asList
     (new Troop[] {new Troop(new Vektor(100,900),true, "Tower"),new Troop(new Vektor(900, 900), true, "Tower")}));
@@ -47,9 +51,9 @@ public class MainLoop {
     public static void main(String[] args) throws IOException {
         for (int i = 0; i < 4; i++) {
             for (String troop: TROOPTYPES) {    
-            Troop toBeAdded = new Troop(new Vektor(0,0), true, troop);
-            if (!troopSelection.contains(toBeAdded)) {
-                troopSelection.add(toBeAdded);
+            if (!troopSelection.contains(troop)) {
+                troopSelection.add(troop);
+                //break; ker mava premal troopov
             }
         }
         }
@@ -82,7 +86,6 @@ public class MainLoop {
         frame.setVisible(true);
         //frame creation in organizacija
 
-
         playArea.addMouseListener(new MouseAdapter() {
     	    @Override
     	    public void mouseClicked(MouseEvent event) {
@@ -99,7 +102,52 @@ public class MainLoop {
                 }
             }
          });
+         cards.setLayout(new GridLayout(4,1));
 
+         JButton but1 = new JButton();
+        but1.setVisible(false);
+         but1.setBounds(0,0,450,250);
+         but1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO Auto-generated method stub
+                MainLoop.selectedName = MainLoop.troopSelection.get(0);
+            }
+         });
+         cards.add(but1);
+
+         JButton but2 = new JButton();
+         but2.setVisible(false);
+         but2.setBounds(0,250,450,250);
+         but2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainLoop.selectedName = MainLoop.troopSelection.get(1);
+            }
+         });
+         cards.add(but2);
+
+        JButton but3 = new JButton();
+        but3.setVisible(false);
+         but3.setBounds(0,500,450,250);
+         but3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainLoop.selectedName = MainLoop.troopSelection.get(2);
+            }
+         });
+         cards.add(but3);
+
+        JButton but4 = new JButton();
+        but4.setVisible(false);
+         but4.setBounds(0,750,450,250);
+         but4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainLoop.selectedName = MainLoop.troopSelection.get(3);
+            }
+         });
+        cards.add(but4);
         boolean test = true;
         while (i<2400) {
             //če poteče cajt konča igro
@@ -284,21 +332,18 @@ class CardPanel extends JPanel {
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D graphics = (Graphics2D)g; 
-        int width = 450;
-        int height = 90; 
-        graphics.setFont(new Font("Montserrat", Font.BOLD, 30));
+        graphics.setFont(new Font("Montserrat", Font.BOLD, 25));
         for (int i = 0; i < 4; i++) {
-            graphics.drawImage(MainLoop.troopSelection.get(i).getPicture(),0,i*250, 250, 250, null);
-            graphics.drawString("cost: " + MainLoop.troopSelection.get(i).getCost(), 280, i*250+50);
-            graphics.drawString("health: " + MainLoop.troopSelection.get(i).getMaxhealth(), 280, i*250+80);
-
-
-
+            Troop troop = new Troop(new Vektor(0,0), true, MainLoop.troopSelection.get(i));
+            graphics.drawImage(troop.getPicture(),0,i*250, 250, 250, null);
+            graphics.drawString("cost: " + troop.getCost() + "CUM", 250, i*250+40);
+            graphics.drawString("health: " + troop.getMaxhealth() + "HP", 250, i*250+80);
+            graphics.drawString("range: " + troop.getRange()/30, 250, i*250+120);
+            graphics.drawString("damage: " + troop.getDamage()+ "HP", 250, i*250+160);
+            graphics.drawString("cool: " + troop.getCool()*0.05 + "s", 250, i*250+200);
+            graphics.drawString("speed: " + troop.getSpeed(), 250, i*250+240);
+            graphics.drawRect(0, i*250, 450, 250);
         }  
-        if (MainLoop.freCum == 10) {
-            graphics.setColor(Color.RED);
-            graphics.fillRect(0, 10 * height, width, height);
-        }
     }
 }
 
