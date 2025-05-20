@@ -1,5 +1,6 @@
 package COM;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,16 +15,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
-import java.awt.Stroke;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -37,12 +36,11 @@ public class MainLoop {
     public final static int WIDTH = 1900;
 
     public static final String[] TROOPTYPES = new String[] {"Bomerang", "Monke", "Ice wizard", "Super", "Mortar", "Fire wizard", "CHIPPER"};
-    protected static Random random = new Random();
     protected static String selectedName;
     protected static List<String> troopSelection= new ArrayList<String>();
 
-    protected static int freCum = 5; //elixir globaln za risanje
-    protected static int eneCum = 5;
+    protected static int freElix = 5; //elixir globaln za risanje
+    protected static int eneElix = 5;
     protected static int i = 0; //globalni timer
 
     protected static Map<Troop, Troop> animations = new HashMap<Troop, Troop>(); //tuki grejo troopi k nucajo animacijo
@@ -62,7 +60,7 @@ public class MainLoop {
             }
         }
         }
-
+        //začetna izbira kart
         JFrame frame = new JFrame("COM");
         frame.setSize(new Dimension(WIDTH, HEIGHT));
         frame.setResizable(false);
@@ -72,8 +70,8 @@ public class MainLoop {
         c.gridx = 0;
         c.ipadx = 450;
         c.ipady = HEIGHT;
-        CumPanel cum = new CumPanel();//aka elixir
-        frame.add(cum, c);
+        CumPanel elix = new CumPanel();
+        frame.add(elix, c);
 
         c.gridx = 1;
         c.ipadx = HEIGHT;
@@ -94,17 +92,20 @@ public class MainLoop {
         playArea.addMouseListener(new MouseAdapter() {
     	    @Override
     	    public void mouseClicked(MouseEvent event) {
-                if (!MainLoop.selectedName.equals(null)) {
+                //če je klik playerja biu na frendly area pol ugotoviš kua je objective pieca kkr ga hocs placat (kr je shranjeno v selected name)
+                //glede na to kam je postaulen (nastavs angle proti najbižjemu enemyu)
+                //in pol ga addas v aktivne monkeyu na gridu
+                if (!(MainLoop.selectedName == null)) {
                     double x = event.getX() - 25;
                     double y = event.getY() + 25;
                     Vektor location = new Vektor(x, y);
                     Troop monke = new Troop(location, true, MainLoop.selectedName);
-                    if (monke.isOnFrendlyGround(HEIGHT) && freCum >= monke.getCost()) {
-                        //če je klik playerja biu na frendly area pol ugotoviš kua je objective tega pieca glede na to kam je postaulen in pol ga addas v aktivne monkeyu na gridu
+                    if (monke.isOnFrendlyGround(HEIGHT) && freElix >= monke.getCost()) {
                         monke.pathFind(enemys, HEIGHT);
                         frendlys.add(monke);
-                        MainLoop.freCum = MainLoop.freCum-monke.getCost();
+                        MainLoop.freElix = MainLoop.freElix-monke.getCost();
                         int ind = MainLoop.troopSelection.indexOf(MainLoop.selectedName);
+                        Random random = new Random();
                         while (true) {
                             String name = MainLoop.TROOPTYPES[random.nextInt(MainLoop.TROOPTYPES.length)];
                             if (!MainLoop.troopSelection.contains(name)) {
@@ -114,11 +115,12 @@ public class MainLoop {
                             }
                         }   
                         cards.repaint();
-                        cum.repaint();
+                        elix.repaint();
                     }
                 }
             }
          });
+         //do vrstice 160 je sam ustvarjanje 4 gumbov k določjo indeks kir piece izberemo iz izbire
          cards.setLayout(new GridLayout(4,1));
 
          JButton but1 = new JButton();
@@ -126,7 +128,6 @@ public class MainLoop {
          but1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
                 MainLoop.selectedName = MainLoop.troopSelection.get(0);
             }
          });
@@ -161,6 +162,8 @@ public class MainLoop {
             }
          });
         cards.add(but4);
+
+
         boolean test = true;
         while (i<2400) {
             //če poteče cajt konča igro
@@ -173,10 +176,6 @@ public class MainLoop {
                 System.out.println("WINNER");
                 break;
             }
-
-
-
-
             //zanka za pathfinder frendlyu
             for (Troop freTroop: frendlys) {
                 if (freTroop.getName().equals("Bridge")) {
@@ -193,8 +192,8 @@ public class MainLoop {
             }
             //zanka za in range pa atack za frendlye in enemye
             for (Troop freTroop: frendlys) {
-                //preveris ce je trenutna stevilka iteracije aka time kkr je minil - stevilka iteracije k je tazadnic napadu < cooldown pa ce 
-                //je objekt bridge in ce kr kol od tega skipas troopa
+                //preveris ce je trenutna stevilka iteracije aka time kkr je minil - stevilka iteracije k je tazadnic napadu < cooldown 
+                //pa ce je objekt bridge in ce kr kol od tega skipas troopa
                 if (!((i-freTroop.getLastAttack() < freTroop.getCool()) || freTroop.getName().equals("Bridge"))) {
                     //prevers use enemye in ce je kir u range pa ni bridge ga napades 
                     for (Troop eneTroop: enemys) {
@@ -214,11 +213,9 @@ public class MainLoop {
                     if (freTroop.isInRange(eneTroop)) {
                         test = false;
                         break;
-                    }
-                    else {
+                    } else {
                         test = true;
-                    }
-                }
+                    }}
                 if (test) {
                     freTroop.move();
                 }
@@ -245,44 +242,36 @@ public class MainLoop {
                     if (eneTroop.isInRange(freTroop)) {
                         test = false;
                         break;
-                    }
-                    else {
+                    } else {
                         test = true;
-                    }
-                }
+                    }}
                 if (test) {
                     eneTroop.move();
                 }
                 frendlys.removeIf(frendly -> (frendly.isDead()));
             }
-                //spremeni globaln timer
+            //spremeni globaln timer
             i++;
             //pogleda če lhka prišteje elixer in če lahko ga
-            if (i % 40 == 0 && freCum < 10) {
-                freCum++;
+            if (i % 40 == 0 && freElix < 10) {
+                freElix++;
             }
-            if (i % 40 == 0 && eneCum < 10) {
-                eneCum++;
-
+            if (i % 40 == 0 && eneElix < 10) {
+                eneElix++;
             }
-
             playArea.repaint(); // ponoven izris okna
-            cum.repaint();
+            elix.repaint();
             cards.repaint();
             try {
                 Thread.sleep(50); // počakaj 50 ms
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
-        }
-        frame.removeAll();
-        }
-        }
+            }}}}
+
     
 class CumPanel extends JPanel {
         public CumPanel() {
         super();
-        setBackground(Color.MAGENTA);
     }
         @Override
     public void paint(Graphics g) {
@@ -290,16 +279,20 @@ class CumPanel extends JPanel {
         Graphics2D graphics = (Graphics2D)g; 
         int width = 450;
         int height = 90; 
-        for (int i = 0; i < MainLoop.freCum; i++) {
-            graphics.setColor(Color.YELLOW);
-            graphics.fillRect(0, i * height, width, height);
-            graphics.setColor(Color.BLACK);
-            graphics.drawRect(0, i * height, width, height);
+        for (int i = 0; i < MainLoop.freElix; i++) {
+            try {
+                graphics.drawImage(ImageIO.read(new File("pictures","BANANA.png")),0, i * height, width/2, height, null);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }  
-        if (MainLoop.freCum == 10) {
+        if (MainLoop.freElix == 10) {
             graphics.setColor(Color.RED);
             graphics.fillRect(0, 10 * height, width, height);
         }
+        graphics.setColor(Color.BLACK);
+        graphics.setFont(new Font("Montserrat", Font.BOLD, 50));
+        graphics.drawString(MainLoop.freElix+" BANANA", width/2-150, 950);
     }
 }
 
@@ -315,6 +308,7 @@ class MainPanel extends JPanel {
         AffineTransform base = graphics.getTransform();
         int picSize = 80;
         graphics.setFont(new Font("Montserrat", Font.BOLD, 10));
+        //transliram koordinaten sistem v koordinaten sistem centriran na monkeya nati izrišem sliko monkeya in prikaz trenutnega healtha
         for (Troop freTroop: MainLoop.frendlys) {
             graphics.translate(freTroop.getLocation().getX(), freTroop.getLocation().getY());
             graphics.rotate(freTroop.getOrientation());
@@ -328,6 +322,7 @@ class MainPanel extends JPanel {
             graphics.drawString(freTroop.getCurrenthealth()+"/"+freTroop.getMaxhealth(), -picSize/4, -picSize/2-2);
             graphics.setTransform(base);
         }
+        //isto sranje k zgori sam za enemye
         for (Troop eneTroop: MainLoop.enemys) {
             graphics.translate(eneTroop.getLocation().getX(), eneTroop.getLocation().getY());
             graphics.rotate(eneTroop.getOrientation());
@@ -341,7 +336,7 @@ class MainPanel extends JPanel {
             graphics.drawString(eneTroop.getCurrenthealth()+"/"+eneTroop.getMaxhealth(), -picSize/4, -picSize/2-2);
             graphics.setTransform(base);
         }
-        
+        //narišem "animacije" sam za breif moment de zgleda k de je nek projectile letel in pol jih izbrišem iz seznama stvari za "animirat"
         MainLoop.animations.keySet().removeIf(animatroop -> (MainLoop.i-animatroop.getLastAttack() > 4));
         graphics.setFont(new Font("Montserrat", Font.BOLD, 30));
         graphics.setColor(Color.RED);
@@ -366,6 +361,7 @@ class CardPanel extends JPanel {
         graphics.setFont(new Font("Montserrat", Font.BOLD, 22));
         graphics.setStroke(new BasicStroke(2));
         int ind = MainLoop.troopSelection.indexOf(MainLoop.selectedName);
+        //izdrišem karte monkeyu kjer so info in označim z rdečo obrobo kateri je trenutno izbran
         for (int i = 0; i < 4; i++) {
             if (ind == i) {
                 graphics.setStroke(new BasicStroke(5));
