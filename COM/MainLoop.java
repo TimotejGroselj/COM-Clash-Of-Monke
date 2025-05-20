@@ -314,33 +314,42 @@ class MainPanel extends JPanel {
         Graphics2D graphics = (Graphics2D)g; 
         AffineTransform base = graphics.getTransform();
         int picSize = 80;
+        graphics.setFont(new Font("Montserrat", Font.BOLD, 10));
         for (Troop freTroop: MainLoop.frendlys) {
             graphics.translate(freTroop.getLocation().getX(), freTroop.getLocation().getY());
             graphics.rotate(freTroop.getOrientation());
             graphics.drawImage(freTroop.getPicture(), -picSize/2, -picSize/2, picSize, picSize, null);
+            graphics.rotate(-freTroop.getOrientation());
+            graphics.setColor(Color.RED);
+            graphics.fillRect(-picSize/2, -picSize/2-10, picSize, picSize/10);
+            graphics.setColor(Color.GREEN);
+            graphics.fillRect(-picSize/2, -picSize/2-10, freTroop.getCurrenthealth()*picSize/freTroop.getMaxhealth(), picSize/10);
+            graphics.setColor(Color.BLACK);
+            graphics.drawString(freTroop.getCurrenthealth()+"/"+freTroop.getMaxhealth(), -picSize/4, -picSize/2-2);
             graphics.setTransform(base);
         }
         for (Troop eneTroop: MainLoop.enemys) {
             graphics.translate(eneTroop.getLocation().getX(), eneTroop.getLocation().getY());
             graphics.rotate(eneTroop.getOrientation());
             graphics.drawImage(eneTroop.getPicture(), -picSize/2, -picSize/2, picSize, picSize, null);
+            graphics.rotate(-eneTroop.getOrientation());
+            graphics.setColor(Color.RED);
+            graphics.fillRect(-picSize/2, -picSize/2-10, picSize, picSize/10);
+            graphics.setColor(Color.GREEN);
+            graphics.fillRect(-picSize/2, -picSize/2-10, eneTroop.getCurrenthealth()*picSize/eneTroop.getMaxhealth(), picSize/10);
+            graphics.setColor(Color.BLACK);
+            graphics.drawString(eneTroop.getCurrenthealth()+"/"+eneTroop.getMaxhealth(), -picSize/4, -picSize/2-2);
             graphics.setTransform(base);
         }
         
-        MainLoop.animations.keySet().removeIf(animatroop -> (MainLoop.i-animatroop.getLastAttack() > 6));
+        MainLoop.animations.keySet().removeIf(animatroop -> (MainLoop.i-animatroop.getLastAttack() > 4));
         graphics.setFont(new Font("Montserrat", Font.BOLD, 30));
         graphics.setColor(Color.RED);
         for (Troop attackingTroop: MainLoop.animations.keySet()) {
             graphics.translate(attackingTroop.getLocation().getX(), attackingTroop.getLocation().getY());
             graphics.rotate(attackingTroop.getOrientation());
             int dist = (int) Vektor.dist(MainLoop.animations.get(attackingTroop).getLocation(), attackingTroop.getLocation());
-            graphics.drawImage(attackingTroop.getAnimation(), dist/2-picSize/2, -picSize/8, picSize/2, picSize/2, null);
-            if (MainLoop.i-attackingTroop.getLastAttack() > 4) {
-                graphics.translate(dist, 0);
-                graphics.rotate(-attackingTroop.getOrientation());
-                graphics.drawString(attackingTroop.getDamage()+"", 0, picSize);
-                graphics.setTransform(base);
-            }
+            graphics.drawImage(attackingTroop.getAnimation(), dist/2, -picSize/8, picSize/3, picSize/3, null);
         }
     }
 }
