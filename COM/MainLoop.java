@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
@@ -34,10 +35,10 @@ import java.awt.GridLayout;
 public class MainLoop {
     public final static int HEIGHT = 1000;
     public final static int WIDTH = 1900;
-
     public static final String[] TROOPTYPES = new String[] {"Bomerang", "Monke", "Ice wizard", "Super", "Mortar", "Fire wizard", "CHIPPER"};
     protected static String selectedName;
     protected static List<String> troopSelection= new ArrayList<String>();
+    protected static BufferedImage BANANA;
 
     protected static int freElix = 5; //elixir globaln za risanje
     protected static int eneElix = 5;
@@ -51,7 +52,12 @@ public class MainLoop {
     protected static Set<Troop> enemys = new HashSet<>(Arrays.asList
     (new Troop[] {new Troop(new Vektor(100,100),false, "Tower"), new Troop(new Vektor(900,100), false, "Tower")}));
     //začetni troopi aka sam towerji
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
+        try {
+            BufferedImage BANANA = ImageIO.read(new File("pictures","BANANA.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         for (int i = 0; i < 4; i++) {
             for (String troop: TROOPTYPES) {    
             if (!troopSelection.contains(troop)) {
@@ -278,21 +284,24 @@ class CumPanel extends JPanel {
         super.paint(g);
         Graphics2D graphics = (Graphics2D)g; 
         int width = 450;
-        int height = 90; 
+        int height = 95; 
         for (int i = 0; i < MainLoop.freElix; i++) {
-            try {
-                graphics.drawImage(ImageIO.read(new File("pictures","BANANA.png")),0, i * height, width/2, height, null);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            graphics.drawImage(MainLoop.BANANA, width/6, i * height, width-width/3, height, null);
         }  
         if (MainLoop.freElix == 10) {
             graphics.setColor(Color.RED);
-            graphics.fillRect(0, 10 * height, width, height);
+            graphics.rotate(Math.PI/2);
+
+            graphics.setFont(new Font(Font.MONOSPACED, Font.BOLD, 100));
+            graphics.drawString("LEAKING BANANA", height/2, -10);
+            graphics.drawString("LEAKING BANANA", height/2, -width+90);
+            graphics.rotate(-Math.PI/2);
         }
+        else {
         graphics.setColor(Color.BLACK);
         graphics.setFont(new Font("Montserrat", Font.BOLD, 50));
         graphics.drawString(MainLoop.freElix+" BANANA", width/2-150, 950);
+        }
     }
 }
 
