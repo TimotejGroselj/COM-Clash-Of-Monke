@@ -118,7 +118,7 @@ class ChooseTheLocation {
                 }
             }
             if (cords.isEmpty()) return null;
-            if (cords.size() == 1) return cords.getFirst();
+            if (cords.size() == 1) return cords.get(0);
             int id = r.nextInt(cords.size()-1);
             return cords.get(id);
         }

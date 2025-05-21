@@ -40,7 +40,7 @@ public class MainLoop {
     protected static List<String> troopSelection= new ArrayList<String>();
     protected static BufferedImage BANANA;
     protected static BufferedImage backround;
-
+    protected static BufferedImage bananaBack;
     protected static int freElix = 5; //elixir globaln za risanje
     protected static int eneElix = 5;
     protected static int i = 0; //globalni timer
@@ -55,12 +55,17 @@ public class MainLoop {
     //začetni troopi aka sam towerji
     public static void main(String[] args) {
         try {
-            BANANA = ImageIO.read(new File("pictures","BANANA.png"));
+            BANANA = ImageIO.read(new File("layout_pictures","BANANA.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
         try {
             backround = ImageIO.read(new File("layout_pictures","backround.jpg"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            bananaBack = ImageIO.read(new File("layout_pictures","bananaBack.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -187,10 +192,10 @@ public class MainLoop {
                 System.out.println("WINNER");
                 break;
             }
-
+            
             Troop MonkeNemesis = new MonkeThinker(frendlys,eneElix,MonkeFights).getDude();
             if (MonkeNemesis != null){enemys.add(MonkeNemesis);eneElix-=MonkeNemesis.getCost();}
-
+            
 
             //zanka za actione frendlyu
             for (Troop freTroop: frendlys) {
@@ -258,6 +263,7 @@ class CumPanel extends JPanel {
         Graphics2D graphics = (Graphics2D)g; 
         int width = 450;
         int height = 95; 
+        graphics.drawImage(MainLoop.bananaBack, 0,0, width, height*10+50,null);
         for (int i = 0; i < MainLoop.freElix; i++) {
             graphics.drawImage(MainLoop.BANANA, width/6, i * height, width-width/3, height, null);
         }  
@@ -271,7 +277,7 @@ class CumPanel extends JPanel {
             graphics.rotate(-Math.PI/2);
         }
         else {
-        graphics.setColor(Color.BLACK);
+        graphics.setColor(Color.YELLOW);
         graphics.setFont(new Font("Montserrat", Font.BOLD, 50));
         graphics.drawString(MainLoop.freElix+" BANANA", width/2-150, 950);
         }
