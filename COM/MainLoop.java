@@ -190,7 +190,7 @@ public class MainLoop {
                     //če je troop ready za attack aka je minil več časa od prejšnga attacka kkr je troopou cooldown napade najbižjega
                     if (i-freTroop.getLastAttack() >= freTroop.getCool()) {
                         freTroop.attack(closestTroop);
-                        animations.put(freTroop, closestTroop);
+                        animations.put(freTroop, new Troop(freTroop, freTroop.getAnimation(), closestTroop.getLocation()));
                         freTroop.setLastAttack(i);
                         //če ga ubijemo ga removamo
                         if (closestTroop.isDead()) {
@@ -207,7 +207,7 @@ public class MainLoop {
                 if (eneTroop.isInRange(closestTroop)) {
                     if (i-eneTroop.getLastAttack() >= eneTroop.getCool()) {
                         eneTroop.attack(closestTroop);
-                        animations.put(eneTroop, closestTroop);
+                        animations.put(eneTroop, new Troop(eneTroop, eneTroop.getAnimation(), closestTroop.getLocation()));
                         eneTroop.setLastAttack(i);
                         if (closestTroop.isDead()) {
                             frendlys.remove(closestTroop);
@@ -312,10 +312,11 @@ class MainPanel extends JPanel {
         graphics.setFont(new Font("Montserrat", Font.BOLD, 30));
         graphics.setColor(Color.RED);
         for (Troop attackingTroop: MainLoop.animations.keySet()) {
-            graphics.translate(attackingTroop.getLocation().getX(), attackingTroop.getLocation().getY());
+            graphics.translate(MainLoop.animations.get(attackingTroop).getLocation().getX(), MainLoop.animations.get(attackingTroop).getLocation().getY());
             graphics.rotate(attackingTroop.getOrientation());
-            int dist = (int) Vektor.dist(MainLoop.animations.get(attackingTroop).getLocation(), attackingTroop.getLocation());
-            graphics.drawImage(attackingTroop.getAnimation(), dist/2, -picSize/8, picSize/3, picSize/3, null);
+            graphics.drawImage(MainLoop.animations.get(attackingTroop).getPicture(), -picSize/4, -picSize/4, picSize/2, picSize/2, null);
+            MainLoop.animations.get(attackingTroop).move();
+            graphics.setTransform(base);
         }
     }
 }

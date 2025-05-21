@@ -19,7 +19,7 @@ public class Troop {
     private int cost;
     private double orientation;
     private Vektor location;
-    private BufferedImage animation;
+    private String animation;
     private int currenthealth;
     private boolean isFrendly;
     private String name;
@@ -33,11 +33,7 @@ public class Troop {
             } catch (IOException e) {
             e.printStackTrace();
             }
-            try {
-            this.animation = ImageIO.read(new File("animations","towerrocket.png"));
-            } catch (IOException e) {
-            e.printStackTrace();
-            }
+            this.animation = "towerrocket.png";
             this.orientation = Math.PI/2;
             this.location = location;
             this.isFrendly = isFrendly;
@@ -64,7 +60,7 @@ public class Troop {
         //cost 9 levelu: vsak level zbije od 10 en elixir
 
         //sum vseh pointov nj bo 25 pointov ki jih lahko porabiš kakor želiš dokler so v limiti.
-        if (name.equals("Bomerang")) {
+        else if (name.equals("Bomerang")) {
 
             this.isFrendly = isFrendly;
             this.name = name;
@@ -73,11 +69,7 @@ public class Troop {
             } catch (IOException e) {
             e.printStackTrace();
             }
-            try {
-            this.animation = (ImageIO.read(new File("animations", "bommer.png")));
-            } catch (IOException e) {
-            e.printStackTrace();
-            }
+            this.animation = "bommer.png";
             setOrientation(Math.PI/2);
             setLastAttack(-100);
             setLocation(location);
@@ -89,7 +81,7 @@ public class Troop {
             setCurrenthealth(getMaxhealth());
             setCost(4);
         }
-        if (name.equals("Monke")) {
+        else if (name.equals("Monke")) {
             this.isFrendly = isFrendly;
             this.name = name;
             try {
@@ -97,11 +89,9 @@ public class Troop {
             } catch (IOException e) {
             e.printStackTrace();
             }
-            try {
-            this.animation = (ImageIO.read(new File("animations", "dart.png")));
-            } catch (IOException e) {
-            e.printStackTrace();
-            }
+
+            this.animation = "dart.png";
+
             setOrientation(Math.PI/2);
             setLastAttack(-100);
             setLocation(location);
@@ -114,7 +104,7 @@ public class Troop {
             setCost(9);
         }
 
-            if (name.equals("Ice wizard")) {
+            else if (name.equals("Ice wizard")) {
 
             this.isFrendly = isFrendly;
             this.name = name;
@@ -123,11 +113,8 @@ public class Troop {
             } catch (IOException e) {
             e.printStackTrace();
             }
-            try {
-            this.animation = (ImageIO.read(new File("animations", "frezebolt.png")));
-            } catch (IOException e) {
-            e.printStackTrace();
-            }
+            this.animation = "frezebolt.png";
+   
             setOrientation(Math.PI/2);
             setLastAttack(-100);
             setLocation(location);
@@ -140,7 +127,7 @@ public class Troop {
             setCost(5);
         }
 
-        if (name.equals("Super")) {
+        else if (name.equals("Super")) {
 
             this.isFrendly = isFrendly;
             this.name = name;
@@ -149,11 +136,9 @@ public class Troop {
             } catch (IOException e) {
             e.printStackTrace();
             }
-            try {
-            this.animation = (ImageIO.read(new File("animations", "dart.png")));
-            } catch (IOException e) {
-            e.printStackTrace();
-            }
+
+            this.animation = "dart.png";
+  
             setOrientation(Math.PI/2);
             setLastAttack(-100);
             setLocation(location);
@@ -165,7 +150,7 @@ public class Troop {
             setCurrenthealth(getMaxhealth());
             setCost(2);
         }
-            if (name.equals("Mortar")) {
+            else if (name.equals("Mortar")) {
 
             this.isFrendly = isFrendly;
             this.name = name;
@@ -174,11 +159,8 @@ public class Troop {
             } catch (IOException e) {
             e.printStackTrace();
             }
-            try {
-            this.animation = (ImageIO.read(new File("animations", "bomb.png")));
-            } catch (IOException e) {
-            e.printStackTrace();
-            }
+            this.animation = "bomb.png";
+     
             setOrientation(Math.PI/2);
             setLastAttack(-100);
             setLocation(location);
@@ -191,7 +173,7 @@ public class Troop {
             setCost(5);
         }
 
-            if (name.equals("Fire wizard")) {
+            else if (name.equals("Fire wizard")) {
 
             this.isFrendly = isFrendly;
             this.name = name;
@@ -200,11 +182,9 @@ public class Troop {
             } catch (IOException e) {
             e.printStackTrace();
             }
-            try {
-            this.animation = (ImageIO.read(new File("animations", "laserblast.png")));
-            } catch (IOException e) {
-            e.printStackTrace();
-            }
+
+            this.animation = "laserblast.png";
+     
             setOrientation(Math.PI/2);
             setLastAttack(-100);
             setLocation(location);
@@ -217,7 +197,7 @@ public class Troop {
             setCost(3);
         }
 
-            if (name.equals("CHIPPER")) {
+            else if (name.equals("CHIPPER")) {
 
             this.isFrendly = isFrendly;
             this.name = name;
@@ -226,11 +206,7 @@ public class Troop {
             } catch (IOException e) {
             e.printStackTrace();
             }
-            try {
-            this.animation = (ImageIO.read(new File("animations", "sparkles.png")));
-            } catch (IOException e) {
-            e.printStackTrace();
-            }
+            this.animation = "sparkles.png";
             setOrientation(Math.PI/2);
             setLastAttack(-100);
             setLocation(location);
@@ -243,7 +219,20 @@ public class Troop {
             setCost(1);
         }
     }
-    
+    public Troop(Troop freTroop, String name, Vektor enelocation) {
+        //to pomen de smo v animaciji
+        //to pomen da noben ime ni Troop ampk bo animacija in je važn sam speed pa slikca 
+            this.speed = (int) Vektor.dist(freTroop.getLocation(), enelocation)/4;
+            try {
+            this.picture = ImageIO.read(new File("animations", name));
+            } catch (IOException e) {
+            e.printStackTrace();
+            } 
+            setLocation(freTroop.getLocation());
+            setOrientation(freTroop.getOrientation());
+
+
+    }
 
     //tuki prefukava konstante de balancava shit
     private void setSpeed(int speed) {
@@ -305,7 +294,7 @@ public class Troop {
     public int getCost() {
         return cost;
     }
-    public BufferedImage getAnimation() {
+    public String getAnimation() {
         return animation;
     }
     public String getName() {
