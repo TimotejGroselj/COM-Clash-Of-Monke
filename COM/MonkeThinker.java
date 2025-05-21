@@ -22,7 +22,7 @@ public class MonkeThinker {
                 if (this.Dude == null) continue;
                 this.Spawn = new ChooseTheLocation(this.Dude, friend).GetSpawn("Defence");
             } else {
-                if (friend.getCurrenthealth() > 70) { //tuki se to stotko nastimi, to je za tanke
+                if (friend.getCurrenthealth() > 50) { //tuki se to stotko nastimi, to je za tanke
                     this.Dude = BestMonke.DoBackupDefence(friend);
                     if (this.Dude == null) continue;
                     this.Spawn = new ChooseTheLocation(this.Dude, friend).GetSpawn("BackupDefence");
@@ -62,7 +62,7 @@ class ChooseTheGuy{
             if (tobeat.get(i) && (i.getCost()<=this.current_elixir)){best.add(i);}
         }
         if (best.isEmpty()) return null;
-        if (best.size() == 1) return best.getFirst();
+        if (best.size() == 1) return best.get(0);
 
         int num = r.nextInt(best.size()-1);
         for (Troop i1: best){
@@ -79,7 +79,7 @@ class ChooseTheGuy{
             if (tobeat.get(i) && (i.getCost()<=this.current_elixir)){best.add(i);}
         }
         if (best.isEmpty()) return null;
-        if (best.size() == 1) return best.getFirst();
+        if (best.size() == 1) return best.get(0);
         int num = r.nextInt(best.size()-1);
         return best.get(num);
     }
@@ -91,7 +91,7 @@ class ChooseTheGuy{
             if (thing.getCost() <= this.current_elixir){best.add(thing);}
         }
         if (best.isEmpty()) return null;
-        if (best.size() == 1) return best.getFirst();
+        if (best.size() == 1) return best.get(0);
         int num = r.nextInt(best.size() - 1);
         return best.get(num);
     }
@@ -112,7 +112,7 @@ class ChooseTheLocation {
     }
 
     public boolean IsInside(double x,double y){
-        return ((x >= 0 && x <= a)&&(y >= 0 && y <= b/2));
+        return ((x >= 0 && x <= a)&&(y >= 0 && y <= b/2)); //0-> height*1/4
     }
 
     public Vektor GetSpawn(String strategy) {
