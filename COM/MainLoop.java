@@ -168,7 +168,7 @@ public class MainLoop {
             }
          });
         cards.add(but4);
-
+        Map<Troop, HashMap<Troop,Boolean>> MonkeFights = new Interactions(TROOPTYPES).getInteractions();
         Troop closestTroop;
         while (i<2400) {
             //če poteče cajt konča igro
@@ -181,6 +181,10 @@ public class MainLoop {
                 System.out.println("WINNER");
                 break;
             }
+
+            Troop MonkeNemesis = new MonkeThinker(frendlys,eneElix,MonkeFights).getDude();
+            if (MonkeNemesis != null){enemys.add(MonkeNemesis);eneElix-=MonkeNemesis.getCost();}
+
             //zanka za actione frendlyu
             for (Troop freTroop: frendlys) {
                 //pathfind določ angle do najbližjiga in vrne ta tropp k je najbižji
