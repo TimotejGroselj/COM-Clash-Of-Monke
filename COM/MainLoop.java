@@ -180,6 +180,7 @@ public class MainLoop {
          });
         cards.add(but4);
         Map<Troop, HashMap<Troop,Boolean>> MonkeFights = new Interactions(TROOPTYPES).getInteractions();
+
         Troop closestTroop;
         while (i<2400) {
             //če poteče cajt konča igro

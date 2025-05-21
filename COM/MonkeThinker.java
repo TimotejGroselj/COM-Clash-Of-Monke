@@ -18,14 +18,19 @@ public class MonkeThinker {
             if (Objects.equals(friend.getName(), "Tower")){continue;}
             ChooseTheGuy BestMonke = new ChooseTheGuy(friend, this.elixir, fightclub);
             if (!friend.isOnFrendlyGround(MainLoop.HEIGHT)) {
-                this.Dude = BestMonke.DoDefence(friend);
+                this.Dude = BestMonke.DoDefence();
                 if (this.Dude == null) continue;
                 this.Spawn = new ChooseTheLocation(this.Dude, friend).GetSpawn("Defence");
             } else {
-                this.Dude = BestMonke.DoOffence();
-                if (this.Dude == null) continue;
-                this.Spawn = new ChooseTheLocation(this.Dude, friend).GetSpawn("Offence");
-
+                if (friend.getCurrenthealth() >= 70) { //tuki se to stotko nastimi, to je za tanke
+                    this.Dude = BestMonke.DoBackupDefence();
+                    if (this.Dude == null) continue;
+                    this.Spawn = new ChooseTheLocation(this.Dude, friend).GetSpawn("BackupDefence");
+                } else {
+                    this.Dude = BestMonke.DoOffence();
+                    if (this.Dude == null) continue;
+                    this.Spawn = new ChooseTheLocation(this.Dude, friend).GetSpawn("Offence");
+                }
             }
         }
     }
@@ -39,18 +44,41 @@ public class MonkeThinker {
 class ChooseTheGuy{
 
     private final int current_elixir;
-    private final Map<Troop, HashMap<Troop, Boolean>> interactions;
+    private final Troop replica;
+    public Map<Troop, HashMap<Troop, Boolean>> interactions;
 
 
     public ChooseTheGuy(Troop friend,int current_elixir, Map<Troop, HashMap<Troop,Boolean>> interactions) {
         this.current_elixir = current_elixir;
         this.interactions = interactions;
+        Troop replica = null;
+        for (Troop i: interactions.keySet()){
+            if (Objects.equals(i.getName(), friend.getName())){replica=i;break;}
+        }
+        this.replica = replica;
+
     }
 
-
-    public Troop DoDefence(Troop tr1){
+    public Troop DoBackupDefence(){
         Random r = new Random();
-        HashMap<Troop,Boolean> tobeat = interactions.get(tr1);
+        HashMap<Troop,Boolean> tobeat = interactions.get(replica);
+        List<Troop> best = new ArrayList<>();
+        for (Troop i: tobeat.keySet()){
+            if (tobeat.get(i) && (i.getCost()<=this.current_elixir)){best.add(i);}
+        }
+        if (best.isEmpty()) return null;
+        if (best.size() == 1) return best.get(0);
+
+        int num = r.nextInt(best.size()-1);
+        for (Troop i1: best){
+            if (i1.getDamage() > 80) {return i1;} //ta 80 se se stima
+        }
+        return best.get(num);
+    }
+
+    public Troop DoDefence(){
+        Random r = new Random();
+        HashMap<Troop,Boolean> tobeat = interactions.get(replica);
         List<Troop> best = new ArrayList<>();
         for (Troop i: tobeat.keySet()){
             if (tobeat.get(i) && (i.getCost()<=this.current_elixir)){best.add(i);}
@@ -105,7 +133,7 @@ class ChooseTheLocation {
                 y = r.nextInt(0, (int) (b/2));
             }
             return new Vektor(x, y);
-        } else {
+        }  else if (strategy.equals("Defence")) {
             double parameter = 6;
             double fi = Math.PI/parameter;
             List<Vektor> cords = new ArrayList<>();
@@ -121,6 +149,17 @@ class ChooseTheLocation {
             if (cords.size() == 1) return cords.get(0);
             int id = r.nextInt(cords.size()-1);
             return cords.get(id);
+        }
+        else {
+            if (this.x0 < a/2) {
+                x = r.nextInt((int) (a / 3), (int) (a /2));
+                y = r.nextInt(0, (int) (b/2));
+            }
+            else {
+                x = r.nextInt((int) (a / 2), (int) (2*a /3));
+                y = r.nextInt(0, (int) (b/2));
+            }
+            return new Vektor(x, y);
         }
     }
 }
