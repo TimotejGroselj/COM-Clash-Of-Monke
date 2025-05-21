@@ -96,7 +96,7 @@ class ChooseTheGuy{
 }
 
 class ChooseTheLocation {
-    private final double a = MainLoop.WIDTH;
+    private final double a = MainLoop.HEIGHT;
     private final double b = MainLoop.HEIGHT; //left y cord
     private final double range;
     private final double x0;

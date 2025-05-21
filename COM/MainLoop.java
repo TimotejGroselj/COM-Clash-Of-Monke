@@ -169,6 +169,7 @@ public class MainLoop {
          });
         cards.add(but4);
 
+        Map<Troop, HashMap<Troop,Boolean>> MonkeFights = new Interactions(TROOPTYPES).getInteractions();
 
         boolean test = true;
         while (i<2400) {
@@ -182,6 +183,10 @@ public class MainLoop {
                 System.out.println("WINNER");
                 break;
             }
+
+            Troop MonkeNemesis = new MonkeThinker(frendlys,eneElix,MonkeFights).getDude();
+            if (MonkeNemesis != null){enemys.add(MonkeNemesis);eneElix -= MonkeNemesis.getCost();}
+
             //zanka za pathfinder frendlyu
             for (Troop freTroop: frendlys) {
                 if (freTroop.getName().equals("Bridge")) {

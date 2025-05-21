@@ -2,6 +2,7 @@ package COM;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,6 +20,7 @@ public class Start extends JFrame{
     private static JButton first = null;
     protected static Set<String> deck = new HashSet<>();
     protected static Set<String> rest = new HashSet<>();
+    protected static boolean running = true;
 
     public Start() throws IOException {
         JFrame start = new JFrame("Build Your Deck!");
@@ -29,36 +31,43 @@ public class Start extends JFrame{
         int width = 100;
         int height = 100;
         int space = 50;
-        int xt= 4*width + 3*space;
-        int rxt = (w-xt)/2;
-        int yt = 4*height + 3*space;
-        int ryt = (h-yt)/2;
+        int xt = 4 * width + 3 * space;
+        int rxt = (w - xt) / 2;
+        int yt = 4 * height + 3 * space;
+        int ryt = (h - yt) / 2;
 
-        for (int i = 1;i < 9;i++){deck.add(Integer.toString(i));}
-        for (int i = 9;i < 25;i++){rest.add(Integer.toString(i));}
+        for (int i = 1; i < 9; i++) {
+            deck.add(Integer.toString(i));
+        }
+        for (int i = 9; i < 25; i++) {
+            rest.add(Integer.toString(i));
+        }
+
+
 
         ActionListener SwapCards = e -> {
             JButton chosen = (JButton) e.getSource();
             if (first == null) {
                 first = chosen;
+                first.setBorder(new LineBorder(Color.RED,5));
             } else {
                 String temp = first.getText();
                 String casu = chosen.getText();
-                if (first != chosen){
-                    if (deck.contains(temp) && rest.contains(casu)){
+                if (first != chosen) {
+                    if (deck.contains(temp) && rest.contains(casu)) {
                         deck.remove(temp);
                         deck.add(casu);
                         rest.remove(casu);
                         rest.add(temp);
-                    }
-                    else {
+                    } else {
                         deck.remove(casu);
                         deck.add(temp);
                         rest.remove(temp);
                         rest.add(casu);
                     }
-                first.setText(chosen.getText());
-                chosen.setText(temp);
+                    first.setText(chosen.getText());
+                    chosen.setText(temp);
+                    first.setBorder(UIManager.getBorder("Button.border"));
                 }
                 first = null;
             }
@@ -67,39 +76,38 @@ public class Start extends JFrame{
         JButton ready = new JButton();
         ready.setText("READY");
         ready.setBackground(Color.GREEN);
-        ready.setBounds(1400,160,100,100);
-        ready.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                start.dispose();
-            }
+        ready.setBounds(1400, 160, 100, 100);
+        ready.addActionListener(e -> {
+            if (deck.size() == 8) {start.dispose();running = false;}
+            if (Objects.equals(first.getBorder(), new LineBorder(Color.RED, 5))){}
         });
         start.add(ready);
 
 
-        for (int j = 0;j < 2;j++) {
+
+        for (int j = 0; j < 2; j++) {
             for (int i = 0; i < 4; i++) {
                 JButton button = new JButton();
-                int CardNum = (i+1) + j*4;
+                int CardNum = (i + 1) + j * 4;
                 button.setText(Integer.toString(CardNum));
-                int x = rxt + i * (width+space);
-                int y = ryt-150 + j * (height+space);
+                int x = rxt + i * (width + space);
+                int y = ryt - 150 + j * (height + space);
                 button.setBounds(x, y, width, height);
                 button.addActionListener(SwapCards);
                 start.add(button);
             }
         }
-        int yt2 = 9*height + 8*space;
-        int ryt2 = (h-yt2)/2;
-        int add =0;
-        for (int j = 0;j <2;j++) {
+        int yt2 = 9 * height + 8 * space;
+        int ryt2 = (h - yt2) / 2;
+        int add = 0;
+        for (int j = 0; j < 2; j++) {
             for (int i = 1; i < 13; i++) {
-                int CardNum = i + (8+j*4);
+                int CardNum = i + (8 + j * 4);
                 JButton button = new JButton();
                 button.setText(Integer.toString(CardNum));
                 int x = i * (width + space);
                 int y = ryt2 + (height + space);
-                button.setBounds(x - 100, y + 600+ add, width, height);
+                button.setBounds(x - 100, y + 600 + add, width, height);
                 button.addActionListener(SwapCards);
                 start.add(button);
             }
@@ -110,37 +118,46 @@ public class Start extends JFrame{
 
 
         ImageIcon cur = new ImageIcon("layout_pictures/Wood.png");
-        Image wood = cur.getImage().getScaledInstance(1000,500,Image.SCALE_DEFAULT);
+        Image wood = cur.getImage().getScaledInstance(1000, 500, Image.SCALE_DEFAULT);
         ImageIcon fin = new ImageIcon(wood);
         JLabel fin1 = new JLabel(fin);
-        fin1.setBounds(450,-110,1000,500);
+        fin1.setBounds(450, -110, 1000, 500);
         start.add(fin1);
 
 
         ImageIcon seamonk = new ImageIcon("layout_pictures/SeaMonke.png");
-        Image seemon = seamonk.getImage().getScaledInstance(250,250,Image.SCALE_DEFAULT);
+        Image seemon = seamonk.getImage().getScaledInstance(250, 250, Image.SCALE_DEFAULT);
         ImageIcon seemonfin = new ImageIcon(seemon);
         JLabel fin2 = new JLabel(seemonfin);
-        fin2.setBounds(20,350,250,250);
+        fin2.setBounds(20, 350, 250, 250);
         start.add(fin2);
 
 
         ImageIcon tren = new ImageIcon("layout_pictures/Lake.png");
-        Image sea = tren.getImage().getScaledInstance(w,h,Image.SCALE_DEFAULT);
+        Image sea = tren.getImage().getScaledInstance(w, h, Image.SCALE_DEFAULT);
         ImageIcon see = new ImageIcon(sea);
         JLabel funsee = new JLabel(see);
-        funsee.setBounds(0,0,w,h);
+        funsee.setBounds(0, 0, w, h);
         start.add(funsee);
 
 
-
         start.setVisible(true);
-        System.out.println(Start.deck);
+
+        while (running){
+            System.out.println(Start.deck);
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+
     }
 
     public static void main(String[] args) throws IOException {
         Start uga = new Start();
-        System.out.println();
+        System.out.println(Start.deck);
     }
 }
 
