@@ -39,6 +39,7 @@ public class MainLoop {
     protected static String selectedName;
     protected static List<String> troopSelection= new ArrayList<String>();
     protected static BufferedImage BANANA;
+    protected static BufferedImage backround;
 
     protected static int freElix = 5; //elixir globaln za risanje
     protected static int eneElix = 5;
@@ -54,7 +55,12 @@ public class MainLoop {
     //začetni troopi aka sam towerji
     public static void main(String[] args) {
         try {
-            BufferedImage BANANA = ImageIO.read(new File("pictures","BANANA.png"));
+            BANANA = ImageIO.read(new File("pictures","BANANA.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            backround = ImageIO.read(new File("layout_pictures","backround.jpg"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -181,9 +187,10 @@ public class MainLoop {
                 System.out.println("WINNER");
                 break;
             }
-
+            /*
             Troop MonkeNemesis = new MonkeThinker(frendlys,eneElix,MonkeFights).getDude();
             if (MonkeNemesis != null){enemys.add(MonkeNemesis);eneElix-=MonkeNemesis.getCost();}
+            */
 
             //zanka za actione frendlyu
             for (Troop freTroop: frendlys) {
@@ -281,6 +288,7 @@ class MainPanel extends JPanel {
         super.paint(g);
         Graphics2D graphics = (Graphics2D)g; 
         AffineTransform base = graphics.getTransform();
+        graphics.drawImage(MainLoop.backround, 0,0, 1200,1200,null);
         int picSize = 80;
         graphics.setFont(new Font("Montserrat", Font.BOLD, 10));
         //transliram koordinaten sistem v koordinaten sistem centriran na monkeya nati izrišem sliko monkeya in prikaz trenutnega healtha
