@@ -54,6 +54,8 @@ class ChooseTheGuy{
 
     public Troop DoBackupDefence(Troop tr1){
         Random r = new Random();
+        System.out.println(interactions.get(tr1));
+
         HashMap<Troop,Boolean> tobeat = interactions.get(tr1);
         List<Troop> best = new ArrayList<>();
         for (Troop i: tobeat.keySet()){

@@ -79,7 +79,6 @@ public class Start extends JFrame{
         ready.setBounds(1400, 160, 100, 100);
         ready.addActionListener(e -> {
             if (deck.size() == 8) {start.dispose();running = false;}
-            if (Objects.equals(first.getBorder(), new LineBorder(Color.RED, 5))){}
         });
         start.add(ready);
 
