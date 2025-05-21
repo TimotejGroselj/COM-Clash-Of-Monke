@@ -107,7 +107,7 @@ public class MainLoop {
                     Vektor location = new Vektor(x, y);
                     Troop monke = new Troop(location, true, MainLoop.selectedName);
                     if (monke.isOnFrendlyGround(HEIGHT) && freElix >= monke.getCost()) {
-                        monke.pathFind(enemys, HEIGHT);
+                        monke.pathFind(enemys);
                         frendlys.add(monke);
                         MainLoop.freElix = MainLoop.freElix-monke.getCost();
                         int ind = MainLoop.troopSelection.indexOf(MainLoop.selectedName);
@@ -169,8 +169,7 @@ public class MainLoop {
          });
         cards.add(but4);
 
-
-        boolean test = true;
+        Troop closestTroop;
         while (i<2400) {
             //če poteče cajt konča igro
             //pregleda če je kdo zgubu aka nima več nobenga monketa
@@ -182,80 +181,43 @@ public class MainLoop {
                 System.out.println("WINNER");
                 break;
             }
-            //zanka za pathfinder frendlyu
+            //zanka za actione frendlyu
             for (Troop freTroop: frendlys) {
-                if (freTroop.getName().equals("Bridge")) {
-                    continue;
-                }
-                freTroop.pathFind(enemys, HEIGHT);    
-            }
-            //zanka za pathfinderja enemyu
-             for (Troop eneTroop: enemys) {
-                if (eneTroop.getName().equals("Bridge")) {
-                    continue;
-                }
-                eneTroop.pathFind(frendlys, HEIGHT);    
-            }
-            //zanka za in range pa atack za frendlye in enemye
-            for (Troop freTroop: frendlys) {
-                //preveris ce je trenutna stevilka iteracije aka time kkr je minil - stevilka iteracije k je tazadnic napadu < cooldown 
-                //pa ce je objekt bridge in ce kr kol od tega skipas troopa
-                if (!((i-freTroop.getLastAttack() < freTroop.getCool()) || freTroop.getName().equals("Bridge"))) {
-                    //prevers use enemye in ce je kir u range pa ni bridge ga napades 
-                    for (Troop eneTroop: enemys) {
-                        if (eneTroop.getName().equals("Bridge")) {
-                            continue;
-                        }
-                        if (freTroop.isInRange(eneTroop)) {
-                            freTroop.attack(eneTroop);
-                            animations.put(freTroop, eneTroop);
-                            freTroop.setLastAttack(i);
-                            break;
+                //pathfind določ angle do najbližjiga in vrne ta tropp k je najbižji
+                closestTroop = freTroop.pathFind(enemys);
+                //če je ta najbližji troop v range se nocmo premaknt in pol gledamo naprej 
+                if (freTroop.isInRange(closestTroop)) {
+                    //če je troop ready za attack aka je minil več časa od prejšnga attacka kkr je troopou cooldown napade najbižjega
+                    if (i-freTroop.getLastAttack() >= freTroop.getCool()) {
+                        freTroop.attack(closestTroop);
+                        animations.put(freTroop, closestTroop);
+                        freTroop.setLastAttack(i);
+                        //če ga ubijemo ga removamo
+                        if (closestTroop.isDead()) {
+                            enemys.remove(closestTroop);
                         }
                     }
-                }
-                //prever a je kkrsn kol enemy u rangu in se premakne ce ni nobenga
-                for (Troop eneTroop: enemys) {
-                    if (freTroop.isInRange(eneTroop)) {
-                        test = false;
-                        break;
-                    } else {
-                        test = true;
-                    }}
-                if (test) {
+                } else {
                     freTroop.move();
                 }
-                //odstrani vse mrtve monkeye
-                enemys.removeIf(enemy -> (enemy.isDead()));
             }
-
-            //isto sranje k uzgori sam obratno
-            for (Troop eneTroop: enemys) {
-                if (!((i-eneTroop.getLastAttack() < eneTroop.getCool()) || eneTroop.getName().equals("Bridge"))) {
-                    for (Troop freTroop: frendlys) {
-                        if (freTroop.getName().equals("Bridge")) {
-                            continue;
-                        }
-                        if (eneTroop.isInRange(freTroop)) {
-                            eneTroop.attack(freTroop);
-                            animations.put(eneTroop, freTroop);
-                            eneTroop.setLastAttack(i);
-                            break;
+            //zanka za actione enemy k je ista k zgori
+             for (Troop eneTroop: enemys) {
+                closestTroop = eneTroop.pathFind(frendlys);    
+                if (eneTroop.isInRange(closestTroop)) {
+                    if (i-eneTroop.getLastAttack() >= eneTroop.getCool()) {
+                        eneTroop.attack(closestTroop);
+                        animations.put(eneTroop, closestTroop);
+                        eneTroop.setLastAttack(i);
+                        if (closestTroop.isDead()) {
+                            frendlys.remove(closestTroop);
                         }
                     }
-                }   
-                for (Troop freTroop: frendlys) {
-                    if (eneTroop.isInRange(freTroop)) {
-                        test = false;
-                        break;
-                    } else {
-                        test = true;
-                    }}
-                if (test) {
+                } else {
                     eneTroop.move();
                 }
-                frendlys.removeIf(frendly -> (frendly.isDead()));
             }
+            
             //spremeni globaln timer
             i++;
             //pogleda če lhka prišteje elixer in če lahko ga
