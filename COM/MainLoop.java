@@ -187,10 +187,10 @@ public class MainLoop {
                 System.out.println("WINNER");
                 break;
             }
-            /*
+
             Troop MonkeNemesis = new MonkeThinker(frendlys,eneElix,MonkeFights).getDude();
             if (MonkeNemesis != null){enemys.add(MonkeNemesis);eneElix-=MonkeNemesis.getCost();}
-            */
+
 
             //zanka za actione frendlyu
             for (Troop freTroop: frendlys) {

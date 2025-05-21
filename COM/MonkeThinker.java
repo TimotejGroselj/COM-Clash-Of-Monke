@@ -22,15 +22,10 @@ public class MonkeThinker {
                 if (this.Dude == null) continue;
                 this.Spawn = new ChooseTheLocation(this.Dude, friend).GetSpawn("Defence");
             } else {
-                if (friend.getCurrenthealth() > 50) { //tuki se to stotko nastimi, to je za tanke
-                    this.Dude = BestMonke.DoBackupDefence(friend);
-                    if (this.Dude == null) continue;
-                    this.Spawn = new ChooseTheLocation(this.Dude, friend).GetSpawn("BackupDefence");
-                } else {
-                    this.Dude = BestMonke.DoOffence();
-                    if (this.Dude == null) continue;
-                    this.Spawn = new ChooseTheLocation(this.Dude, friend).GetSpawn("Offence");
-                }
+                this.Dude = BestMonke.DoOffence();
+                if (this.Dude == null) continue;
+                this.Spawn = new ChooseTheLocation(this.Dude, friend).GetSpawn("Offence");
+
             }
         }
     }
@@ -52,24 +47,6 @@ class ChooseTheGuy{
         this.interactions = interactions;
     }
 
-    public Troop DoBackupDefence(Troop tr1){
-        Random r = new Random();
-        System.out.println(interactions.get(tr1));
-
-        HashMap<Troop,Boolean> tobeat = interactions.get(tr1);
-        List<Troop> best = new ArrayList<>();
-        for (Troop i: tobeat.keySet()){
-            if (tobeat.get(i) && (i.getCost()<=this.current_elixir)){best.add(i);}
-        }
-        if (best.isEmpty()) return null;
-        if (best.size() == 1) return best.get(0);
-
-        int num = r.nextInt(best.size()-1);
-        for (Troop i1: best){
-            if (i1.getDamage() > 80) {return i1;} //ta 80 se se stima
-        }
-        return best.get(num);
-    }
 
     public Troop DoDefence(Troop tr1){
         Random r = new Random();
@@ -128,7 +105,7 @@ class ChooseTheLocation {
                 y = r.nextInt(0, (int) (b/2));
             }
             return new Vektor(x, y);
-        } else if (strategy.equals("Defence")) {
+        } else {
             double parameter = 6;
             double fi = Math.PI/parameter;
             List<Vektor> cords = new ArrayList<>();
@@ -144,17 +121,6 @@ class ChooseTheLocation {
             if (cords.size() == 1) return cords.getFirst();
             int id = r.nextInt(cords.size()-1);
             return cords.get(id);
-        }
-        else {
-            if (this.x0 < a/2) {
-                x = r.nextInt((int) (a / 3), (int) (a /2));
-                y = r.nextInt(0, (int) (b/2));
-            }
-            else {
-                x = r.nextInt((int) (a / 2), (int) (2*a /3));
-                y = r.nextInt(0, (int) (b/2));
-            }
-            return new Vektor(x, y);
         }
     }
 }
