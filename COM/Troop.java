@@ -3,6 +3,7 @@ package COM;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
@@ -50,27 +51,6 @@ public class Troop {
             setCurrenthealth(getMaxhealth());
             this.cost = 0;
         }
-        if (name.equals("Bridge")) {
-           try {
-            this.picture = ImageIO.read(new File("pictures","TeseterMonke.png"));
-            } catch (IOException e) {
-            e.printStackTrace();
-            }
-            this.orientation = Math.PI/2;
-            this.location = location;
-            this.isFrendly = isFrendly;
-            this.lastAttack=-100;
-            this.name = name;
-            this.speed = 0;
-            this.damage = 0;
-            this.range = 0;
-            this.cool = 0;
-            this.maxhealth = 0;
-            this.currenthealth = this.maxhealth;
-            this.cost = 0;
-        }
-
-
 
         //initiatana fixna Tower pa bridge k sta mal built diffrent
 
@@ -370,14 +350,11 @@ public class Troop {
         return !this.isFrendly();
 
     }
-    public void pathFind(Set <Troop> enemys, int height) {
+    public Troop pathFind(Set <Troop> enemys) {
         //fuck it we ball
         double min = 100000.0; 
         Troop pathPoinTroop = null;
         for (Troop enemy: enemys) {
-            if ((!this.isOnFrendlyGround(height)) && enemy.getName().equals("Bridge")) {
-                continue;
-            }
             double dist = Vektor.dist(enemy.getLocation(),this.getLocation());
             if (dist < min) {
                 min = dist;
@@ -385,5 +362,6 @@ public class Troop {
             }
         }
         this.setOrientation(Vektor.angle(this.getLocation(), pathPoinTroop.getLocation()));
+        return pathPoinTroop;
     }
 }
