@@ -4,59 +4,47 @@ package COM;
 import java.util.*;
 import java.util.List;
 
-/*
-How to use:
-Before while loop call Map<Troop, HashMap<Troop,Boolean>> name = new Interactions(Set<Troop> AllTroops).gerInteractions();
-name must be called before while loop for one time only call!
-In while loop call MonkeThinker enemy_monk = new MonkeThinker(Set<Troop> your_deck_cards,Set<Troop> AllTroops,current_elixir_forAI,name);
-Then Troop MonkeChoice = enemy_monk.getDude(); //gets the best card for scenario
-Vektor MonkePlace = enemy_monk.getSpawn(); //gets ai's placement decision
- */
+
 public class MonkeThinker {
 
     public Vektor Spawn;
     public Troop Dude;
     public int elixir;
-    private Map<Troop, HashMap<Troop,Boolean>> fightclub;
 
-    public MonkeThinker(Set<Troop> friendly,int elixir, Map<Troop, HashMap<Troop,Boolean>> fightclub) {
-        this.fightclub = fightclub;
+    public MonkeThinker(Set<Troop> friendly, int elixir, Map<Troop, HashMap<Troop, Boolean>> fightclub) {
+        this.Dude = null;
         this.elixir = elixir;
-        for (Troop friend:friendly){
-            ChooseTheGuy BestMonke = new ChooseTheGuy(friend,this.elixir,this.fightclub);
-            if (!friend.isOnFrendlyGround(MainLoop.HEIGHT)){
+        for (Troop friend : friendly) {
+            if (Objects.equals(friend.getName(), "Tower")){continue;}
+            ChooseTheGuy BestMonke = new ChooseTheGuy(friend, this.elixir, fightclub);
+            if (!friend.isOnFrendlyGround(MainLoop.HEIGHT)) {
                 this.Dude = BestMonke.DoDefence(friend);
                 if (this.Dude == null) continue;
-                this.Spawn = new ChooseTheLocation(this.Dude,friend).GetSpawn("Defence");
-            }
-            else {
+                this.Spawn = new ChooseTheLocation(this.Dude, friend).GetSpawn("Defence");
+            } else {
                 if (friend.getCurrenthealth() > 70) { //tuki se to stotko nastimi, to je za tanke
                     this.Dude = BestMonke.DoBackupDefence(friend);
                     if (this.Dude == null) continue;
-                    this.Spawn = new ChooseTheLocation(this.Dude,friend).GetSpawn("BackupDefence");
-                }
-                else {
+                    this.Spawn = new ChooseTheLocation(this.Dude, friend).GetSpawn("BackupDefence");
+                } else {
                     this.Dude = BestMonke.DoOffence();
                     if (this.Dude == null) continue;
-                    this.Spawn = new ChooseTheLocation(this.Dude,friend).GetSpawn("Offence");
+                    this.Spawn = new ChooseTheLocation(this.Dude, friend).GetSpawn("Offence");
                 }
             }
         }
     }
 
     public Troop getDude() {
-        return Dude;
+        if (Dude == null) {return null;}
+        return new Troop(Spawn, false, Dude.getName());
     }
 
-    public Vektor getSpawn() {
-        return Spawn;
-    }
 }
-
 class ChooseTheGuy{
 
     private final int current_elixir;
-    private final Map<Troop, HashMap<Troop,Boolean>> interactions;
+    private final Map<Troop, HashMap<Troop, Boolean>> interactions;
 
 
     public ChooseTheGuy(Troop friend,int current_elixir, Map<Troop, HashMap<Troop,Boolean>> interactions) {
@@ -66,7 +54,7 @@ class ChooseTheGuy{
 
     public Troop DoBackupDefence(Troop tr1){
         Random r = new Random();
-        HashMap<Troop,Boolean> tobeat = this.interactions.get(tr1);
+        HashMap<Troop,Boolean> tobeat = interactions.get(tr1);
         List<Troop> best = new ArrayList<>();
         for (Troop i: tobeat.keySet()){
             if (tobeat.get(i) && (i.getCost()<=this.current_elixir)){best.add(i);}
@@ -83,7 +71,7 @@ class ChooseTheGuy{
 
     public Troop DoDefence(Troop tr1){
         Random r = new Random();
-        HashMap<Troop,Boolean> tobeat = this.interactions.get(tr1);
+        HashMap<Troop,Boolean> tobeat = interactions.get(tr1);
         List<Troop> best = new ArrayList<>();
         for (Troop i: tobeat.keySet()){
             if (tobeat.get(i) && (i.getCost()<=this.current_elixir)){best.add(i);}
@@ -97,7 +85,7 @@ class ChooseTheGuy{
     public Troop DoOffence(){
         Random r = new Random();
         List<Troop> best = new ArrayList<>();
-        for (Troop thing:this.interactions.keySet()){
+        for (Troop thing:interactions.keySet()){
             if (thing.getCost() <= this.current_elixir){best.add(thing);}
         }
         if (best.isEmpty()) return null;
@@ -109,7 +97,7 @@ class ChooseTheGuy{
 
 class ChooseTheLocation {
     private final double a = MainLoop.WIDTH;
-    private final double ry = MainLoop.HEIGHT/2.0; //left y cord
+    private final double b = MainLoop.HEIGHT; //left y cord
     private final double range;
     private final double x0;
     private final double y0;
@@ -122,7 +110,7 @@ class ChooseTheLocation {
     }
 
     public boolean IsInside(double x,double y){
-        return ((x >= 0 && x <= a)&&(y >= ry/2 && y <= ry));
+        return ((x >= 0 && x <= a)&&(y >= 0 && y <= b/2));
     }
 
     public Vektor GetSpawn(String strategy) {
@@ -130,12 +118,12 @@ class ChooseTheLocation {
         double x,y = 0.0;
         if (strategy.equals("Offence")) {
             if (this.x0 < a/2) {
-                x = r.nextInt(0, (int) (a /2));
-                y = r.nextInt((int) (ry/2), (int) (ry));
+                x = r.nextInt((int)(a /2), (int) (a));
+                y = r.nextInt( 0, (int) (b/2));
             }
             else {
-                x = r.nextInt((int) (a / 2), (int) a);
-                y = r.nextInt((int) (2*ry/3), (int) (ry));
+                x = r.nextInt(0, (int) (a / 2));
+                y = r.nextInt(0, (int) (b/2));
             }
             return new Vektor(x, y);
         } else if (strategy.equals("Defence")) {
@@ -158,11 +146,11 @@ class ChooseTheLocation {
         else {
             if (this.x0 < a/2) {
                 x = r.nextInt((int) (a / 3), (int) (a /2));
-                y = r.nextInt((int) (2*ry/3), (int) (ry));
+                y = r.nextInt(0, (int) (b/2));
             }
             else {
                 x = r.nextInt((int) (a / 2), (int) (2*a /3));
-                y = r.nextInt((int) (2*ry/3), (int) (ry));
+                y = r.nextInt(0, (int) (b/2));
             }
             return new Vektor(x, y);
         }

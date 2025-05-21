@@ -162,6 +162,10 @@ public class MainLoop {
          });
         cards.add(but4);
         boolean test = true;
+
+
+        Map<Troop, HashMap<Troop,Boolean>> MonkeFights = new Interactions(TROOPTYPES).getInteractions();
+
         while (i<2400) {
             //če poteče cajt konča igro
             //pregleda če je kdo zgubu aka nima več nobenga monketa
@@ -174,8 +178,8 @@ public class MainLoop {
                 break;
             }
 
-
-
+            Troop EnemyMonke = new MonkeThinker(frendlys,8,MonkeFights).getDude();
+            if (EnemyMonke != null){enemys.add(EnemyMonke);}
 
             //zanka za pathfinder frendlyu
             for (Troop freTroop: frendlys) {

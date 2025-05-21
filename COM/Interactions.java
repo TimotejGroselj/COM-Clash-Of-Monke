@@ -8,7 +8,7 @@ public class Interactions {
 
     public Map<Troop, HashMap<Troop,Boolean>> interactions;
 
-    public Interactions(Set<String> allTroops) {
+    public Interactions(String[] allTroops) {
         Map<Troop, HashMap<Troop,Boolean>> interactions = new HashMap<>();
         for (String first:allTroops){
             Troop attacker = new Troop(new Vektor(0,0),true,first);
