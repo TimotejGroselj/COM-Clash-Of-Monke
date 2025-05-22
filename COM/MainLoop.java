@@ -36,7 +36,7 @@ public class MainLoop {
     public final static int HEIGHT = 1000;
     public final static int WIDTH = 1900;
     public static final String[] TROOPTYPES = new String[] {"Bomerang", "Monke", "Ice wizard", "Super", "Mortar", "Fire wizard", "CHIPPER", "Timo", "Sniper",
-                                                            "Plasma super", "Ninja", "Minigun", "Laser gunner", "Jaka", "Freze tower", "Engineer",
+                                                            "Plasma super", "Ninja", "Minigun", "Laser gunner", "Jaka", "Freze tower", "Engineer", "Crosbow",
                                                             "Catapult", "Canon", "Bommerang master", "Bionic bommer", "Wizard", "Alien", "Flame thrower","Acid thrower"} ;
     protected static String selectedName;
     protected static List<String> troopSelection= new ArrayList<String>();

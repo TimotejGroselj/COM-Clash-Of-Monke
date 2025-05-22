@@ -373,6 +373,26 @@ public class Troop {
         setCurrenthealth(getMaxhealth());
         setCost(7);
         }
+        else if (name.equals("Crosbow")) {
+        this.isFrendly = isFrendly;
+        this.name = name;
+        try {
+        this.picture = ImageIO.read(new File("pictures","crosbow.png"));
+        } catch (IOException e) {
+        e.printStackTrace();
+        }
+        this.animation = "cross.png";
+        setOrientation(Math.PI/2);
+        setLastAttack(-100);
+        setLocation(location);
+        setSpeed(3);
+        setDamage(2);
+        setRange(6);
+        setCool(7); 
+        setMaxhealth(3);
+        setCurrenthealth(getMaxhealth());
+        setCost(8);
+        }
         else if (name.equals("Engineer")) {
         this.isFrendly = isFrendly;
         this.name = name;
