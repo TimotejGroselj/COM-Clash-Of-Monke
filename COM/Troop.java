@@ -76,10 +76,10 @@ public class Troop {
             setSpeed(2);
             setDamage(5);
             setRange(5);
-            setCool(4);
+            setCool(5);
             setMaxhealth(5);
             setCurrenthealth(getMaxhealth());
-            setCost(4);
+            setCost(5);
         }
         else if (name.equals("Monke")) {
             this.isFrendly = isFrendly;
@@ -99,7 +99,7 @@ public class Troop {
             setDamage(5);
             setRange(5);
             setCool(5);
-            setMaxhealth(2);
+            setMaxhealth(0.5);
             setCurrenthealth(getMaxhealth());
             setCost(9);
         }
@@ -119,12 +119,12 @@ public class Troop {
             setLastAttack(-100);
             setLocation(location);
             setSpeed(4);
-            setDamage(3);
+            setDamage(4);
             setRange(4);
             setCool(5);
             setMaxhealth(5);
             setCurrenthealth(getMaxhealth());
-            setCost(5);
+            setCost(6);
         }
 
         else if (name.equals("Super")) {
@@ -143,7 +143,7 @@ public class Troop {
             setLastAttack(-100);
             setLocation(location);
             setSpeed(2);
-            setDamage(0.25);
+            setDamage(1);
             setRange(5);
             setCool(10.5);
             setMaxhealth(7);
@@ -165,12 +165,12 @@ public class Troop {
             setLastAttack(-100);
             setLocation(location);
             setSpeed(0);
-            setDamage(10);
-            setRange(17);
+            setDamage(9);
+            setRange(15);
             setCool(1);
             setMaxhealth(7);
             setCurrenthealth(getMaxhealth());
-            setCost(5);
+            setCost(4);
         }
 
             else if (name.equals("Fire wizard")) {
@@ -186,12 +186,12 @@ public class Troop {
             setLastAttack(-100);
             setLocation(location);
             setSpeed(4);
-            setDamage(7);
+            setDamage(5);
             setRange(7);
             setCool(3);
             setMaxhealth(2);
             setCurrenthealth(getMaxhealth());
-            setCost(3);
+            setCost(5);
         }
             else if (name.equals("CHIPPER")) {
             this.isFrendly = isFrendly;
@@ -229,7 +229,7 @@ public class Troop {
         setDamage(0.1);
         setRange(4);
         setCool(11); 
-        setMaxhealth(2);
+        setMaxhealth(3);
         setCurrenthealth(getMaxhealth());
         setCost(6);
         }
@@ -246,10 +246,10 @@ public class Troop {
         setLastAttack(-100);
         setLocation(location);
         setSpeed(3);
-        setDamage(0.05);
-        setRange(2);
+        setDamage(0.5);
+        setRange(4);
         setCool(10.8);
-        setMaxhealth(6);
+        setMaxhealth(5);
         setCurrenthealth(getMaxhealth());
         setCost(4);
         }
@@ -307,11 +307,11 @@ public class Troop {
         setLocation(location);
         setSpeed(3);
         setDamage(1);
-        setRange(3);
-        setCool(9); 
+        setRange(4);
+        setCool(10); 
         setMaxhealth(4);
         setCurrenthealth(getMaxhealth());
-        setCost(6);
+        setCost(7);
         }
         else if (name.equals("Bommerang master")) {
         this.isFrendly = isFrendly;
@@ -325,13 +325,13 @@ public class Troop {
         setOrientation(Math.PI/2);
         setLastAttack(-100);
         setLocation(location);
-        setSpeed(7);
-        setDamage(3);
-        setRange(2);
-        setCool(4); 
-        setMaxhealth(7);
+        setSpeed(4);
+        setDamage(5);
+        setRange(5);
+        setCool(3); 
+        setMaxhealth(8);
         setCurrenthealth(getMaxhealth());
-        setCost(3);
+        setCost(5);
         }
         else if (name.equals("Canon")) {
         this.isFrendly = isFrendly;
@@ -347,7 +347,7 @@ public class Troop {
         setLocation(location);
         setSpeed(0);
         setDamage(3);
-        setRange(4);
+        setRange(6);
         setCool(7); 
         setMaxhealth(5);
         setCurrenthealth(getMaxhealth());
@@ -369,9 +369,9 @@ public class Troop {
         setDamage(5);
         setRange(9);
         setCool(1); 
-        setMaxhealth(6);
+        setMaxhealth(5);
         setCurrenthealth(getMaxhealth());
-        setCost(3);
+        setCost(7);
         }
         else if (name.equals("Crosbow")) {
         this.isFrendly = isFrendly;
@@ -386,7 +386,7 @@ public class Troop {
         setLastAttack(-100);
         setLocation(location);
         setSpeed(3);
-        setDamage(1);
+        setDamage(2);
         setRange(6);
         setCool(7); 
         setMaxhealth(3);
@@ -406,12 +406,12 @@ public class Troop {
         setLastAttack(-100);
         setLocation(location);
         setSpeed(3);
-        setDamage(1);
+        setDamage(3);
         setRange(3);
-        setCool(4); 
+        setCool(6); 
         setMaxhealth(8);
         setCurrenthealth(getMaxhealth());
-        setCost(6);
+        setCost(7);
         }
         else if (name.equals("Freze tower")) {
         this.isFrendly = isFrendly;
@@ -426,12 +426,12 @@ public class Troop {
         setLastAttack(-100);
         setLocation(location);
         setSpeed(2);
-        setDamage(3);
-        setRange(1);
+        setDamage(2);
+        setRange(2);
         setCool(4); 
         setMaxhealth(11);
         setCurrenthealth(getMaxhealth());
-        setCost(5);
+        setCost(6);
         }
         else if (name.equals("Jaka")) {
         this.isFrendly = isFrendly;
@@ -445,10 +445,10 @@ public class Troop {
         setOrientation(Math.PI/2);
         setLastAttack(-100);
         setLocation(location);
-        setSpeed(10);
+        setSpeed(11);
         setDamage(75);
-        setRange(0.04);
-        this.cool = 2400;
+        setRange(1);
+        this.cool = 3600;
         setMaxhealth(1);
         setCurrenthealth(getMaxhealth());
         setCost(8);
@@ -487,11 +487,11 @@ public class Troop {
         setLocation(location);
         setSpeed(3);
         setDamage(1);
-        setRange(6);
+        setRange(5);
         setCool(11); 
         setMaxhealth(3);
         setCurrenthealth(getMaxhealth());
-        setCost(3);
+        setCost(2);
         }
         else if (name.equals("Ninja")) {
         this.isFrendly = isFrendly;
@@ -505,10 +505,10 @@ public class Troop {
         setOrientation(Math.PI/2);
         setLastAttack(-100);
         setLocation(location);
-        setSpeed(7);
+        setSpeed(5);
         setDamage(3);
-        setRange(3);
-        setCool(4); 
+        setRange(4);
+        setCool(6); 
         setMaxhealth(3);
         setCurrenthealth(getMaxhealth());
         setCost(7);
@@ -517,7 +517,7 @@ public class Troop {
         this.isFrendly = isFrendly;
         this.name = name;
         try {
-        this.picture = ImageIO.read(new File("pictures","crosbow.png"));
+        this.picture = ImageIO.read(new File("pictures","plasmasuper.png"));
         } catch (IOException e) {
         e.printStackTrace();
         }
@@ -525,29 +525,29 @@ public class Troop {
         setOrientation(Math.PI/2);
         setLastAttack(-100);
         setLocation(location);
-        setSpeed(3);
-        setDamage(0.75);
+        setSpeed(2);
+        setDamage(2);
         setRange(4);
-        setCool(10.5);
-        setMaxhealth(4);
+        setCool(8);
+        setMaxhealth(10);
         setCurrenthealth(getMaxhealth());
-        setCost(3);
+        setCost(5);
         }
         else if (name.equals("Sniper")) {
         this.isFrendly = isFrendly;
         this.name = name;
         try {
-        this.picture = ImageIO.read(new File("pictures","crosbow.png"));
+        this.picture = ImageIO.read(new File("pictures","sniper.png"));
         } catch (IOException e) {
         e.printStackTrace();
         }
-        this.animation = "plasma.png";
+        this.animation = "cross.png";
         setOrientation(Math.PI/2);
         setLastAttack(-100);
         setLocation(location);
         setSpeed(3);
-        setDamage(4);
-        setRange(15);
+        setDamage(7);
+        setRange(12);
         setCool(2);
         setMaxhealth(2);
         setCurrenthealth(getMaxhealth());
@@ -565,11 +565,11 @@ public class Troop {
         setOrientation(Math.PI/2);
         setLastAttack(-100);
         setLocation(location);
-        setSpeed(6);
-        setDamage(5);
-        setRange(2);
-        setCool(4);
-        setMaxhealth(3);
+        setSpeed(4);
+        setDamage(4);
+        setRange(6);
+        setCool(5);
+        setMaxhealth(4);
         setCurrenthealth(getMaxhealth());
         setCost(8);
         }
@@ -600,8 +600,8 @@ public class Troop {
     private void setCool(double cool) {
         this.cool = (int) (110-10*cool);
     }
-    private void setMaxhealth(int maxhealth) {
-        this.maxhealth = (int) 100*maxhealth;
+    private void setMaxhealth(double maxhealth) {
+        this.maxhealth = (int) (100*maxhealth);
     }
     private void setCost(int cost) {
         this.cost = 10-cost;

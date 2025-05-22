@@ -51,9 +51,9 @@ public class MainLoop {
 
     
     protected static Set<Troop> frendlys = new HashSet<>(Arrays.asList
-    (new Troop[] {new Troop(new Vektor(100,900),true, "Tower"),new Troop(new Vektor(900, 900), true, "Tower")}));
+    (new Troop[] {new Troop(new Vektor(200,800),true, "Tower"),new Troop(new Vektor(800, 800), true, "Tower")}));
     protected static Set<Troop> enemys = new HashSet<>(Arrays.asList
-    (new Troop[] {new Troop(new Vektor(100,100),false, "Tower"), new Troop(new Vektor(900,100), false, "Tower")}));
+    (new Troop[] {new Troop(new Vektor(200,200),false, "Tower"), new Troop(new Vektor(800,200), false, "Tower")}));
     //začetni troopi aka sam towerji
     public static void main(String[] args) {
         try {
@@ -184,7 +184,7 @@ public class MainLoop {
         Map<Troop, HashMap<Troop,Boolean>> MonkeFights = new Interactions(TROOPTYPES).getInteractions();
 
         Troop closestTroop;
-        while (i<2400) {
+        while (i<3600) {
             //če poteče cajt konča igro
             //pregleda če je kdo zgubu aka nima več nobenga monketa
             if (frendlys.size() == 0) {
@@ -335,7 +335,7 @@ class MainPanel extends JPanel {
         for (Troop attackingTroop: MainLoop.animations.keySet()) {
             graphics.translate(MainLoop.animations.get(attackingTroop).getLocation().getX(), MainLoop.animations.get(attackingTroop).getLocation().getY());
             graphics.rotate(attackingTroop.getOrientation());
-            graphics.drawImage(MainLoop.animations.get(attackingTroop).getPicture(), -picSize/4, -picSize/4, picSize/2, picSize/2, null);
+            graphics.drawImage(MainLoop.animations.get(attackingTroop).getPicture(), 0, -picSize/4, picSize/2, picSize/2, null);
             MainLoop.animations.get(attackingTroop).move();
             graphics.setTransform(base);
         }
