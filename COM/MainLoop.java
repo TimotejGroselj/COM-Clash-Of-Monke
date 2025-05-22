@@ -35,9 +35,10 @@ import java.awt.GridLayout;
 public class MainLoop {
     public final static int HEIGHT = 1000;
     public final static int WIDTH = 1900;
-    public static final String[] TROOPTYPES = new String[] {"Bomerang", "Monke", "Ice wizard", "Super", "Mortar", "Fire wizard", "CHIPPER", "Timo", "Sniper",
-                                                            "Plasma super", "Ninja", "Minigun", "Laser gunner", "Jaka", "Freze tower", "Engineer",
-                                                            "Catapult", "Canon", "Bommerang master", "Bionic bommer", "Wizard", "Alien", "Flame thrower","Acid thrower"} ;
+    public static final String[] TROOPTYPES = new String[] {"Acid thrower", "Alien","Monke","Wizard", "Bionic bommer", "Bomerang",
+            "Bommerang master","Canon","Catapult","CHIPPER","Engineer", "Fire wizard",
+            "Flame thrower","Freze tower","Jaka","Laser gunner", "Minigun","Mortar",
+            "Ninja", "Plasma super", "Sniper", "Super", "Timo","Ice wizard"};
     protected static String selectedName;
     protected static List<String> troopSelection= new ArrayList<String>();
     protected static BufferedImage BANANA;
@@ -55,7 +56,7 @@ public class MainLoop {
     protected static Set<Troop> enemys = new HashSet<>(Arrays.asList
     (new Troop[] {new Troop(new Vektor(200,200),false, "Tower"), new Troop(new Vektor(800,200), false, "Tower")}));
     //začetni troopi aka sam towerji
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         try {
             BANANA = ImageIO.read(new File("layout_pictures","BANANA.png"));
         } catch (IOException e) {
@@ -79,7 +80,11 @@ public class MainLoop {
             }
         }
         }
-        //začetna izbira kart
+
+        Start uga = new Start();
+        List<String> deck = uga.getActual_deck();
+
+
         JFrame frame = new JFrame("COM");
         frame.setSize(new Dimension(WIDTH, HEIGHT));
         frame.setResizable(false);

@@ -56,7 +56,6 @@ class ChooseTheGuy{
             if (Objects.equals(i.getName(), friend.getName())){replica=i;break;}
         }
         this.replica = replica;
-
     }
 
     public Troop DoBackupDefence(){
@@ -93,7 +92,7 @@ class ChooseTheGuy{
         Random r = new Random();
         List<Troop> best = new ArrayList<>();
         for (Troop thing:interactions.keySet()){
-            if (thing.getCost() <= this.current_elixir){best.add(thing);}
+            if (thing.getCost() <= this.current_elixir){best.add(thing);System.out.println(thing.getName());}
         }
         if (best.isEmpty()) return null;
         if (best.size() == 1) return best.get(0);
