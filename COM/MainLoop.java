@@ -38,7 +38,7 @@ public class MainLoop {
     public static final String[] TROOPTYPES = new String[] {"Acid thrower", "Alien","Monke","Wizard", "Bionic bommer", "Bomerang",
             "Bommerang master","Canon","Catapult","CHIPPER","Engineer", "Fire wizard",
             "Flame thrower","Freze tower","Jaka","Laser gunner", "Minigun","Mortar",
-            "Ninja", "Plasma super", "Sniper", "Super", "Timo","Ice wizard"};
+            "Ninja", "Plasma super", "Sniper", "Super", "Timo","Ice wizard"}; //tega ne slati por favor
     protected static String selectedName;
     protected static List<String> troopSelection= new ArrayList<String>();
     protected static BufferedImage BANANA;
@@ -72,17 +72,18 @@ public class MainLoop {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        Start uga = new Start();
+        List<String> deck = uga.getActual_deck();
+
         for (int i = 0; i < 4; i++) {
-            for (String troop: TROOPTYPES) {    
+            for (String troop: deck) {
             if (!troopSelection.contains(troop)) {
                 troopSelection.add(troop);
                 break;
             }
         }
         }
-
-        Start uga = new Start();
-        List<String> deck = uga.getActual_deck();
 
 
         JFrame frame = new JFrame("COM");
@@ -131,7 +132,8 @@ public class MainLoop {
                         int ind = MainLoop.troopSelection.indexOf(MainLoop.selectedName);
                         Random random = new Random();
                         while (true) {
-                            String name = MainLoop.TROOPTYPES[random.nextInt(MainLoop.TROOPTYPES.length)];
+                            String name = deck.get(random.nextInt(deck.size()));
+                            //String name = MainLoop.TROOPTYPES[random.nextInt(MainLoop.TROOPTYPES.length)];
                             if (!MainLoop.troopSelection.contains(name)) {
                                 MainLoop.troopSelection.set(ind, name);
                                 MainLoop.selectedName = null;
