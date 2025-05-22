@@ -35,7 +35,9 @@ import java.awt.GridLayout;
 public class MainLoop {
     public final static int HEIGHT = 1000;
     public final static int WIDTH = 1900;
-    public static final String[] TROOPTYPES = new String[] {"Bomerang", "Monke", "Ice wizard", "Super", "Mortar", "Fire wizard", "CHIPPER"};
+    public static final String[] TROOPTYPES = new String[] {"Bomerang", "Monke", "Ice wizard", "Super", "Mortar", "Fire wizard", "CHIPPER", "Timo", "Sniper",
+                                                            "Plasma super", "Ninja", "Minigun", "Laser gunner", "Jaka", "Freze tower", "Engineer", "Crosbow",
+                                                            "Catapult", "Canon", "Bommerang master", "Bionic bommer", "Wizard", "Alien", "Flame thrower","Acid thrower"} ;
     protected static String selectedName;
     protected static List<String> troopSelection= new ArrayList<String>();
     protected static BufferedImage BANANA;
@@ -349,6 +351,7 @@ class CardPanel extends JPanel {
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D graphics = (Graphics2D)g; 
+        graphics.drawImage(MainLoop.bananaBack, 0,0, 450, 1000,null);
         graphics.setFont(new Font("Montserrat", Font.BOLD, 22));
         graphics.setStroke(new BasicStroke(2));
         int ind = MainLoop.troopSelection.indexOf(MainLoop.selectedName);
@@ -358,10 +361,11 @@ class CardPanel extends JPanel {
                 graphics.setStroke(new BasicStroke(5));
                 graphics.setColor(Color.RED);
                 graphics.drawRect(0, i*250, 450, 250);
-                graphics.setColor(Color.BLACK);
-                graphics.setStroke(new BasicStroke(2));
+
             }
             else {
+                graphics.setColor(Color.YELLOW);
+                graphics.setStroke(new BasicStroke(2));
                 graphics.drawRect(0, i*250, 450, 250);
             }
             Troop troop = new Troop(new Vektor(0,0), true, MainLoop.troopSelection.get(i));

@@ -39,11 +39,11 @@ public class Troop {
             this.isFrendly = isFrendly;
             this.lastAttack=-100;
             this.name = name;
-            this.speed = 0;
+            setSpeed(0);
             setDamage(11);
             setRange(8);
             setCool(3);
-            this.maxhealth = 200;
+            setMaxhealth(30);
             setCurrenthealth(getMaxhealth());
             this.cost = 0;
         }
@@ -85,7 +85,7 @@ public class Troop {
             this.isFrendly = isFrendly;
             this.name = name;
             try {
-            setPicture(ImageIO.read(new File("pictures","basicMonke.png")));
+            this.picture = ImageIO.read(new File("pictures","basicMonke.png"));
             } catch (IOException e) {
             e.printStackTrace();
             }
@@ -143,9 +143,9 @@ public class Troop {
             setLastAttack(-100);
             setLocation(location);
             setSpeed(2);
-            setDamage(1);
+            setDamage(0.25);
             setRange(5);
-            setCool(10);
+            setCool(10.5);
             setMaxhealth(7);
             setCurrenthealth(getMaxhealth());
             setCost(2);
@@ -174,7 +174,6 @@ public class Troop {
         }
 
             else if (name.equals("Fire wizard")) {
-
             this.isFrendly = isFrendly;
             this.name = name;
             try {
@@ -182,9 +181,7 @@ public class Troop {
             } catch (IOException e) {
             e.printStackTrace();
             }
-
             this.animation = "laserblast.png";
-     
             setOrientation(Math.PI/2);
             setLastAttack(-100);
             setLocation(location);
@@ -196,9 +193,7 @@ public class Troop {
             setCurrenthealth(getMaxhealth());
             setCost(3);
         }
-
             else if (name.equals("CHIPPER")) {
-
             this.isFrendly = isFrendly;
             this.name = name;
             try {
@@ -211,17 +206,377 @@ public class Troop {
             setLastAttack(-100);
             setLocation(location);
             setSpeed(1);
-            this.damage = 1;
+            setDamage(0.5);
             setRange(2);
             setCool(11); //jap nima cooldowna vsako kurcevi iteracijo dela damage
             setMaxhealth(8);
             setCurrenthealth(getMaxhealth());
             setCost(1);
         }
+        else if (name.equals("Acid thrower")) {
+        this.isFrendly = isFrendly;
+        this.name = name;
+        try {
+        this.picture = ImageIO.read(new File("pictures","acidthrower.png"));
+        } catch (IOException e) {
+        e.printStackTrace();
+        }
+        this.animation = "acid.png";
+        setOrientation(Math.PI/2);
+        setLastAttack(-100);
+        setLocation(location);
+        setSpeed(3);
+        setDamage(0.1);
+        setRange(4);
+        setCool(11); 
+        setMaxhealth(2);
+        setCurrenthealth(getMaxhealth());
+        setCost(6);
+        }
+        else if (name.equals("Flame thrower")) {
+        this.isFrendly = isFrendly;
+        this.name = name;
+        try {
+        this.picture = ImageIO.read(new File("pictures","flamethrower.png"));
+        } catch (IOException e) {
+        e.printStackTrace();
+        }
+        this.animation = "firebolt.png";
+        setOrientation(Math.PI/2);
+        setLastAttack(-100);
+        setLocation(location);
+        setSpeed(3);
+        setDamage(0.05);
+        setRange(2);
+        setCool(10.8);
+        setMaxhealth(6);
+        setCurrenthealth(getMaxhealth());
+        setCost(4);
+        }
+        else if (name.equals("Alien")) {
+        this.isFrendly = isFrendly;
+        this.name = name;
+        try {
+        this.picture = ImageIO.read(new File("pictures","alien.png"));
+        } catch (IOException e) {
+        e.printStackTrace();
+        }
+        this.animation = "alienshot.png";
+        setOrientation(Math.PI/2);
+        setLastAttack(-100);
+        setLocation(location);
+        setSpeed(3);
+        setDamage(10);
+        setRange(7);
+        setCool(0); 
+        setMaxhealth(1);
+        setCurrenthealth(getMaxhealth());
+        setCost(6);
+        }
+        else if (name.equals("Wizard")) {
+        this.isFrendly = isFrendly;
+        this.name = name;
+        try {
+        this.picture = ImageIO.read(new File("pictures","basicwizi.png"));
+        } catch (IOException e) {
+        e.printStackTrace();
+        }
+        this.animation = "wizi.png";
+        setOrientation(Math.PI/2);
+        setLastAttack(-100);
+        setLocation(location);
+        setSpeed(5);
+        setDamage(3);
+        setRange(4);
+        setCool(5); 
+        setMaxhealth(4);
+        setCurrenthealth(getMaxhealth());
+        setCost(7);
+        }
+        else if (name.equals("Bionic bommer")) {
+        this.isFrendly = isFrendly;
+        this.name = name;
+        try {
+        this.picture = ImageIO.read(new File("pictures","bionicbommer.png"));
+        } catch (IOException e) {
+        e.printStackTrace();
+        }
+        this.animation = "basicbomerang.png";
+        setOrientation(Math.PI/2);
+        setLastAttack(-100);
+        setLocation(location);
+        setSpeed(3);
+        setDamage(1);
+        setRange(3);
+        setCool(9); 
+        setMaxhealth(4);
+        setCurrenthealth(getMaxhealth());
+        setCost(6);
+        }
+        else if (name.equals("Bommerang master")) {
+        this.isFrendly = isFrendly;
+        this.name = name;
+        try {
+        this.picture = ImageIO.read(new File("pictures","bommerninja.png"));
+        } catch (IOException e) {
+        e.printStackTrace();
+        }
+        this.animation = "glaive.png";
+        setOrientation(Math.PI/2);
+        setLastAttack(-100);
+        setLocation(location);
+        setSpeed(7);
+        setDamage(3);
+        setRange(2);
+        setCool(4); 
+        setMaxhealth(7);
+        setCurrenthealth(getMaxhealth());
+        setCost(3);
+        }
+        else if (name.equals("Canon")) {
+        this.isFrendly = isFrendly;
+        this.name = name;
+        try {
+        this.picture = ImageIO.read(new File("pictures","canon.png"));
+        } catch (IOException e) {
+        e.printStackTrace();
+        }
+        this.animation = "bomb.png";
+        setOrientation(Math.PI/2);
+        setLastAttack(-100);
+        setLocation(location);
+        setSpeed(0);
+        setDamage(3);
+        setRange(4);
+        setCool(7); 
+        setMaxhealth(5);
+        setCurrenthealth(getMaxhealth());
+        setCost(7);
+        }
+        else if (name.equals("Catapult")) {
+        this.isFrendly = isFrendly;
+        this.name = name;
+        try {
+        this.picture = ImageIO.read(new File("pictures","catapult.png"));
+        } catch (IOException e) {
+        e.printStackTrace();
+        }
+        this.animation = "catapult.png";
+        setOrientation(Math.PI/2);
+        setLastAttack(-100);
+        setLocation(location);
+        setSpeed(1);
+        setDamage(5);
+        setRange(9);
+        setCool(1); 
+        setMaxhealth(6);
+        setCurrenthealth(getMaxhealth());
+        setCost(3);
+        }
+        else if (name.equals("Crosbow")) {
+        this.isFrendly = isFrendly;
+        this.name = name;
+        try {
+        this.picture = ImageIO.read(new File("pictures","crosbow.png"));
+        } catch (IOException e) {
+        e.printStackTrace();
+        }
+        this.animation = "cross.png";
+        setOrientation(Math.PI/2);
+        setLastAttack(-100);
+        setLocation(location);
+        setSpeed(3);
+        setDamage(1);
+        setRange(6);
+        setCool(7); 
+        setMaxhealth(3);
+        setCurrenthealth(getMaxhealth());
+        setCost(8);
+        }
+        else if (name.equals("Engineer")) {
+        this.isFrendly = isFrendly;
+        this.name = name;
+        try {
+        this.picture = ImageIO.read(new File("pictures","enginer.png"));
+        } catch (IOException e) {
+        e.printStackTrace();
+        }
+        this.animation = "tack.png";
+        setOrientation(Math.PI/2);
+        setLastAttack(-100);
+        setLocation(location);
+        setSpeed(3);
+        setDamage(1);
+        setRange(3);
+        setCool(4); 
+        setMaxhealth(8);
+        setCurrenthealth(getMaxhealth());
+        setCost(6);
+        }
+        else if (name.equals("Freze tower")) {
+        this.isFrendly = isFrendly;
+        this.name = name;
+        try {
+        this.picture = ImageIO.read(new File("pictures","frezze.png"));
+        } catch (IOException e) {
+        e.printStackTrace();
+        }
+        this.animation = "sparkles.png";
+        setOrientation(Math.PI/2);
+        setLastAttack(-100);
+        setLocation(location);
+        setSpeed(2);
+        setDamage(3);
+        setRange(1);
+        setCool(4); 
+        setMaxhealth(11);
+        setCurrenthealth(getMaxhealth());
+        setCost(5);
+        }
+        else if (name.equals("Jaka")) {
+        this.isFrendly = isFrendly;
+        this.name = name;
+        try {
+        this.picture = ImageIO.read(new File("pictures","jaka.png"));
+        } catch (IOException e) {
+        e.printStackTrace();
+        }
+        this.animation = "boom.png";
+        setOrientation(Math.PI/2);
+        setLastAttack(-100);
+        setLocation(location);
+        setSpeed(10);
+        setDamage(75);
+        setRange(0.04);
+        this.cool = 2400;
+        setMaxhealth(1);
+        setCurrenthealth(getMaxhealth());
+        setCost(8);
+        }
+        else if (name.equals("Laser gunner")) {
+        this.isFrendly = isFrendly;
+        this.name = name;
+        try {
+        this.picture = ImageIO.read(new File("pictures","laserminigun.png"));
+        } catch (IOException e) {
+        e.printStackTrace();
+        }
+        this.animation = "lasershot.png";
+        setOrientation(Math.PI/2);
+        setLastAttack(-100);
+        setLocation(location);
+        setSpeed(3);
+        setDamage(2.5);
+        setRange(6);
+        setCool(9.5); 
+        setMaxhealth(3);
+        setCurrenthealth(getMaxhealth());
+        setCost(3);
+        }
+        else if (name.equals("Minigun")) {
+        this.isFrendly = isFrendly;
+        this.name = name;
+        try {
+        this.picture = ImageIO.read(new File("pictures","minigun.png"));
+        } catch (IOException e) {
+        e.printStackTrace();
+        }
+        this.animation = "dart.png";
+        setOrientation(Math.PI/2);
+        setLastAttack(-100);
+        setLocation(location);
+        setSpeed(3);
+        setDamage(1);
+        setRange(6);
+        setCool(11); 
+        setMaxhealth(3);
+        setCurrenthealth(getMaxhealth());
+        setCost(3);
+        }
+        else if (name.equals("Ninja")) {
+        this.isFrendly = isFrendly;
+        this.name = name;
+        try {
+        this.picture = ImageIO.read(new File("pictures","ninja.png"));
+        } catch (IOException e) {
+        e.printStackTrace();
+        }
+        this.animation = "shuriken.png";
+        setOrientation(Math.PI/2);
+        setLastAttack(-100);
+        setLocation(location);
+        setSpeed(7);
+        setDamage(3);
+        setRange(3);
+        setCool(4); 
+        setMaxhealth(3);
+        setCurrenthealth(getMaxhealth());
+        setCost(7);
+        }
+        else if (name.equals("Plasma super")) {
+        this.isFrendly = isFrendly;
+        this.name = name;
+        try {
+        this.picture = ImageIO.read(new File("pictures","crosbow.png"));
+        } catch (IOException e) {
+        e.printStackTrace();
+        }
+        this.animation = "plasma.png";
+        setOrientation(Math.PI/2);
+        setLastAttack(-100);
+        setLocation(location);
+        setSpeed(3);
+        setDamage(0.75);
+        setRange(4);
+        setCool(10.5);
+        setMaxhealth(4);
+        setCurrenthealth(getMaxhealth());
+        setCost(3);
+        }
+        else if (name.equals("Sniper")) {
+        this.isFrendly = isFrendly;
+        this.name = name;
+        try {
+        this.picture = ImageIO.read(new File("pictures","crosbow.png"));
+        } catch (IOException e) {
+        e.printStackTrace();
+        }
+        this.animation = "plasma.png";
+        setOrientation(Math.PI/2);
+        setLastAttack(-100);
+        setLocation(location);
+        setSpeed(3);
+        setDamage(4);
+        setRange(15);
+        setCool(2);
+        setMaxhealth(2);
+        setCurrenthealth(getMaxhealth());
+        setCost(5);
+        }        
+        else if (name.equals("Timo")) {
+        this.isFrendly = isFrendly;
+        this.name = name;
+        try {
+        this.picture = ImageIO.read(new File("pictures","timotej.png"));
+        } catch (IOException e) {
+        e.printStackTrace();
+        }
+        this.animation = "tack.png";
+        setOrientation(Math.PI/2);
+        setLastAttack(-100);
+        setLocation(location);
+        setSpeed(6);
+        setDamage(5);
+        setRange(2);
+        setCool(4);
+        setMaxhealth(3);
+        setCurrenthealth(getMaxhealth());
+        setCost(8);
+        }
     }
     public Troop(Troop freTroop, String name, Vektor enelocation) {
         //to pomen de smo v animaciji
-        //to pomen da noben ime ni Troop ampk bo animacija in je važn sam speed pa slikca 
+        //to pomen da noben ime ni Troop ampk bo animacija in je važn sam speed pa orientacije in slikca
             this.speed = (int) Vektor.dist(freTroop.getLocation(), enelocation)/4;
             try {
             this.picture = ImageIO.read(new File("animations", name));
@@ -230,25 +585,23 @@ public class Troop {
             } 
             setLocation(freTroop.getLocation());
             setOrientation(freTroop.getOrientation());
-
-
     }
 
-    //tuki prefukava konstante de balancava shit
-    private void setSpeed(int speed) {
-        this.speed = speed;
+    //te metode so samo za kvazi balancanje stvari
+    private void setSpeed(double speed) {
+        this.speed = (int) speed;
     }
-    private void setDamage(int damage) {
-        this.damage = 2*damage;
+    private void setDamage(double damage) {
+        this.damage = (int) (20*damage);
     }
-    private void setRange(int range) {
-        this.range = 30*range;
+    private void setRange(double range) {
+        this.range = (int) (30*range);
     }
-    private void setCool(int cool) {
-        this.cool = 110-10*cool;
+    private void setCool(double cool) {
+        this.cool = (int) (110-10*cool);
     }
     private void setMaxhealth(int maxhealth) {
-        this.maxhealth = 10*maxhealth;
+        this.maxhealth = (int) 100*maxhealth;
     }
     private void setCost(int cost) {
         this.cost = 10-cost;
@@ -309,9 +662,7 @@ public class Troop {
     public boolean isFrendly() {
         return isFrendly;
     }
-    public void setPicture(BufferedImage picture) {
-        this.picture = picture;
-    }
+
     public boolean isDead() {
         if (this.getCurrenthealth()<=0) {
             return true;
