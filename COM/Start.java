@@ -195,7 +195,6 @@ public class Start extends JFrame{
 
 
         while (running){
-            System.out.println(deck);
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
@@ -204,8 +203,5 @@ public class Start extends JFrame{
         }
     }
 
-    public static void main(String[] args) throws IOException {
-        Start uga = new Start();
-    }
 }
 
