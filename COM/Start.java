@@ -4,6 +4,8 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -67,7 +69,7 @@ public class Start extends JFrame{
                         deck.add(casu);
                         rest.remove(casu);
                         rest.add(temp);
-                    } else {
+                    } else if (!(rest.contains(temp) && rest.contains(casu) || deck.contains(temp)&&deck.contains(casu))) {
                         deck.remove(casu);
                         deck.add(temp);
                         rest.remove(temp);
@@ -82,6 +84,39 @@ public class Start extends JFrame{
                 first = null;
             }
         };
+
+        MouseAdapter Hover = new MouseAdapter() {
+            JPanel rect = new JPanel();
+            JLabel text = new JLabel();
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                JButton butt = (JButton) e.getSource();
+                String name = butt.getText();
+                Troop statser = new Troop(new Vektor(0,0),true,name);
+
+                text.setFont(new Font("Arial", Font.BOLD, 16));
+                text.setText("<html>Name:"+statser.getName()+
+                        "<br>Cost:"+statser.getCost() +
+                        "<br>Health:"+statser.getMaxhealth()+
+                        "<br>Range:"+statser.getRange()+
+                        "<br>Damage:"+statser.getDamage()+
+                        "<br>Cool:"+statser.getCool()+
+                        "<br>Speed:"+statser.getSpeed()+"</html>");
+
+                rect.add(text);
+                rect.setBackground(Color.red);
+                rect.setBounds(200,200,250,200);
+                start.add(rect);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                start.remove(rect);
+
+            }
+        };
+
+
 
         JButton ready = new JButton();
         ready.setText("READY");
@@ -131,6 +166,7 @@ public class Start extends JFrame{
         start.setLayout(null);
 
 
+
         ImageIcon cur = new ImageIcon("layout_pictures/Wood.png");
         Image wood = cur.getImage().getScaledInstance(1000, 500, Image.SCALE_DEFAULT);
         ImageIcon fin = new ImageIcon(wood);
@@ -153,10 +189,13 @@ public class Start extends JFrame{
         JLabel funsee = new JLabel(see);
         funsee.setBounds(0, 0, w, h);
         start.add(funsee);
+
+
         start.setVisible(true);
 
 
         while (running){
+            System.out.println(deck);
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
@@ -165,6 +204,8 @@ public class Start extends JFrame{
         }
     }
 
-
+    public static void main(String[] args) throws IOException {
+        Start uga = new Start();
+    }
 }
 
