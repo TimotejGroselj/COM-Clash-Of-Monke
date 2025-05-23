@@ -74,7 +74,7 @@ public class MainLoop {
         }
 
         Start uga = new Start();
-        List<String> deck = uga.getActual_deck();
+        List<String> deck = Start.deck;
 
         for (int i = 0; i < 4; i++) {
             for (String troop: deck) {

@@ -17,7 +17,7 @@ public class Start extends JFrame{
     protected static List<String> deck = new ArrayList<>();
     protected static List<String> rest = new ArrayList<>();
     protected static boolean running = true;
-    protected static List<String> pictures = new ArrayList<>();
+    protected static List<Icon> pictures = new ArrayList<>();
     protected static List<String> actual_deck = new ArrayList<>();
 
     public Start() throws IOException {
@@ -35,23 +35,22 @@ public class Start extends JFrame{
         int yt = 4 * height + 3 * space;
         int ryt = (h - yt) / 2;
 
-        File foldr = new File("pictures");
-        File[] allpics = foldr.listFiles();
 
-
-        assert allpics != null;
-        for (File file:allpics){
-            if (!file.getName().equals("tower.png"))
-            {pictures.add(file.getName());}
-        }
-
-        for (int i = 1; i < 9; i++) {
-            deck.add(Integer.toString(i));
-        }
-        for (int i = 9; i < 17; i++) {
-            rest.add(Integer.toString(i));
-        }
-
+        int count = 0;
+        for (String troop:MainLoop.TROOPTYPES){
+            if (count < 8){
+                Troop monk = new Troop(new Vektor(0,0),true,troop);
+                Icon icon = new ImageIcon(monk.getPicture());
+                deck.add(troop);
+                pictures.add(icon);}
+            else {
+                Troop monk = new Troop(new Vektor(0,0),true,troop);
+                Icon icon = new ImageIcon(monk.getPicture());
+                rest.add(troop);
+                pictures.add(icon);}
+            count ++;
+            actual_deck.add(troop);
+            }
 
         ActionListener SwapCards = e -> {
             JButton chosen = (JButton) e.getSource();
@@ -97,9 +96,11 @@ public class Start extends JFrame{
         for (int j = 0; j < 2; j++) {
             for (int i = 0; i < 4; i++) {
                 JButton button = new JButton();
-                int CardNum = (i + 1) + j * 4;
-                button.setIcon(new ImageIcon("pictures/"+pictures.get(CardNum)));
-                button.setText(Integer.toString(CardNum));
+                int CardNum = i + j*4;
+                button.setIcon(pictures.get(CardNum));
+                button.setText(actual_deck.get(CardNum));
+                button.setVerticalTextPosition(JButton.BOTTOM);
+                button.setHorizontalTextPosition(JButton.CENTER);
                 int x = rxt + i * (width + space);
                 int y = ryt - 150 + j * (height + space);
                 button.setBounds(x, y, width, height);
@@ -111,14 +112,16 @@ public class Start extends JFrame{
         int ryt2 = (h - yt2) / 2;
         int add = 0;
         for (int j = 0; j < 2; j++) {
-            for (int i = 9; i < 13; i++) {
-                int CardNum = i + j*4;
+            for (int i = 8; i < 16; i++) {
+                int CardNum = i + j*8;
                 JButton button = new JButton();
-                button.setIcon(new ImageIcon("pictures/"+pictures.get(CardNum)));
-                button.setText(Integer.toString(CardNum));
+                button.setIcon(pictures.get(CardNum));
+                button.setText(actual_deck.get(CardNum));
+                button.setVerticalTextPosition(JButton.BOTTOM);
+                button.setHorizontalTextPosition(JButton.CENTER);
                 int x = i * (width + space);
                 int y = ryt2 + (height + space);
-                button.setBounds(x - 675, y + 600 + add, width, height);
+                button.setBounds(x-825 , y + 600 + add, width, height);
                 button.addActionListener(SwapCards);
                 start.add(button);
             }
@@ -154,7 +157,6 @@ public class Start extends JFrame{
 
 
         while (running){
-            //System.out.println(actual_deck);
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
@@ -163,13 +165,6 @@ public class Start extends JFrame{
         }
     }
 
-    public List<String> getActual_deck(){
-        for (String num:deck){
-            int i = Integer.parseInt(num);
-            actual_deck.add(MainLoop.TROOPTYPES[i]);
-        }
-        return actual_deck;
-    }
 
 }
 
