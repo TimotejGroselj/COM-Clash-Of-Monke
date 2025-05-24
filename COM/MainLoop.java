@@ -18,7 +18,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.Insets;
 
 import javax.imageio.ImageIO;
@@ -196,13 +195,7 @@ public class MainLoop {
         while (i<3600) {
             //če poteče cajt konča igro
             //pregleda če je kdo zgubu aka nima več nobenga monketa
-            if (frendlys.size() == 0) {
-                break;
-            }
-            if (enemys.size() == 0) {
-                break;
-            }
-            
+
             Troop MonkeNemesis = new MonkeThinker(frendlys,eneElix,MonkeFights).getDude();
             if (MonkeNemesis != null){enemys.add(MonkeNemesis);eneElix-=MonkeNemesis.getCost();}
             
@@ -211,6 +204,10 @@ public class MainLoop {
             for (Troop freTroop: frendlys) {
                 //pathfind določ angle do najbližjiga in vrne ta tropp k je najbižji
                 closestTroop = freTroop.pathFind(enemys);
+                if (closestTroop.equals(null)) {
+                    i = 3900;
+                    break;
+                }
                 //če je ta najbližji troop v range se nocmo premaknt in pol gledamo naprej 
                 if (freTroop.isInRange(closestTroop)) {
                     //če je troop ready za attack aka je minil več časa od prejšnga attacka kkr je troopou cooldown napade najbižjega
@@ -230,6 +227,10 @@ public class MainLoop {
             //zanka za actione enemy k je ista k zgori
              for (Troop eneTroop: enemys) {
                 closestTroop = eneTroop.pathFind(frendlys);    
+                if (closestTroop.equals(null)) {
+                    i = 3900;
+                    break;
+                }
                 if (eneTroop.isInRange(closestTroop)) {
                     if (i-eneTroop.getLastAttack() >= eneTroop.getCool()) {
                         eneTroop.attack(closestTroop);
@@ -252,6 +253,13 @@ public class MainLoop {
             }
             if (i % 40 == 0 && eneElix < 10) {
                 eneElix++;
+            }
+
+            if (frendlys.size() == 0) {
+                break;
+            }
+            if (enemys.size() == 0) {
+                break;
             }
             playArea.repaint(); // ponoven izris okna
             elix.repaint();
@@ -343,6 +351,9 @@ class MainPanel extends JPanel {
         Graphics2D graphics = (Graphics2D)g; 
         AffineTransform base = graphics.getTransform();
         graphics.drawImage(MainLoop.backround, 0,0, 1200,1200,null);
+        graphics.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
+        graphics.setColor(Color.BLACK);
+        graphics.drawString(String.format("%.0fs",  (3600-MainLoop.i)*0.05 ), 20, 20);
         int picSize = 80;
         graphics.setFont(new Font("Montserrat", Font.BOLD, 10));
         //transliram koordinaten sistem v koordinaten sistem centriran na monkeya nati izrišem sliko monkeya in prikaz trenutnega healtha
@@ -351,11 +362,10 @@ class MainPanel extends JPanel {
             graphics.rotate(freTroop.getOrientation());
             graphics.drawImage(freTroop.getPicture(), -picSize/2, -picSize/2, picSize, picSize, null);
             graphics.rotate(-freTroop.getOrientation());
-            graphics.setColor(Color.RED);
-            graphics.fillRect(-picSize/2, -picSize/2-10, picSize, picSize/10);
             graphics.setColor(Color.GREEN);
             graphics.fillRect(-picSize/2, -picSize/2-10, freTroop.getCurrenthealth()*picSize/freTroop.getMaxhealth(), picSize/10);
             graphics.setColor(Color.BLACK);
+            graphics.drawRect(-picSize/2, -picSize/2-10, picSize, picSize/10);
             graphics.drawString(freTroop.getCurrenthealth()+"/"+freTroop.getMaxhealth(), -picSize/4, -picSize/2-2);
             graphics.setTransform(base);
         }
@@ -366,10 +376,9 @@ class MainPanel extends JPanel {
             graphics.drawImage(eneTroop.getPicture(), -picSize/2, -picSize/2, picSize, picSize, null);
             graphics.rotate(-eneTroop.getOrientation());
             graphics.setColor(Color.RED);
-            graphics.fillRect(-picSize/2, -picSize/2-10, picSize, picSize/10);
-            graphics.setColor(Color.GREEN);
             graphics.fillRect(-picSize/2, -picSize/2-10, eneTroop.getCurrenthealth()*picSize/eneTroop.getMaxhealth(), picSize/10);
             graphics.setColor(Color.BLACK);
+            graphics.drawRect(-picSize/2, -picSize/2-10, picSize, picSize/10);
             graphics.drawString(eneTroop.getCurrenthealth()+"/"+eneTroop.getMaxhealth(), -picSize/4, -picSize/2-2);
             graphics.setTransform(base);
         }
