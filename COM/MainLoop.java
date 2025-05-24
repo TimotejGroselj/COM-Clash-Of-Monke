@@ -18,6 +18,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Insets;
 
 import javax.imageio.ImageIO;
@@ -47,6 +48,7 @@ public class MainLoop {
     protected static int freElix = 5; //elixir globaln za risanje
     protected static int eneElix = 5;
     protected static int i = 0; //globalni timer
+    protected static String situation;
 
     protected static Map<Troop, Troop> animations = new HashMap<Troop, Troop>(); //tuki grejo troopi k nucajo animacijo
 
@@ -195,11 +197,9 @@ public class MainLoop {
             //če poteče cajt konča igro
             //pregleda če je kdo zgubu aka nima več nobenga monketa
             if (frendlys.size() == 0) {
-                System.out.println("LOSER");
                 break;
             }
             if (enemys.size() == 0) {
-                System.out.println("WINNER");
                 break;
             }
             
@@ -260,7 +260,45 @@ public class MainLoop {
                 Thread.sleep(50); // počakaj 50 ms
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }}}}
+            }}
+            frame.dispose();
+            int winConFre = 0;
+            int winConEne = 0;
+            for (Troop frendly: MainLoop.frendlys) {
+                if (frendly.getName().equals("Tower")) {
+                    winConFre = winConFre + frendly.getCurrenthealth();
+                }
+            }
+            for (Troop enemy: MainLoop.enemys) {
+                if (enemy.getName().equals("Tower")) {
+                    winConEne = winConEne + enemy.getCurrenthealth();
+                }
+            }
+            if (winConEne < winConFre) {
+                situation = "Winner";
+            }
+            else if (winConEne == winConFre) {
+                situation = "Draw";
+            }
+            else {
+                situation = "Loser";
+            }     
+            frame = new JFrame();
+            frame.setSize(new Dimension(WIDTH, HEIGHT));
+            frame.setLayout(new GridLayout(1,1));
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            WinPanel winner = new WinPanel();
+            frame.add(winner);
+            frame.setVisible(true);
+            while (true) {
+                winner.repaint();
+                try {
+                    Thread.sleep(50); // počakaj 50 ms
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }}
 
     
 class CumPanel extends JPanel {
@@ -385,6 +423,37 @@ class CardPanel extends JPanel {
             graphics.drawString("cool: " + troop.getCool()*0.05 + "s", 250, i*250+111);
             graphics.drawString("speed: " + troop.getSpeed(), 250, i*250+133);
         }  
+    }
+    }   
+    class WinPanel extends JPanel {
+        public WinPanel() {
+        super();
+        if (MainLoop.situation.equals("Winner")) {
+            setBackground(Color.YELLOW);
+        }
+        else if (MainLoop.situation.equals("Loser")) {
+            setBackground(Color.RED);
+        }
+        else {
+            setBackground(Color.BLACK);
+        }
+    }
+        @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        Graphics2D graphics = (Graphics2D)g; 
+        graphics.setFont(new Font(Font.MONOSPACED, Font.BOLD, 100));
+        
+        if (MainLoop.situation.equals("Winner")) {
+            graphics.setColor(Color.RED);
+        }
+        else if (MainLoop.situation.equals("Loser")) {
+            graphics.setColor(Color.YELLOW);
+        }
+        else {
+            graphics.setColor(Color.WHITE);
+        }
+        graphics.drawString(MainLoop.situation, (int) this.getMousePosition().getX(), (int) this.getMousePosition().getY());
     }
 }
 
