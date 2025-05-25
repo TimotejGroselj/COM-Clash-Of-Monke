@@ -15,18 +15,18 @@ public class MonkeThinker {
         this.Dude = null;
         this.elixir = elixir;
         for (Troop friend : friendly) {
-            if (Objects.equals(friend.getName(), "Tower")){continue;}
+            if (Objects.equals(friend.getName(), "Tower")){continue;} //stolp ne moremo postavit
             ChooseTheGuy BestMonke = new ChooseTheGuy(friend, this.elixir, fightclub);
-            if (!friend.isOnFrendlyGround(MainLoop.HEIGHT)) {
+            if (!friend.isOnFrendlyGround(MainLoop.HEIGHT)) { //napade
                 this.Dude = BestMonke.DoDefence();
                 if (this.Dude == null) continue;
                 this.Spawn = new ChooseTheLocation(this.Dude, friend).GetSpawn("Defence");
             } else {
-                if (friend.getCurrenthealth() >= 500) {
+                if (friend.getCurrenthealth() >= 500) { //opazi nasprotnika z veliko health
                     this.Dude = BestMonke.DoBackupDefence();
                     if (this.Dude == null) continue;
                     this.Spawn = new ChooseTheLocation(this.Dude, friend).GetSpawn("BackupDefence");
-                } else {
+                } else { //obrani
                     this.Dude = BestMonke.DoOffence();
                     if (this.Dude == null) continue;
                     this.Spawn = new ChooseTheLocation(this.Dude, friend).GetSpawn("Offence");
@@ -52,6 +52,7 @@ class ChooseTheGuy{
         this.current_elixir = current_elixir;
         this.interactions = interactions;
         Troop replica = null;
+        //objekt trp1 ni enak objektu v interactonih, najdem tisti objekt, ki se ujema z imenom in uporabim le tega
         for (Troop i: interactions.keySet()){
             if (Objects.equals(i.getName(), friend.getName())){replica=i;break;}
         }
@@ -59,6 +60,7 @@ class ChooseTheGuy{
     }
 
     public Troop DoBackupDefence(){
+        //ker sumi za velik napad ga bo zelel cim hitreje uniciti
         Random r = new Random();
         HashMap<Troop,Boolean> tobeat = interactions.get(replica);
         List<Troop> best = new ArrayList<>();
@@ -76,6 +78,7 @@ class ChooseTheGuy{
     }
 
     public Troop DoDefence(){
+        //vzame branilca, ki ima v interactonih true za nasprotnika (ga premaga)
         Random r = new Random();
         HashMap<Troop,Boolean> tobeat = interactions.get(replica);
         List<Troop> best = new ArrayList<>();
@@ -89,10 +92,11 @@ class ChooseTheGuy{
     }
 
     public Troop DoOffence(){
+        //izbere nakljucnega napadalca glede na elixir
         Random r = new Random();
         List<Troop> best = new ArrayList<>();
         for (Troop thing:interactions.keySet()){
-            if (thing.getCost() <= this.current_elixir){best.add(thing);System.out.println(thing.getName());}
+            if (thing.getCost() <= this.current_elixir){best.add(thing);}
         }
         if (best.isEmpty()) return null;
         if (best.size() == 1) return best.get(0);
@@ -103,7 +107,7 @@ class ChooseTheGuy{
 
 class ChooseTheLocation {
     private final double a = MainLoop.HEIGHT;
-    private final double b = MainLoop.HEIGHT; //left y cord
+    private final double b = MainLoop.HEIGHT;
     private final double range;
     private final double x0;
     private final double y0;
@@ -123,6 +127,7 @@ class ChooseTheLocation {
         Random r = new Random();
         double x,y = 0.0;
         if (strategy.equals("Offence")) {
+            //postavi na drugi strani kot nasprotnik napada
             if (this.x0 < a/2) {
                 x = r.nextInt((int)(a /2), (int) (a));
                 y = r.nextInt( 0, (int) (b/2));
@@ -133,6 +138,7 @@ class ChooseTheLocation {
             }
             return new Vektor(x, y);
         }  else if (strategy.equals("Defence")) {
+            //bot bo postavil svojega monkeya na kroznici katere polmer je range nasprotnika
             double parameter = 6;
             double fi = Math.PI/parameter;
             List<Vektor> cords = new ArrayList<>();
@@ -150,6 +156,7 @@ class ChooseTheLocation {
             return cords.get(id);
         }
         else {
+            //postavi nekje v sredini
             if (this.x0 < a/2) {
                 x = r.nextInt((int) (a / 3), (int) (a /2));
                 y = r.nextInt(0, (int) (b/2));

@@ -1,26 +1,10 @@
 # COM-Clash-Of-Monke
-le project by jaka and timo
-what to do when u dont like urself (u start working in this bullshit):
+Projekt by jaka and timo
 
--nared class TROOP(lhka se mu da ime MONKE) k bo daddy useh troopu.
-vsebovat more:
-*slikco troopa
-*speed troopa
-*range
-*damage
-*attack cooldown
-*health
-*cost
-in pol setas neke start value in pol usak troop sam klices supr z parametrcki.
+Kako igrati? 
 
--class TOWER k jih bova pol sam postavla na lokacije.
-vsebuje:
-*lokacijo towerja
-*range
-*damage
-*attack cooldown
-*health
-
-- no grid 
-
-- add shit that you remember here 
+1. Poženi MainLoop.java
+2. Pojavil se bo ekran z izbiro različnih "monkeys", ki ima vsak svoje atribute (HP, damage, cost ...)(ti atributi bojo vidni po nadaljnem razvoju dizajna), in z pritiskom na karto iz "decka" (8 kart s katerimise bo igralo igro) in nato pritiskom na karto iz preostalih "monkeys" ali obratno spremenite deck po svoji izbiri. 
+3. Ko se počutite pripravljeni in vam je deck všeč pritisnite gumb ready in se bo igra zagnala.
+4. Ko se igra zažene je cilj igre uničiti vse nasprotne "Towerje" in pokončati vse preostale nasprotne "monkeys". Na levi imate število banan, katere lahko uporabite za postavljanje "monkeys" na battlefield. Na desni imate trenutno izbiro kart (karte pridejo iz decka). S pritiskom na karto boste izbrali, da ko naslednjič kliknete na vašo polovico battlefielda postavite ta "monkey", ki ga predstavlja karta. Ko postavite "monkey" na battlefield bo izbrala najbižjega nasprotnika ter se začela premikati proti njemu in napadla ko bo lahko. Nasprotnik se bo seveda branil in tudi napadal nazaj. "monkey" bo zmeraj napadel najbižjega, kar odpira priložnosti za različne strategije.
+5. Enjoy =)
