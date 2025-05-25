@@ -422,11 +422,11 @@ public class Troop {
         }
         this.animation = "boom.png";
         setOrientation(Math.PI/2);
-        setLastAttack(-100);
+        setLastAttack(-40000);
         setLocation(location);
         setSpeed(11);
         setDamage(75);
-        setRange(1);
+        setRange(2);
         this.cool = 3600;
         setMaxhealth(1);
         setCurrenthealth(getMaxhealth());
