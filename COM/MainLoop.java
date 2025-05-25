@@ -270,6 +270,7 @@ public class MainLoop {
                 e.printStackTrace();
             }}
             frame.dispose();
+            //odloči kdo zmaga glede na to kdo ma na koncu več življenja na towerjih
             int winConFre = 0;
             int winConEne = 0;
             for (Troop frendly: MainLoop.frendlys) {
