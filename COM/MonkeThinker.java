@@ -22,7 +22,7 @@ public class MonkeThinker {
                 if (this.Dude == null) continue;
                 this.Spawn = new ChooseTheLocation(this.Dude, friend).GetSpawn("Defence");
             } else {
-                if (friend.getCurrenthealth() >= 70) { //tuki se to stotko nastimi, to je za tanke
+                if (friend.getCurrenthealth() >= 500) {
                     this.Dude = BestMonke.DoBackupDefence();
                     if (this.Dude == null) continue;
                     this.Spawn = new ChooseTheLocation(this.Dude, friend).GetSpawn("BackupDefence");
@@ -70,7 +70,7 @@ class ChooseTheGuy{
 
         int num = r.nextInt(best.size()-1);
         for (Troop i1: best){
-            if (i1.getDamage() > 80) {return i1;} //ta 80 se se stima
+            if (i1.getDamage() > 200) {return i1;} //ta 80 se se stima
         }
         return best.get(num);
     }
