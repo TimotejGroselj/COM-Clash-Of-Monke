@@ -19,7 +19,6 @@ import java.awt.image.BufferedImage;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
-
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -463,7 +462,9 @@ class CardPanel extends JPanel {
         else {
             graphics.setColor(Color.WHITE);
         }
+        try {
         graphics.drawString(MainLoop.situation, (int) this.getMousePosition().getX(), (int) this.getMousePosition().getY());
+        } catch(NullPointerException e) {}
     }
 }
 

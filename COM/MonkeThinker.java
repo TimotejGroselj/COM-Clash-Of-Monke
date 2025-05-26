@@ -129,12 +129,12 @@ class ChooseTheLocation {
         if (strategy.equals("Offence")) {
             //postavi na drugi strani kot nasprotnik napada
             if (this.x0 < a/2) {
-                x = r.nextInt((int)(a /2), (int) (a));
-                y = r.nextInt( 0, (int) (b/2));
+                x = r.nextInt((int) (a))+ (int)(a /2);
+                y = r.nextInt((int) (b/2));
             }
             else {
-                x = r.nextInt(0, (int) (a / 2));
-                y = r.nextInt(0, (int) (b/2));
+                x = r.nextInt((int) (a / 2));
+                y = r.nextInt((int) (b/2));
             }
             return new Vektor(x, y);
         }  else if (strategy.equals("Defence")) {
@@ -158,12 +158,12 @@ class ChooseTheLocation {
         else {
             //postavi nekje v sredini
             if (this.x0 < a/2) {
-                x = r.nextInt((int) (a / 3), (int) (a /2));
-                y = r.nextInt(0, (int) (b/2));
+                x = r.nextInt((int) (a /2))+ (int) (a / 3);
+                y = r.nextInt((int) (b/2));
             }
             else {
-                x = r.nextInt((int) (a / 2), (int) (2*a /3));
-                y = r.nextInt(0, (int) (b/2));
+                x = r.nextInt((int) (2*a /3)) + (int) (a / 2);
+                y = r.nextInt((int) (b/2));
             }
             return new Vektor(x, y);
         }
