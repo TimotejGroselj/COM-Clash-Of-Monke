@@ -158,11 +158,11 @@ class ChooseTheLocation {
         else {
             //postavi nekje v sredini
             if (this.x0 < a/2) {
-                x = r.nextInt((int) (a /2))+ (int) (a / 3);
+                x = r.nextInt((int) (a /6))+ (int) (a / 3);
                 y = r.nextInt((int) (b/2));
             }
             else {
-                x = r.nextInt((int) (2*a /3)) + (int) (a / 2);
+                x = r.nextInt((int) (a /6)) + (int) (a / 2);
                 y = r.nextInt((int) (b/2));
             }
             return new Vektor(x, y);
