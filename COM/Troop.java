@@ -95,7 +95,7 @@ public class Troop {
             setLastAttack(-100);
             setLocation(location);
             setSpeed(5);
-            setDamage(5);
+            setDamage(3);
             setRange(5);
             setCool(5);
             setMaxhealth(0.5);
@@ -577,7 +577,7 @@ public class Troop {
         this.range = (int) (30*range);
     }
     private void setCool(double cool) {
-        this.cool = (int) (110-10*cool);
+        this.cool = (int) (77-7*cool);
     }
     private void setMaxhealth(double maxhealth) {
         this.maxhealth = (int) (100*maxhealth);
