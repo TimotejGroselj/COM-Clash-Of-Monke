@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.image as im
 import os
 
-dirs = set(["animations", "pictures"])
+dirs = set(["animations", "pictures", "layout_pictures"])
 #direktori za obdelat
 for dir in dirs:
     files = os.listdir(dir)
