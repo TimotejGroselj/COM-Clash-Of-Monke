@@ -204,7 +204,7 @@ public class MainLoop {
             for (Troop freTroop: frendlys) {
                 //pathfind določ angle do najbližjiga in vrne ta tropp k je najbižji
                 closestTroop = freTroop.pathFind(enemys);
-                if (closestTroop.equals(null)) {
+                if (closestTroop==null) {
                     i = TIMELIMIT;
                     break;
                 }
@@ -224,11 +224,14 @@ public class MainLoop {
                     freTroop.move();
                 }
             }
+            if (enemys.size() == 0) {
+                break;
+            }
             //zanka za actione enemy k je ista k zgori
              for (Troop eneTroop: enemys) {
                 closestTroop = eneTroop.pathFind(frendlys);    
-                if (closestTroop.equals(null)) {
-                    i = TIMELIMIT;
+                if (closestTroop==null) {
+                    i = TIMELIMIT+100;
                     break;
                 }
                 if (eneTroop.isInRange(closestTroop)) {
@@ -245,22 +248,20 @@ public class MainLoop {
                 }
             }
             
+            if (frendlys.size() == 0) {
+                break;
+            }
+            
             //spremeni globaln timer
             i++;
             //pogleda če lhka prišteje elixer in če lahko ga
             if (i % 40 == 0 && freElix < 10) {
                 freElix++;
             }
-            if (i % 40 == 0 && eneElix < 10) {
+            if (i % 90 == 0 && eneElix < 10) {
                 eneElix++;
             }
 
-            if (frendlys.size() == 0) {
-                break;
-            }
-            if (enemys.size() == 0) {
-                break;
-            }
             playArea.repaint(); // ponoven izris okna
             elix.repaint();
             cards.repaint();
