@@ -19,7 +19,6 @@ import java.awt.image.BufferedImage;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
-
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -426,13 +425,13 @@ class CardPanel extends JPanel {
             }
             Troop troop = new Troop(new Vektor(0,0), true, MainLoop.troopSelection.get(i));
             graphics.drawImage(troop.getPicture(),0,i*250, 250, 250, null);
-            graphics.drawString("cost: " + troop.getCost() + "CUM", 250, i*250+22);
+            graphics.drawString("cost: " + troop.getCost() + " BANANA", 250, i*250+22);
             graphics.drawString(troop.getName(), 0, i*250+20);
             graphics.drawString("health: " + troop.getMaxhealth() + "HP", 250, i*250+45);
             graphics.drawString("range: " + troop.getRange()/30, 250, i*250+67);
             graphics.drawString("damage: " + troop.getDamage()+ "HP", 250, i*250+89);
-            graphics.drawString("cool: " + troop.getCool()*0.05 + "s", 250, i*250+111);
-            graphics.drawString("speed: " + troop.getSpeed(), 250, i*250+133);
+            graphics.drawString(String.format("cool: %.1f s", troop.getCool()*0.05 ), 250, i*250+111);
+            graphics.drawString(String.format("speed: %.1f", troop.getSpeed() ), 250, i*250+133);
         }  
     }
     }   
@@ -464,7 +463,9 @@ class CardPanel extends JPanel {
         else {
             graphics.setColor(Color.WHITE);
         }
+        try {
         graphics.drawString(MainLoop.situation, (int) this.getMousePosition().getX(), (int) this.getMousePosition().getY());
+        } catch(NullPointerException e) {}
     }
 }
 
