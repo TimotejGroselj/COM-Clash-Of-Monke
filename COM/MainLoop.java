@@ -35,6 +35,7 @@ import java.awt.GridLayout;
 public class MainLoop {
     public final static int HEIGHT = 1000;
     public final static int WIDTH = 1900;
+    public final static int TIMELIMIT = 3600;
     public static final String[] TROOPTYPES = new String[] {"Acid thrower", "Alien","Monke","Wizard", "Bionic bommer", "Bomerang",
             "Bommerang master","Canon","Catapult","CHIPPER","Engineer", "Fire wizard",
             "Flame thrower","Freze tower","Jaka","Laser gunner", "Minigun","Mortar",
@@ -192,7 +193,7 @@ public class MainLoop {
         Map<Troop, HashMap<Troop,Boolean>> MonkeFights = new Interactions(TROOPTYPES).getInteractions();
 
         Troop closestTroop;
-        while (i<3600) {
+        while (i<TIMELIMIT) {
             //če poteče cajt konča igro
             //pregleda če je kdo zgubu aka nima več nobenga monketa
 
@@ -205,7 +206,7 @@ public class MainLoop {
                 //pathfind določ angle do najbližjiga in vrne ta tropp k je najbižji
                 closestTroop = freTroop.pathFind(enemys);
                 if (closestTroop.equals(null)) {
-                    i = 3900;
+                    i = TIMELIMIT;
                     break;
                 }
                 //če je ta najbližji troop v range se nocmo premaknt in pol gledamo naprej 
@@ -228,7 +229,7 @@ public class MainLoop {
              for (Troop eneTroop: enemys) {
                 closestTroop = eneTroop.pathFind(frendlys);    
                 if (closestTroop.equals(null)) {
-                    i = 3900;
+                    i = TIMELIMIT;
                     break;
                 }
                 if (eneTroop.isInRange(closestTroop)) {

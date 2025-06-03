@@ -427,7 +427,7 @@ public class Troop {
         setSpeed(11);
         setDamage(75);
         setRange(2);
-        this.cool = 3600;
+        this.cool = MainLoop.TIMELIMIT;
         setMaxhealth(1);
         setCurrenthealth(getMaxhealth());
         setCost(8);
