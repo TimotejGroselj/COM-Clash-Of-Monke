@@ -73,7 +73,7 @@ class ChooseTheGuy{
 
         int num = r.nextInt(best.size()-1);
         for (Troop i1: best){
-            if (i1.getDamage() > 100) {return i1;} //preferira troopa, ki ima visok damage
+            if (i1.getDamage() > 200) {return i1;} //preferira troopa, ki ima visok damage
         }
         return best.get(num);
     }
