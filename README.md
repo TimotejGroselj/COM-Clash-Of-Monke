@@ -10,4 +10,4 @@ Kako igrati?
 5. Enjoy =)
 
 # Povezava do posnetka predstavitve projekta
-https://youtu.be/jDhiV7FpNqU
+https://youtu.be/IPj_0pcAUdk
