@@ -223,10 +223,10 @@ public class MainLoop {
                 } else {
                     freTroop.move();
                 }
-            }
             if (enemys.size() == 0) {
+                i = TIMELIMIT+100;
                 break;
-            }
+            }}
             //zanka za actione enemy k je ista k zgori
             if (i<TIMELIMIT) {
                 for (Troop eneTroop: enemys) {
@@ -247,11 +247,10 @@ public class MainLoop {
                     } else {
                         eneTroop.move();
                     }
-                }
-                
                 if (frendlys.size() == 0) {
+                    i = TIMELIMIT+100;
                     break;
-                }
+                }}
             }
             
             //spremeni globaln timer
@@ -260,7 +259,7 @@ public class MainLoop {
             if (i % 40 == 0 && freElix < 10) {
                 freElix++;
             }
-            if (i % 40 == 0 && eneElix < 10) {
+            if (i % 70 == 0 && eneElix < 10) {
                 eneElix++;
             }
 
