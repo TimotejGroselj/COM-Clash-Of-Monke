@@ -205,7 +205,7 @@ public class MainLoop {
                 //pathfind določ angle do najbližjiga in vrne ta tropp k je najbižji
                 closestTroop = freTroop.pathFind(enemys);
                 if (closestTroop==null) {
-                    i = TIMELIMIT;
+                    i = TIMELIMIT+100;
                     break;
                 }
                 //če je ta najbližji troop v range se nocmo premaknt in pol gledamo naprej 
@@ -228,28 +228,30 @@ public class MainLoop {
                 break;
             }
             //zanka za actione enemy k je ista k zgori
-             for (Troop eneTroop: enemys) {
-                closestTroop = eneTroop.pathFind(frendlys);    
-                if (closestTroop==null) {
-                    i = TIMELIMIT+100;
+            if (i<TIMELIMIT) {
+                for (Troop eneTroop: enemys) {
+                    closestTroop = eneTroop.pathFind(frendlys);    
+                    if (closestTroop==null) {
+                        i = TIMELIMIT+100;
+                        break;
+                    }
+                    if (eneTroop.isInRange(closestTroop)) {
+                        if (i-eneTroop.getLastAttack() >= eneTroop.getCool()) {
+                            eneTroop.attack(closestTroop);
+                            animations.put(eneTroop, new Troop(eneTroop, eneTroop.getAnimation(), closestTroop.getLocation()));
+                            eneTroop.setLastAttack(i);
+                            if (closestTroop.isDead()) {
+                                frendlys.remove(closestTroop);
+                            }
+                        }
+                    } else {
+                        eneTroop.move();
+                    }
+                }
+                
+                if (frendlys.size() == 0) {
                     break;
                 }
-                if (eneTroop.isInRange(closestTroop)) {
-                    if (i-eneTroop.getLastAttack() >= eneTroop.getCool()) {
-                        eneTroop.attack(closestTroop);
-                        animations.put(eneTroop, new Troop(eneTroop, eneTroop.getAnimation(), closestTroop.getLocation()));
-                        eneTroop.setLastAttack(i);
-                        if (closestTroop.isDead()) {
-                            frendlys.remove(closestTroop);
-                        }
-                    }
-                } else {
-                    eneTroop.move();
-                }
-            }
-            
-            if (frendlys.size() == 0) {
-                break;
             }
             
             //spremeni globaln timer
@@ -258,7 +260,7 @@ public class MainLoop {
             if (i % 40 == 0 && freElix < 10) {
                 freElix++;
             }
-            if (i % 90 == 0 && eneElix < 10) {
+            if (i % 40 == 0 && eneElix < 10) {
                 eneElix++;
             }
 
