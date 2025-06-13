@@ -37,6 +37,7 @@ public class Start extends JFrame{
         int ryt = (h - yt) / 2;
 
 
+
         int count = 0;
         for (String troop:MainLoop.TROOPTYPES){
             if (count < 8){
@@ -84,36 +85,7 @@ public class Start extends JFrame{
             }
         };
 
-        MouseAdapter Hover = new MouseAdapter() {
-            JPanel rect = new JPanel();
-            JLabel text = new JLabel();
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                JButton butt = (JButton) e.getSource();
-                String name = butt.getText();
-                Troop statser = new Troop(new Vektor(0,0),true,name);
 
-                text.setFont(new Font("Arial", Font.BOLD, 16));
-                text.setText("<html>Name:"+statser.getName()+
-                        "<br>Cost:"+statser.getCost() +
-                        "<br>Health:"+statser.getMaxhealth()+
-                        "<br>Range:"+statser.getRange()+
-                        "<br>Damage:"+statser.getDamage()+
-                        "<br>Cool:"+statser.getCool()+
-                        "<br>Speed:"+statser.getSpeed()+"</html>");
-
-                rect.add(text);
-                rect.setBackground(Color.red);
-                rect.setBounds(200,200,250,200);
-                start.add(rect);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                start.remove(rect);
-
-            }
-        };
 
 
 

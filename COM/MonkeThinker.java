@@ -17,16 +17,16 @@ public class MonkeThinker {
         for (Troop friend : friendly) {
             if (Objects.equals(friend.getName(), "Tower")){continue;} //stolp ne moremo postavit
             ChooseTheGuy BestMonke = new ChooseTheGuy(friend, this.elixir, fightclub);
-            if (!friend.isOnFrendlyGround(MainLoop.HEIGHT)) { //napade
+            if (!friend.isOnFrendlyGround(MainLoop.HEIGHT)) { //obrani
                 this.Dude = BestMonke.DoDefence();
                 if (this.Dude == null) continue;
                 this.Spawn = new ChooseTheLocation(this.Dude, friend).GetSpawn("Defence");
             } else {
-                if (friend.getCurrenthealth() >= 500) { //opazi nasprotnika z veliko health
+                if (friend.getCurrenthealth() >= 350) { //opazi nasprotnika z veliko health
                     this.Dude = BestMonke.DoBackupDefence();
                     if (this.Dude == null) continue;
                     this.Spawn = new ChooseTheLocation(this.Dude, friend).GetSpawn("BackupDefence");
-                } else { //obrani
+                } else { //napade
                     this.Dude = BestMonke.DoOffence();
                     if (this.Dude == null) continue;
                     this.Spawn = new ChooseTheLocation(this.Dude, friend).GetSpawn("Offence");
@@ -36,13 +36,14 @@ public class MonkeThinker {
     }
 
     public Troop getDude() {
+        //vrne troopa
         if (Dude == null) {return null;}
         return new Troop(Spawn, false, Dude.getName());
     }
 
 }
 class ChooseTheGuy{
-
+    //primeren troop za dano strategijo
     private final int current_elixir;
     private final Troop replica;
     public Map<Troop, HashMap<Troop, Boolean>> interactions;
@@ -65,14 +66,14 @@ class ChooseTheGuy{
         HashMap<Troop,Boolean> tobeat = interactions.get(replica);
         List<Troop> best = new ArrayList<>();
         for (Troop i: tobeat.keySet()){
-            if (tobeat.get(i) && (i.getCost()<=this.current_elixir)){best.add(i);}
+            if (tobeat.get(i) && (i.getCost()<=this.current_elixir)){best.add(i);} //glede na trenutno stevilo banan aka elixirja bo dodal ustrezne troope v ožji izbor
         }
         if (best.isEmpty()) return null;
         if (best.size() == 1) return best.get(0);
 
         int num = r.nextInt(best.size()-1);
         for (Troop i1: best){
-            if (i1.getDamage() > 200) {return i1;} //ta 80 se se stima
+            if (i1.getDamage() > 100) {return i1;} //preferira troopa, ki ima visok damage
         }
         return best.get(num);
     }
@@ -106,6 +107,7 @@ class ChooseTheGuy{
 }
 
 class ChooseTheLocation {
+    //ustrezna lokacija troopa, ki ga robot postavi
     private final double a = MainLoop.HEIGHT;
     private final double b = MainLoop.HEIGHT;
     private final double range;
@@ -156,7 +158,8 @@ class ChooseTheLocation {
             return cords.get(id);
         }
         else {
-            //postavi nekje v sredini
+            //postavi nekje v sredini, odvisnno od pozicije nasportnika
+            //podobno kot pri offence samo, da ga bo zelel ubraniti
             if (this.x0 < a/2) {
                 x = r.nextInt((int) (a /6))+ (int) (a / 3);
                 y = r.nextInt((int) (b/2));

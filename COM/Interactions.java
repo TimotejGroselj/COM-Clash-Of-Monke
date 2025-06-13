@@ -6,6 +6,7 @@ import java.util.Set;
 
 public class Interactions {
     // vse mozne interactone za med troopi in kdo koga zmaga
+    // bool true pomeni da troop2 zmaga troop1
     public Map<Troop, HashMap<Troop,Boolean>> interactions;
 
     public Interactions(String[] allTroops) {
