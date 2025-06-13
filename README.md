@@ -8,3 +8,6 @@ Kako igrati?
 3. Ko se počutite pripravljeni in vam je deck všeč pritisnite gumb ready in se bo igra zagnala.
 4. Ko se igra zažene je cilj igre uničiti vse nasprotne "Towerje" in pokončati vse preostale nasprotne "monkeys". Na levi imate število banan, katere lahko uporabite za postavljanje "monkeys" na battlefield. Na desni imate trenutno izbiro kart (karte pridejo iz decka). S pritiskom na karto boste izbrali, da ko naslednjič kliknete na vašo polovico battlefielda postavite ta "monkey", ki ga predstavlja karta. Ko postavite "monkey" na battlefield bo izbrala najbižjega nasprotnika ter se začela premikati proti njemu in napadla ko bo lahko. Nasprotnik se bo seveda branil in tudi napadal nazaj. "monkey" bo zmeraj napadel najbižjega, kar odpira priložnosti za različne strategije.
 5. Enjoy =)
+
+# Povezava do posnetka predstavitve projekta
+https://youtu.be/jDhiV7FpNqU
