@@ -37,7 +37,7 @@ public class MonkeThinker {
 
     public Troop getDude() {
         //vrne troopa
-        if (Dude == null) {return null;}
+        if (Dude == null || Spawn == null) {return null;}
         return new Troop(Spawn, false, Dude.getName());
     }
 
@@ -122,20 +122,21 @@ class ChooseTheLocation {
     }
 
     public boolean IsInside(double x,double y){
-        return ((x >= 0 && x <= a)&&(y >= 0 && y <= b/2)); //0-> height*1/4
+        return ((x >= 450 && x <= a)&&(y >= 0 && y <= b/2)); //0-> height*1/4
     }
 
     public Vektor GetSpawn(String strategy) {
         Random r = new Random();
-        double x,y = 0.0;
+        double x = 450.0;
+        double y = 0.0;
         if (strategy.equals("Offence")) {
             //postavi na drugi strani kot nasprotnik napada
-            if (this.x0 < a/2) {
-                x = r.nextInt((int) (a))+ (int)(a /2);
+            if (this.x0 < (a/2)) {
+                x = r.nextInt((int)(a /2),(int)a);
                 y = r.nextInt((int) (b/2));
             }
             else {
-                x = r.nextInt((int) (a / 2));
+                x = r.nextInt((int) (a/2));
                 y = r.nextInt((int) (b/2));
             }
             return new Vektor(x, y);
@@ -148,8 +149,8 @@ class ChooseTheLocation {
                 x = this.range*Math.sin(fi) + this.x0;
                 y = this.range*Math.cos(fi) + this.y0;
                 fi += Math.PI/parameter;
-                if (IsInside(x,y)) {
-                    cords.add(new Vektor(x, y));
+                if (IsInside(x-100,y-100)) {
+                    cords.add(new Vektor(x-100, y-100));
                 }
             }
             if (cords.isEmpty()) return null;
@@ -160,12 +161,12 @@ class ChooseTheLocation {
         else {
             //postavi nekje v sredini, odvisnno od pozicije nasportnika
             //podobno kot pri offence samo, da ga bo zelel ubraniti
-            if (this.x0 < a/2) {
-                x = r.nextInt((int) (a /6))+ (int) (a / 3);
+            if (this.x0 < (a/2)) {
+                x = r.nextInt((int)(a/2));
                 y = r.nextInt((int) (b/2));
             }
             else {
-                x = r.nextInt((int) (a /6)) + (int) (a / 2);
+                x = r.nextInt((int)(a /2),(int)a);
                 y = r.nextInt((int) (b/2));
             }
             return new Vektor(x, y);
